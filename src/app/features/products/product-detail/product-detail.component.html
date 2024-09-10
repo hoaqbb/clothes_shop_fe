@@ -1,0 +1,88 @@
+@if(productDetail) {
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <div class="container">
+                  
+                  <swiper-container style="--swiper-navigation-color: #000; --swiper-pagination-color: #fff" class="mySwiper"
+                  thumbs-swiper=".mySwiper2" loop="true" space-between="10" navigation="true">
+                  @for (image of productImages; track null) {
+                    <swiper-slide>
+                          <img src="{{baseUrl+image.imageUrl }}">
+                    </swiper-slide>
+                }
+                </swiper-container>
+                
+                <swiper-container class="mySwiper2" loop="true" space-between="10" slides-per-view="4" free-mode="true"
+                  watch-slides-progress="true">
+                  @for (image of productImages; track null) {
+                    <swiper-slide>
+                          <img src="{{baseUrl+image.imageUrl }}">
+                    </swiper-slide>
+                }
+                </swiper-container>
+                </div>
+            </div>
+
+            <div class="col-4">
+                <div class="list-group">
+                    <h3>{{productDetail.name}}</h3>
+                    <span><strong>{{productDetail.price}}đ</strong></span>
+                    <span>Màu sắc:</span>
+
+                    <span>Kích thước</span>
+
+                    <button class="btn-addtocart"><strong>THÊM VÀO GIỎ</strong></button>
+                    <button class="btn">MUA NGAY</button>
+                
+                </div>
+                
+
+
+            </div>
+        </div>
+    </div>
+    <div>{{productDetail.description}}</div>
+
+    <div>
+        <h2>{{ productDetail.name }}</h2>
+        <p>{{ productDetail.description }}</p>
+        <p>Price: {{ productDetail.price}}</p>
+      
+        <div *ngFor="let color of availableColors">
+          <h4>Color: {{ color }}</h4>
+          <ul>
+            <li *ngFor="let size of getSizesByColor(color)">
+              Size: {{ size.size }} - Available: {{ size.amount > 0 ? size.amount : 'Out of stock' }}
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+}
+
+
+<!-- <swiper-container loop="true" class="main-swiper"
+                  thumbs-swiper=".sub-swiper"
+                  mousewheel-force-to-axis="true"
+                  
+                        >
+                  @for (image of productImages; track null) {
+                      <swiper-slide>
+                            <img src="{{baseUrl+image.imageUrl }}" alt="" width="80%">
+                      </swiper-slide>
+                  }
+                </swiper-container>
+
+                <swiper-container class="sub-swiper"
+            
+                  slides-per-view="4"
+                  mousewheel-force-to-axis="true"
+                  watch-slides-progress="true"
+                        >
+                  @for (image of productImages; track null) {
+                      <swiper-slide>
+                            <img src="{{baseUrl+image.imageUrl }}" alt="" width="80%">
+                      </swiper-slide>
+                  }
+                </swiper-container> -->

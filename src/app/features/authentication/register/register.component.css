@@ -1,0 +1,15 @@
+.register-layout {
+    margin: 0 auto;
+    width: 40%;
+    padding: 50px 0;
+}
+
+.mb-3 input {
+    height: 50px;
+    border-radius: 0;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}

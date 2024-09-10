@@ -1,0 +1,115 @@
+<div class="container register-layout">
+    <div class="row">
+        <h2 class="mb-3">ĐĂNG KÝ</h2>
+        <form #registerForm="ngForm" 
+            (ngSubmit)="register()">
+            <div class="mb-3">
+                <input
+                    type="text"
+                    class="form-control"
+                    name="lastName"
+                    id=""
+                    aria-describedby="lastNameHelpId"
+                    placeholder="Họ"
+                />
+                <small id="lastNameHelpId" class="form-text text-danger"
+                    >*Help text</small
+                >
+            </div>
+            <div class="mb-3">
+                <input
+                    type="text"
+                    class="form-control"
+                    name="firstName"
+                    id=""
+                    aria-describedby="firstNameHelpId"
+                    placeholder="Tên"
+                />
+                <small id="firstNameHelpId" class="form-text text-danger"
+                    >*Help text</small
+                >
+            </div>
+            <div class="d-flex">
+                <div class="form-check">
+                    <input id="male" class="form-check-input" 
+                        type="radio" name="gender" value="0">
+                    <label class="form-check-label" for="male">
+                      Nam
+                    </label>
+                  </div>
+                  <div class="form-check ms-3">
+                    <input id="female" class="form-check-input" 
+                        type="radio" name="gender" value="1">
+                    <label class="form-check-label" for="female">
+                      Nữ
+                    </label>
+                  </div>
+            </div>
+            <small id="genderHelpId" class="form-text text-danger mb-3"
+                    >*Help text</small
+                >
+
+            <div class="mb-3">
+                <input
+                    type="date"
+                    class="form-control"
+                    name="dateOfBirth"
+                    id=""
+                    aria-describedby="dateOfBirthHelpId"
+                    placeholder="mm/dd/yyyy"
+                />
+                <small id="dateOfBirthHelpId" class="form-text text-danger"
+                    >*Help text</small
+                >
+            </div>
+            <div class="mb-3">
+                <input
+                    type="email"
+                    class="form-control"
+                    name="email"
+                    id=""
+                    aria-describedby="emailHelpId"
+                    placeholder="Email"
+                />
+                <small id="emailHelpId" class="form-text text-danger"
+                    >*Help text</small
+                >
+            </div>
+            <div class="mb-3">
+                <input
+                    type="password"
+                    class="form-control"
+                    name="password"
+                    id=""
+                    aria-describedby="passwordHelpId"
+                    placeholder="Mật khẩu"
+                />
+                <small id="passwordHelpId" class="form-text text-danger"
+                    >*Help text</small
+                >
+            </div>
+            <div class="mb-3">
+                <input
+                    type="password"
+                    class="form-control"
+                    name="confirmPassword"
+                    id=""
+                    aria-describedby="confirmPasswordHelpId"
+                    placeholder="Nhập lại mật khẩu"
+                />
+                <small id="confirmPasswordHelpId" class="form-text text-danger"
+                    >*Help text</small
+                >
+            </div>
+            
+            <div class="list-group">
+                <button class="p-2" type="submit" style="width: 8rem; font-weight: bolder;">
+                    ĐĂNG KÝ
+                </button>
+                <a class="mt-4" href="/"><i class="fa fa-long-arrow-left">----</i>
+                    Quay lại trang chủ
+                </a>
+            </div>
+            
+        </form>
+</div>

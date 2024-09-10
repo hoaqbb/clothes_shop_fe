@@ -1,0 +1,32 @@
+@if(product) {
+    <div class="card mb-4" routerLink="/products/{{product.slug}}">
+        <div class="card-img-wrapper">
+            <img class="main-image" src="{{baseUrl+product.mainPhoto || '../../../../assets/ao.webp'}}"
+                class="card-img-top">
+            <img class="sub-image" src="{{baseUrl+product.subPhoto}}" alt="">
+            <ul class="list-inline animate text-center">
+                <li class="list-inline-item">
+                    <button class="btn btn-dark" routerLink="/account/login">
+                    MUA NGAY</button></li>
+                <li class="list-inline-item">
+                    <button class="btn btn-dark">
+                    THÊM VÀO GIỎ HÀNG</button></li>
+            </ul>
+        </div>
+       
+        <div class="card-body p-1">
+            
+            <div class="d-inline-flex justify-content-center" style="width: 100%;">
+                @for (color of product.productColors; track null) {
+                    <span class="color-box"
+                    [ngStyle]="{'background-color': color.colorCode}">
+                    </span>
+                }
+            </div>
+            <h6 class="card-title text-center mb-1">
+                {{product.name}}
+            </h6>
+            <p class="card-text text-muted text-center">{{product.price}}đ</p>
+        </div>
+    </div>
+}

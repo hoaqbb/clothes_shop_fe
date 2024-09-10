@@ -1,0 +1,46 @@
+<div class="container login-layout">
+    <div class="row">
+        <h2 class="mb-3">ĐĂNG NHẬP</h2>
+        <form #loginForm="ngForm" 
+            (ngSubmit)="login()">
+            <div class="mb-3">
+                <h6 for="" class="mb-1">Email</h6>
+                <input
+                    type="email"
+                    class="form-control"
+                    name="email"
+                    id=""
+                    aria-describedby="emailHelpId"
+                    placeholder=""
+                />
+                <small id="emailHelpId" class="form-text text-danger"
+                    >*Help text</small
+                >
+            </div>
+            <div class="mb-3">
+                <h6 for="" class="mb-1">Mật khẩu</h6>
+                <input
+                    type="password"
+                    class="form-control"
+                    name="password"
+                    id=""
+                    aria-describedby="emailHelpId"
+                    placeholder=""
+                />
+                <small id="passwordHelpId" class="form-text text-danger"
+                    >*Help text</small
+                >
+            </div>
+            <div class="d-flex">
+                <button type="submit" style="width: 8rem; font-weight: bolder;">
+                    ĐĂNG NHẬP
+                </button>
+            <div class="ms-3">
+                <a href="">Quên mật khẩu?</a>
+                <br>
+                <span class="text-secondary">hoặc </span>
+                <a href="/account/register">Đăng ký</a>
+            </div>
+            </div>
+        </form>
+</div>
