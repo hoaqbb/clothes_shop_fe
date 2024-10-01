@@ -1,38 +1,53 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ProductService } from '../../../core/services/product.service';
 import { ActivatedRoute } from '@angular/router';
-import { ProductDetail } from '../../../models/product-detail';
-import { SlickCarouselModule } from 'ngx-slick-carousel';
-import { ProductImage } from '../../../models/product-image';
-import { NgFor } from '@angular/common';
+import { ProductDetail, ProductImage, ProductVariant } from '../../../models/product';
+import { CommonModule } from '@angular/common';
 import { environment } from '../../../../environments/environment.development';
-import { ProductColor } from '../../../models/product-color';
+import { ColorVariant } from '../../../models/color';
+import { ProductListComponent } from "../product-list/product-list.component";
+import { SizeColor } from '../../../models/size';
+import { FormsModule } from '@angular/forms';
+import { GalleriaModule } from 'primeng/galleria';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [SlickCarouselModule, NgFor],
+  imports: [CommonModule, ProductListComponent, FormsModule, GalleriaModule],
   templateUrl: './product-detail.component.html',
-  styleUrl: './product-detail.component.css',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  styleUrl: './product-detail.component.css'
 })
 export class ProductDetailComponent implements OnInit{
   baseUrl = environment.apiUrl;
-  productDetail? : ProductDetail;
+  productDetail! : ProductDetail;
   productImages?: ProductImage[];
+  variants!: ProductVariant[];
+  colors!:  ColorVariant[];
 
-  @Input() colors?: ProductColor[] = [
+  responsiveOptions: any[] = [
     {
-      "name": "XANH",
-      "colorCode": "#055b26"
+        breakpoint: '1024px',
+        numVisible: 5
     },
     {
-      "name": "HỒNG",
-      "colorCode": "#ee8aa2"
+        breakpoint: '768px',
+        numVisible: 3
+    },
+    {
+        breakpoint: '560px',
+        numVisible: 1
     }
-  ];
+];
 
-  availableColors: string[] = [];
+  selectedColor: ColorVariant | null = null; 
+  onColorChange(color: ColorVariant) {
+    this.selectedColor = color;  // Cập nhật màu đã chọn
+  }
+
+  selectedSize?: string;
+  onSizeChange(size: string) {
+    this.selectedSize = size;
+  }
 
   constructor(private productService: ProductService, private route: ActivatedRoute) { }
 
@@ -48,25 +63,66 @@ export class ProductDetailComponent implements OnInit{
         res => {
           this.productDetail = res,
           this.productImages = this.productDetail.productImages,
-          this.extractColors(),
-          console.log(this.productDetail);
+          this.getSizesInColor(),
+          this.selectedColor = this.colors[0];
+          this.selectedSize = this.getFirstAvailableSize();
+          console.log(this.colors);
       }
       )
     }
   }
 
-  extractColors(): void {
-    if (this.productDetail) {
-      this.availableColors = [...new Set(this.productDetail.productVariants.map(variant => variant.color))];
+  getSizesInColor() {
+    this.variants = this.productDetail.productVariants;
+    this.colors = this.variants.reduce((acc: ColorVariant[], variant) => {
+      const existingColor = acc.find(c => c.color === variant.color);
+      
+      if (!existingColor) {
+        // If color doesn't exist, add it with initial size variant
+        acc.push({
+          color: variant.color,
+          colorCode: variant.colorCode,
+          variants: [{ size: variant.size, amount: variant.amount }]
+        });
+      } else {
+        // If color exists, just add the new size variant
+        existingColor.variants?.push({
+          size: variant.size,
+          amount: variant.amount
+        });
+      }
+      
+      return acc;
+    }, []);
+  }
+
+  //auto check the first size available
+  isFirstAvailableVariant(variant: SizeColor, $index: number): boolean {
+    // Find the first available size in the selected color
+    if(this.selectedColor?.variants){
+      var firstAvailableIndex = this.selectedColor.variants.findIndex(v => v.amount > 0);
+      // Check if the current variant matches that first available one
+      return variant.amount > 0 && $index === firstAvailableIndex
     }
+
+    return false;
   }
 
-  // Get sizes by color
-  getSizesByColor(color: string) {
-    return this.productDetail?.productVariants.filter(variant => variant.color === color) || [];
+  getFirstAvailableSize(): string | undefined {
+    if (this.selectedColor?.variants) {
+      const firstAvailable = this.selectedColor.variants.find(v => v.amount > 0);
+      return firstAvailable?.size;
+    }
+    return undefined;
   }
 
-  // getSizesByColor(p: ProductDetail) {
+  model: any = {};
+  addToCart() {
+    console.log(this.selectedColor?.color);
+    console.log(this.selectedSize);
+  }
 
-  // }
+  buy() {
+
+  }
 }

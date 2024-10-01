@@ -4,32 +4,43 @@
         <form #loginForm="ngForm" 
             (ngSubmit)="login()">
             <div class="mb-3">
-                <h6 for="" class="mb-1">Email</h6>
+                <h6 class="mb-1">Email</h6>
                 <input
+                    [class.is-invalid]="email.touched && email.invalid"
+                    [(ngModel)]="model.email"
                     type="email"
                     class="form-control"
                     name="email"
-                    id=""
-                    aria-describedby="emailHelpId"
-                    placeholder=""
+                    required
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                    #email="ngModel"
                 />
-                <small id="emailHelpId" class="form-text text-danger"
-                    >*Help text</small
-                >
+                <div *ngIf="email.errors?.required"
+                    class="invalid-feedback">
+                    *Vui lòng nhập email
+                </div>
+                <div *ngIf="email.errors?.pattern && email.dirty"
+                    class="invalid-feedback">
+                    *Vui lòng nhập email hợp lệ
+                </div>
+                
             </div>
             <div class="mb-3">
                 <h6 for="" class="mb-1">Mật khẩu</h6>
                 <input
+                    [class.is-invalid]='password.touched && password.invalid'
+                    [(ngModel)]="model.password"
                     type="password"
                     class="form-control"
                     name="password"
-                    id=""
-                    aria-describedby="emailHelpId"
-                    placeholder=""
+                    required
+                    #password="ngModel"
                 />
-                <small id="passwordHelpId" class="form-text text-danger"
-                    >*Help text</small
-                >
+                <div *ngIf="password.errors?.required"
+                    class="invalid-feedback">
+                    *Vui lòng nhập mật khẩu
+                </div>
+                
             </div>
             <div class="d-flex">
                 <button type="submit" style="width: 8rem; font-weight: bolder;">

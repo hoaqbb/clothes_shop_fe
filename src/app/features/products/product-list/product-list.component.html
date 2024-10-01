@@ -1,7 +1,7 @@
 @if(products){
     <div class="container">
         <div class="row">
-            @for (product of products; track null) {
+            @for (product of products ; track null) {
                 <div class="col-3">
                     <app-product-card [product]="product"></app-product-card>
                 </div>

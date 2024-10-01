@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Product } from '../../../models/product';
 import { environment } from '../../../../environments/environment.development';
 import { RouterModule } from '@angular/router';
-import { ProductColor } from '../../../models/product-color';
+import { ProductColor } from '../../../models/product';
 import { NgStyle } from '@angular/common';
 
 @Component({

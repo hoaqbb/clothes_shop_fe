@@ -77,3 +77,12 @@ button {
     height: 6px;
     margin: 5px;
   }
+
+span.discount {
+    background-color: #000;
+
+}
+
+/* h6.price::after {
+    background-image: url();
+} */

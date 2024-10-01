@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="row m-auto">
+        <div class="col-8">
+            <h2 class="text-center">Giỏ hàng của bạn</h2>
+            <div class="container" style="background-color: #fafafa;">
+                @for (item of items ; track null) {
+                    <div class="row">
+                        <app-cart-item-card [cartItem]="item"></app-cart-item-card>
+                    </div>
+                }
+                <div class="row">
+                    <div class="col-md-8 mt-4">
+                        <h5>Ghi chú đơn hàng</h5>
+                        <textarea class="form-control" rows="4"></textarea>
+                    </div>
+                    <div class="col-md-4 mt-4">
+                        <h5>Chính sách Đổi/Trả</h5>
+                        <ul class="list-unstyled">
+                        <li>→ Sản phẩm được đổi 1 lần duy nhất, không hỗ trợ trả.</li>
+                        <li>→ Sản phẩm còn đủ tem mác, chưa qua sử dụng.</li>
+                        <li>→ Sản phẩm nguyên giá được đổi trong 30 ngày trên toàn hệ thống.</li>
+                        <li>→ Sản phẩm sale chỉ hỗ trợ đổi size (nếu cửa hàng còn).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-2 m-auto">
+            <h6>Thông tin đơn hàng</h6>
+            
+        </div>
+    </div>
+    
+</div>

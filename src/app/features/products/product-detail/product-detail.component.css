@@ -104,3 +104,62 @@ swiper-slide img {
     height: 100%;
     object-fit: cover;
   }
+
+
+  .color-box {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin: 5px;
+  }
+  
+  input.form-check-input#color {
+    height: 3px;
+    border-radius: 0;
+  }
+
+  .size-container {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .size-box {
+    position: relative;
+    padding: 10px;
+    border: 1px solid #000;
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Hide the radio button */
+  /* .size-box input[type="radio"] {
+    display: none; 
+  } */
+  
+  .size-box span {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .size-box.out-of-stock {
+    background-color: #f8f8f8;
+  }
+  
+  .size-box.out-of-stock span {
+    color: #999; /* Greyed out text */
+  }
+  
+  /* .slash-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none; 
+  } */
+  

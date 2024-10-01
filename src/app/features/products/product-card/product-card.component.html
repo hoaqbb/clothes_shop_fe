@@ -23,10 +23,20 @@
                     </span>
                 }
             </div>
-            <h6 class="card-title text-center mb-1">
+            <h5 class="card-title text-center mb-1">
                 {{product.name}}
-            </h6>
-            <p class="card-text text-muted text-center">{{product.price}}đ</p>
+            </h5>
+            @if(product.discount > 0) {
+                <div class="d-flex p-2 justify-content-center">
+                    <span class="col d-flex justify-content-center text-light discount"><strong>-{{product.discount}}%</strong></span>
+                    <h6 class="col d-flex justify-content-center">{{product.price*(100-product.discount)/100}}đ</h6>
+                    <h6 class="col d-flex justify-content-center price text-decoration-line-through">
+                        {{product.price}}đ</h6>
+                </div>
+            } @else {
+                <h6 class="col d-flex justify-content-center">{{product.price}}đ</h6>
+            }
+            
         </div>
     </div>
 }

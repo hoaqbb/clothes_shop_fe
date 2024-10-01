@@ -1,0 +1,7 @@
+.sidebar-container {
+    display: block;
+    width: 200px;
+    height: 1000px;
+    background-color: aqua;
+    padding: 100px;
+}

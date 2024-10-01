@@ -4,12 +4,27 @@
     padding: 50px 0;
 }
 
-.mb-3 input {
+/* .mb-3 input {
     height: 50px;
     border-radius: 0;
-}
+} */
+
+
 
 a {
     text-decoration: none;
     color: black;
 }
+
+::ng-deep .custom-calendar{
+    width: 100% !important;
+  }
+  
+::ng-deep .p-inputtext {
+    border-radius: 0 !important;
+}
+
+::ng-deep .p-calendar .p-datepicker {
+    min-width: 70% !important;
+}
+  

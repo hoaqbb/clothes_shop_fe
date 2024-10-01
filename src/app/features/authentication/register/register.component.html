@@ -1,37 +1,20 @@
 <div class="container register-layout">
     <div class="row">
         <h2 class="mb-3">ĐĂNG KÝ</h2>
-        <form #registerForm="ngForm" 
+        <form [formGroup]="registerForm"
             (ngSubmit)="register()">
-            <div class="mb-3">
-                <input
-                    type="text"
-                    class="form-control"
-                    name="lastName"
-                    id=""
-                    aria-describedby="lastNameHelpId"
-                    placeholder="Họ"
-                />
-                <small id="lastNameHelpId" class="form-text text-danger"
-                    >*Help text</small
-                >
-            </div>
-            <div class="mb-3">
-                <input
-                    type="text"
-                    class="form-control"
-                    name="firstName"
-                    id=""
-                    aria-describedby="firstNameHelpId"
-                    placeholder="Tên"
-                />
-                <small id="firstNameHelpId" class="form-text text-danger"
-                    >*Help text</small
-                >
-            </div>
-            <div class="d-flex">
+            <app-text-input 
+                [formControl]="registerForm.controls['lastName']"
+                [label]='"Họ"'>
+            </app-text-input>
+            <app-text-input 
+                [formControl]="registerForm.controls['firstName']"
+                [label]='"Tên"'>
+            </app-text-input>
+            <div class="d-flex my-3">
                 <div class="form-check">
                     <input id="male" class="form-check-input" 
+                        formControlName="gender"
                         type="radio" name="gender" value="0">
                     <label class="form-check-label" for="male">
                       Nam
@@ -39,77 +22,61 @@
                   </div>
                   <div class="form-check ms-3">
                     <input id="female" class="form-check-input" 
+                        formControlName="gender"
                         type="radio" name="gender" value="1">
                     <label class="form-check-label" for="female">
                       Nữ
                     </label>
                   </div>
             </div>
-            <small id="genderHelpId" class="form-text text-danger mb-3"
-                    >*Help text</small
-                >
-
             <div class="mb-3">
-                <input
-                    type="date"
-                    class="form-control"
+                <p-calendar 
+                    [maxDate]="maxYear"
+                    styleClass="custom-calendar"
+                    formControlName="dateOfBirth" 
                     name="dateOfBirth"
-                    id=""
-                    aria-describedby="dateOfBirthHelpId"
-                    placeholder="mm/dd/yyyy"
-                />
-                <small id="dateOfBirthHelpId" class="form-text text-danger"
-                    >*Help text</small
-                >
+                    [iconDisplay]="'input'" 
+                    [showIcon]="true" 
+                    inputId="dateOfBirth" 
+                    dateFormat="dd/mm/yy"
+                    placeholder="ngày/tháng/năm"
+                    [ariaSetSize]="10"
+                    />
             </div>
-            <div class="mb-3">
-                <input
-                    type="email"
-                    class="form-control"
-                    name="email"
-                    id=""
-                    aria-describedby="emailHelpId"
-                    placeholder="Email"
-                />
-                <small id="emailHelpId" class="form-text text-danger"
-                    >*Help text</small
-                >
-            </div>
-            <div class="mb-3">
-                <input
-                    type="password"
-                    class="form-control"
-                    name="password"
-                    id=""
-                    aria-describedby="passwordHelpId"
-                    placeholder="Mật khẩu"
-                />
-                <small id="passwordHelpId" class="form-text text-danger"
-                    >*Help text</small
-                >
-            </div>
-            <div class="mb-3">
-                <input
-                    type="password"
-                    class="form-control"
-                    name="confirmPassword"
-                    id=""
-                    aria-describedby="confirmPasswordHelpId"
-                    placeholder="Nhập lại mật khẩu"
-                />
-                <small id="confirmPasswordHelpId" class="form-text text-danger"
-                    >*Help text</small
-                >
-            </div>
+            <app-text-input 
+                [formControl]="registerForm.controls['email']"
+                [label]='"Email"'
+                [type]="'email'">
+            </app-text-input>
+            <app-text-input 
+                [formControl]="registerForm.controls['password']"
+                [label]='"Mật khẩu"'
+                [type]="'password'">
+            </app-text-input>
+            <app-text-input 
+                [formControl]="registerForm.controls['confirmPassword']"
+                [label]='"Nhập lại mật khẩu"'
+                [type]="'password'">
+            </app-text-input>
             
+            <div class="row" *ngIf="validationErrors.length > 0">
+                <ul class="text-danger">
+                    <li *ngFor="let error of validationErrors">
+                        {{error}}
+                    </li>
+                </ul>
+        
+            </div>
+
             <div class="list-group">
                 <button class="p-2" type="submit" style="width: 8rem; font-weight: bolder;">
                     ĐĂNG KÝ
                 </button>
-                <a class="mt-4" href="/"><i class="fa fa-long-arrow-left">----</i>
+                <a class="mt-4" href="/"><i class="pi pi-arrow-left" style="font-size: 1rem; font-weight: bold;"></i>
                     Quay lại trang chủ
                 </a>
             </div>
             
         </form>
+        
 </div>

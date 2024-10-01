@@ -1,65 +1,155 @@
 @if(productDetail) {
     <div class="container">
         <div class="row">
-            <div class="col-8">
+          <div class="col-3">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+              Fugiat, accusantium suscipit doloremque repellendus impedit 
+              recusandae ullam totam veniam necessitatibus exercitationem 
+              aliquid illum amet unde soluta qui officiis, obcaecati accusamus similique?</p>
+          </div>
+
+            <div class="col-6">
                 <div class="container">
                   
-                  <swiper-container style="--swiper-navigation-color: #000; --swiper-pagination-color: #fff" class="mySwiper"
-                  thumbs-swiper=".mySwiper2" loop="true" space-between="10" navigation="true">
+                  
                   @for (image of productImages; track null) {
-                    <swiper-slide>
+                    <!-- <p-galleria 
+                      [(value)]="productImages" 
+                      thumbnailsPosition="right" 
+                      [responsiveOptions]="responsiveOptions" 
+                      [containerStyle]="{ 'max-width': '640px' }"
+                      [numVisible]="5">
+                      <ng-template pTemplate="item" let-item>
+                          <img 
+                              [src]="item.itemImageSrc" 
+                              style="width: 100%; min-height: 420px; display: block;" />
+                      </ng-template>
+                      <ng-template pTemplate="thumbnail" let-item>
+                          <div class="grid grid-nogutter justify-content-center">
+                              <img [src]="item.thumbnailImageSrc" />
+                          </div>
+                      </ng-template>
+              </p-galleria> -->
                           <img src="{{baseUrl+image.imageUrl }}">
-                    </swiper-slide>
+                    
                 }
-                </swiper-container>
                 
-                <swiper-container class="mySwiper2" loop="true" space-between="10" slides-per-view="4" free-mode="true"
-                  watch-slides-progress="true">
-                  @for (image of productImages; track null) {
-                    <swiper-slide>
-                          <img src="{{baseUrl+image.imageUrl }}">
-                    </swiper-slide>
-                }
-                </swiper-container>
                 </div>
             </div>
 
-            <div class="col-4">
+            <div class="col-3">
                 <div class="list-group">
                     <h3>{{productDetail.name}}</h3>
                     <span><strong>{{productDetail.price}}đ</strong></span>
                     <span>Màu sắc:</span>
-
-                    <span>Kích thước</span>
-
-                    <button class="btn-addtocart"><strong>THÊM VÀO GIỎ</strong></button>
-                    <button class="btn">MUA NGAY</button>
+                    <form #productForm="ngForm"
+                      autocomplete="off">
+                      @if(colors) {
+                        <div class="d-flex">
+                          @for (color of colors; track $index) {
+                            <!-- kiểm tra mã màu có tồn tại ko -->
+                            @if(color.colorCode){
+                              <!-- @if($index==0){ -->
+                                <div class="list-group align-items-center">
+                                  <label class="color-box"
+                                    style="cursor: pointer;"
+                                    [ngStyle]="{'background-color': color.colorCode}">
+                                    <input id="color" class="form-check-input mt-4"
+                                           type="radio" name="choseColor"
+                                           [value]="color.colorCode"
+                                           (change)="onColorChange(color)"
+                                           [checked]="$index === 0"> <!-- This will check the first radio input -->
+                                  </label>
+                                </div>
+                            }
+                          }
+                        </div>
+                        <span>Kích thước</span>
+                        <div class="mt-1 size-container">
+                          @if(selectedColor) {
+                            <div class="size-options d-flex">
+                              @for (variant of selectedColor.variants; track $index) {
+                                <!-- để cursor not-allowed lên lable -->
+                                <label class="size-box " 
+                                  [ngClass]="{'out-of-stock': variant.amount === 0}">
+                                  <input  class="form-check-input mt-4"
+                                           type="radio" name="choseSize" 
+                                           [value]="variant.size"
+                                           [disabled]="variant.amount === 0"
+                                           (change)="onSizeChange(variant.size)"
+                                           [checked]="isFirstAvailableVariant(variant, $index)"
+                                           >
+                                  <!-- <input type="radio" name="size" [value]="variant.size" 
+                                    [disabled]="variant.amount === 0" 
+                                    /> -->
+                                  <span>{{ variant.size }}</span>
+                                  <!-- Show the slash image if the size is out of stock -->
+                                  <!-- <img *ngIf="variant.amount === 0"
+                                    class="slash-img" src="assets/slash.png" alt="Out of stock" /> -->
+                                </label>
+                            }
+                            </div>
+                          }
+                          
+                        </div>
+                      }
+  
+                      <button class="btn-addtocart" type="button"
+                        (click)="addToCart()">
+                        <strong>THÊM VÀO GIỎ</strong></button>
+                      <button class="btn" type="button"
+                        (click)="buy()"
+                        >MUA NGAY</button>
+                    </form>
+                    
                 
                 </div>
-                
-
-
             </div>
+
+            
         </div>
     </div>
-    <div>{{productDetail.description}}</div>
-
-    <div>
-        <h2>{{ productDetail.name }}</h2>
-        <p>{{ productDetail.description }}</p>
-        <p>Price: {{ productDetail.price}}</p>
-      
-        <div *ngFor="let color of availableColors">
-          <h4>Color: {{ color }}</h4>
-          <ul>
-            <li *ngFor="let size of getSizesByColor(color)">
-              Size: {{ size.size }} - Available: {{ size.amount > 0 ? size.amount : 'Out of stock' }}
-            </li>
-          </ul>
-        </div>
+    
+    <div class="container-fluid">
+      <div class="row">
+        <h1>SẢN PHẨM LIÊN QUAN</h1>
       </div>
-      
+      <div class="row">
+        <app-product-list></app-product-list>
+      </div>
+    </div>
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+<div class="mt-1">
+  <select *ngIf="selectedColor" class="form-select">
+    <option *ngFor="let variant of selectedColor.variants" [disabled]="variant.amount === 0">
+      {{ variant.size }} ({{ variant.amount > 0 ? variant.amount : 'Out of stock' }})
+    </option>
+  </select>
+  
+</div> -->
+
+<!-- <div *ngFor="let color of availableColors">
+  <h4>Color: {{ color }}</h4>
+  <ul>
+    <li *ngFor="let size of getSizesByColor(color)">
+      Size: {{ size.size }} - Available: {{ size.amount > 0 ? size.amount : 'Out of stock' }}
+    </li>
+  </ul>
+</div> -->
 
 
 <!-- <swiper-container loop="true" class="main-swiper"
