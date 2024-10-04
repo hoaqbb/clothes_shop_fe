@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CartItem } from '../../../models/cart';
 import { SeedCartItems } from '../../../models/seed-data-cart-items';
 import { CartItemCardComponent } from '../../../shared/components/cart-item-card/cart-item-card.component';
+import { CartService } from '../../../core/services/cart.service';
 
 @Component({
   selector: 'app-cart-detail',
@@ -10,45 +11,22 @@ import { CartItemCardComponent } from '../../../shared/components/cart-item-card
   templateUrl: './cart-detail.component.html',
   styleUrl: './cart-detail.component.css'
 })
-export class CartDetailComponent {
+export class CartDetailComponent implements OnInit{
   // cartItems: CartItem[] = SeedCartItems.items;
 
-  items: CartItem[] = [
-    {
-        name: 'HADES STRIPED SOLID SHIRT',
-        price: 480000,
-        photo: "/product-image/ao1_1.webp",
-        discount: 10,
-        color: "XANH",
-        colorCode: "#055b26",
-        size: "S",
-        quantity: 1,
-        slug: 'hades-striped-shirt'
-    },
-    {
-        name: 'HADES LOVELESS STRIPED SHIRT',
-        price: 520000,
-        photo: "/product-image/ao2_1.webp",
-        discount: 20,
-        color: "XÁM",
-        colorCode: "#949494",
-        size: "L",
-        quantity: 1,
-        slug: 'hades-loveloss-striped-shirts'
-    },
-    {
-        name: 'HADES STRIPED SOLID SHIRT',
-        price: 480000,
-        photo: "/product-image/ao1_1.webp",
-        discount: 10,
-        color: "XANH",
-        colorCode: "#055b26",
-        size: "M",
-        quantity: 2,
-        slug: 'hades-striped-shirt'
-    }
-]
-  constructor() {
-    console.log(this.items); // Kiểm tra xem dữ liệu có được gán đúng không
+  items: CartItem[] = [];
+  constructor(private cartService: CartService) {
+    
   }
+  ngOnInit(): void {
+    this.getCartItems();
+  }
+
+  getCartItems() {
+    this.cartService.getUserCart().subscribe((items) => {
+      this.items = items;
+
+    })
+  }
+
 }

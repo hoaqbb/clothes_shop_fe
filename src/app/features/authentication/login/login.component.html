@@ -40,10 +40,18 @@
                     class="invalid-feedback">
                     *Vui lòng nhập mật khẩu
                 </div>
-                
             </div>
+
+            <div class="row" *ngIf="validationErrors.length > 0">
+                <ul class="text-danger">
+                    <li *ngFor="let error of validationErrors">
+                        {{error.error}}
+                    </li>
+                </ul>
+            </div>
+
             <div class="d-flex">
-                <button type="submit" style="width: 8rem; font-weight: bolder;">
+                <button [disabled]="loginForm.invalid" type="submit" style="width: 8rem; font-weight: bolder;">
                     ĐĂNG NHẬP
                 </button>
             <div class="ms-3">

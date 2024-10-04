@@ -13,10 +13,15 @@ import { CommonModule, NgIf } from '@angular/common';
 })
 export class LoginComponent {
   model : any = {};
+  validationErrors: string[] = [];
 
   constructor(private accountService: AccountService, private router: Router) { }
 
   login() {
-    this.accountService.login(this.model).subscribe(() => this.router.navigateByUrl('/'));
+    this.accountService.login(this.model).subscribe({
+      next: () => this.router.navigateByUrl('/'),
+      error: (error) => this.validationErrors.push(error)
+    })
+      
   }
 }
