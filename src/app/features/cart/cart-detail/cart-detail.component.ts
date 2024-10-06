@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CartItem } from '../../../models/cart';
-import { SeedCartItems } from '../../../models/seed-data-cart-items';
 import { CartItemCardComponent } from '../../../shared/components/cart-item-card/cart-item-card.component';
 import { CartService } from '../../../core/services/cart.service';
 
@@ -14,19 +13,19 @@ import { CartService } from '../../../core/services/cart.service';
 export class CartDetailComponent implements OnInit{
   // cartItems: CartItem[] = SeedCartItems.items;
 
-  items: CartItem[] = [];
-  constructor(private cartService: CartService) {
+  // items: CartItem[] = [];
+  constructor(public cartService: CartService) {
     
   }
   ngOnInit(): void {
-    this.getCartItems();
+    // this.getCartItems();
   }
 
-  getCartItems() {
-    this.cartService.getUserCart().subscribe((items) => {
-      this.items = items;
+  // getCartItems() {
+  //   this.cartService.getUserCart().subscribe((items) => {
+  //     this.items = items;
 
-    })
-  }
+  //   })
+  // }
 
 }

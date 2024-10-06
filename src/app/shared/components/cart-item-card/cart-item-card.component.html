@@ -2,33 +2,33 @@
     <div class="d-flex p-0 m-1" style="background-color: #ffff;">
         
             <div class="col-2 d-flex justify-content-center align-self-center">
-                <a  href="product/{{cartItem.slug}}">
-                    <!-- <img src="{{baseUrl+cartItem.photo}}" alt="" style="height: 100px; width: 65px;"> -->
-                    <img  src="https://product.hstatic.net/1000306633/product/1.mat_truoc_efd2405a5815455a9f425811a59fff71.png" alt="" style="height: 100px; width: 65px;">
+                <a  href="products/{{cartItem.slug}}">
+                    <img src="{{baseUrl+cartItem.photo}}" alt="" style="height: 100px; width: 65px;">
                 </a>
             </div>
         
             <div class="col-4 align-self-center">
                 <h6>{{cartItem.name}}</h6>
-                <p class="text-muted">{{cartItem.color}} / {{cartItem.size}}</p>
+                <p class="text-muted">{{cartItem.productVariant.color}} / {{cartItem.productVariant.size}}</p>
             </div>
             
             <div class="col-2 align-self-center">
-                
                 <p-inputNumber 
-                   size="1"
+                    [(ngModel)]="cartItem.quantity"
+                    size="1"
                     min="1"
-                    max="6"
+                    [max]="cartItem.productVariant.amount"
                     [showButtons]="true" 
                     buttonLayout="horizontal" 
                     spinnerMode="vertical" 
                     inputId="vertical"
+                    (ngModelChange)="changeQuantityItem(cartItem.productVariant.id, cartItem.quantity)"
                     decrementButtonClass="p-button-secondary"
                     incrementButtonClass="p-button-secondary" 
                     incrementButtonIcon="pi pi-plus" 
                     decrementButtonIcon="pi pi-minus" />
             </div>
-                <!-- [(ngModel)]={{cartItem.quantity}} -->
+            
             <div class="col-2 text-center align-self-center">
                 <p>{{cartItem.price*(100-cartItem.discount)/100}}đ</p>
             </div>
@@ -37,9 +37,9 @@
             <div class="col-2 d-flex flex-column align-items-center">
                 <p>Thành tiền:</p>
                 <p style="font-weight: 400;">{{cartItem.price*(100-cartItem.discount)/100*cartItem.quantity}}đ</p>
-                <p>
+                <span (click)="removeCartItem(cartItem.id)">
                     <i class="pi pi-trash" style="color: red;"></i>
-                </p>
+                </span>
             </div>
         </div>
     

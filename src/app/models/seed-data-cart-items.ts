@@ -1,7 +1,7 @@
-import { CartItem } from "./cart";
+import { CartItem, CartItemTest } from "./cart";
 
 export class SeedCartItems {
-    public static items: CartItem[] = [
+    public static items: CartItemTest[] = [
         {
             name: 'HADES STRIPED SOLID SHIRT',
             price: 480000,

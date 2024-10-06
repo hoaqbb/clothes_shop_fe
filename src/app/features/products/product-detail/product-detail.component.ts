@@ -1,4 +1,4 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, Output, EventEmitter } from '@angular/core';
 import { ProductService } from '../../../core/services/product.service';
 import { ActivatedRoute } from '@angular/router';
 import { ProductDetail, ProductImage, ProductVariant } from '../../../models/product';
@@ -9,6 +9,10 @@ import { ProductListComponent } from "../product-list/product-list.component";
 import { SizeColor } from '../../../models/size';
 import { FormsModule } from '@angular/forms';
 import { GalleriaModule } from 'primeng/galleria';
+import { CartService } from '../../../core/services/cart.service';
+import { ToastrService } from 'ngx-toastr';
+import { map, pipe, tap } from 'rxjs';
+import { CartItem } from '../../../models/cart';
 
 @Component({
   selector: 'app-product-detail',
@@ -23,33 +27,26 @@ export class ProductDetailComponent implements OnInit{
   productImages?: ProductImage[];
   variants!: ProductVariant[];
   colors!:  ColorVariant[];
-
-  responsiveOptions: any[] = [
-    {
-        breakpoint: '1024px',
-        numVisible: 5
-    },
-    {
-        breakpoint: '768px',
-        numVisible: 3
-    },
-    {
-        breakpoint: '560px',
-        numVisible: 1
-    }
-];
-
   selectedColor: ColorVariant | null = null; 
+  selectedSize?: string;
+  selectedVariantId: number | null;
+
+  
   onColorChange(color: ColorVariant) {
     this.selectedColor = color;  // Cập nhật màu đã chọn
   }
 
-  selectedSize?: string;
+  
   onSizeChange(size: string) {
     this.selectedSize = size;
   }
 
-  constructor(private productService: ProductService, private route: ActivatedRoute) { }
+  constructor(
+    private productService: ProductService, 
+    private cartService: CartService,
+    private toastr: ToastrService,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
     this.getProductDetail();
@@ -67,9 +64,12 @@ export class ProductDetailComponent implements OnInit{
           this.selectedColor = this.colors[0];
           this.selectedSize = this.getFirstAvailableSize();
           console.log(this.colors);
+          console.log(this.productDetail);
       }
       )
     }
+    
+    
   }
 
   getSizesInColor() {
@@ -82,11 +82,12 @@ export class ProductDetailComponent implements OnInit{
         acc.push({
           color: variant.color,
           colorCode: variant.colorCode,
-          variants: [{ size: variant.size, amount: variant.amount }]
+          variants: [{ id: variant.id, size: variant.size, amount: variant.amount }]
         });
       } else {
         // If color exists, just add the new size variant
         existingColor.variants?.push({
+          id: variant.id,
           size: variant.size,
           amount: variant.amount
         });
@@ -116,10 +117,26 @@ export class ProductDetailComponent implements OnInit{
     return undefined;
   }
 
-  model: any = {};
+  @Output() event = new EventEmitter<void>()
   addToCart() {
-    console.log(this.selectedColor?.color);
-    console.log(this.selectedSize);
+    const selectedVariant = this.selectedColor?.variants?.find(variant => variant.size === this.selectedSize);
+    this.selectedVariantId = selectedVariant.id;
+
+    let isCartItemExisted = this.cartService.cartItems.find(x => x.productVariant.id === this.selectedVariantId)
+    console.log(isCartItemExisted);
+      if(isCartItemExisted) {
+        if(isCartItemExisted.quantity < isCartItemExisted.productVariant.amount) {
+          this.cartService.cartItems[this.cartService.cartItems.indexOf(isCartItemExisted)].quantity += 1;
+          return this.cartService.addToCart(this.selectedVariantId).subscribe(() => {
+            this.event.emit();
+          })
+        }
+
+        return this.toastr.warning("Sản phẩm đã đạt tới giới hạn trong kho!");
+      }
+    return this.cartService.addToCart(this.selectedVariantId).subscribe((response: CartItem) => {
+      this.cartService.cartItems.push(response)
+    })
   }
 
   buy() {

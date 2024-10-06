@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LoginComponent } from '../../../features/authentication/login/login.component';
 import { RegisterComponent } from '../../../features/authentication/register/register.component';
@@ -15,15 +15,11 @@ import { AsyncPipe } from '@angular/common';
   styleUrl: './nav-bar.component.css'
 })
 export class NavBarComponent {
-  show: boolean = false;
+  @Output() toggleCartSideBar = new EventEmitter<void>();
 
   constructor(public accountService: AccountService) { }
 
   toggleSidebar() {
-    this.show = !this.show;
-  }
-
-  onSidebarHide() {
-    this.show = false;
+    this.toggleCartSideBar.emit();
   }
 }

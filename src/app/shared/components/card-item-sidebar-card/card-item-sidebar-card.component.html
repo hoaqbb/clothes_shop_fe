@@ -1,13 +1,15 @@
 @if(cartItem){
     <div class="d-flex">
-        <img  src="https://product.hstatic.net/1000306633/product/1.mat_truoc_efd2405a5815455a9f425811a59fff71.png" 
-            alt="" style="height: 100px; width: 65px;">
+        <a href="/products/{{cartItem.slug}}">
+            <img  src="{{baseUrl+cartItem.photo}}"
+                alt="" style="height: 100px; width: 65px;">
+        </a>
         <div class="list-group p-3" style="font-size: smaller;">
             <h6 style="font-size: small;">{{cartItem.name}}</h6>
             <div class="d-flex">
-                <span>{{cartItem.color}}</span>
+                <span>{{cartItem.productVariant.color}}</span>
                 <span> / </span>
-                <span>{{cartItem.size}}</span>
+                <span>{{cartItem.productVariant.size}}</span>
             </div>
             <div class="d-flex">
                 <span>{{cartItem.quantity}}</span>
@@ -15,6 +17,6 @@
                 <span>{{cartItem.price*cartItem.quantity}}đ</span>
             </div>
         </div>
-        <span><i class="pi pi-times" style="font-weight: bold; font-size: small;"></i></span>
+        <span (click)="removeCartItem(cartItem.id)"><i class="pi pi-times" style="font-weight: bold; font-size: small;"></i></span>
     </div>
 }

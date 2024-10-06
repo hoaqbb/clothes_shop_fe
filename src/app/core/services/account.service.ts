@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { map, ReplaySubject } from 'rxjs';
 import { User } from '../../models/user';
+import { CartService } from './cart.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class AccountService {
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser$ = this.currentUserSource.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private cartService: CartService) { }
 
   login(model: any) {
     return this.http.post(this.baseUrl + '/api/Account/login', model).pipe(
@@ -20,6 +21,12 @@ export class AccountService {
         const user = response;
         if(user) {
           this.setCurrentUserSource(user);
+          this.cartService.getUserCart().subscribe(response => {
+            this.cartService.cartItems = response;
+          })
+          // this.cartService.getUserCart().subscribe((response) => {
+          //   this.cartService.setCurrentCartItemsSource(response);
+          // });
         }
       })
     );
@@ -36,6 +43,10 @@ export class AccountService {
     )
   }
 
+  getUserDetail() {
+
+  }
+
   setCurrentUserSource(user: User) {
     this.currentUserSource.next(user);
     localStorage.setItem('user', JSON.stringify(user));
@@ -44,5 +55,6 @@ export class AccountService {
   logout() {
     localStorage.removeItem('user');
     this.currentUserSource.next(null);
+    this.cartService.cartItems = [];
   }
 }

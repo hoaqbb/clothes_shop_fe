@@ -3,7 +3,7 @@
         <div class="col-8">
             <h2 class="text-center">Giỏ hàng của bạn</h2>
             <div class="container" style="background-color: #fafafa;">
-                @for (item of items ; track null) {
+                @for (item of cartService.cartItems ; track null) {
                     <div class="row">
                         <app-cart-item-card [cartItem]="item"></app-cart-item-card>
                     </div>

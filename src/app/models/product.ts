@@ -24,6 +24,7 @@ export interface ProductImage {
 }
 
 export interface ProductVariant {
+  id: number
   amount: number
   color: string
   colorCode: string

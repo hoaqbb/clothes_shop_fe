@@ -70,11 +70,11 @@
                             <div class="size-options d-flex">
                               @for (variant of selectedColor.variants; track $index) {
                                 <!-- để cursor not-allowed lên lable -->
-                                <label class="size-box " 
+                                <label class="size-box" 
                                   [ngClass]="{'out-of-stock': variant.amount === 0}">
                                   <input  class="form-check-input mt-4"
                                            type="radio" name="choseSize" 
-                                           [value]="variant.size"
+                                           [value]="variant.id"
                                            [disabled]="variant.amount === 0"
                                            (change)="onSizeChange(variant.size)"
                                            [checked]="isFirstAvailableVariant(variant, $index)"
