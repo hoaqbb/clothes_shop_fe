@@ -10,6 +10,9 @@ import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 import { adminGuard } from './core/guards/admin.guard';
 import { AccountDetailComponent } from './features/account/account-detail/account-detail.component';
 import { authGuard } from './core/guards/auth.guard';
+import { CheckoutComponent } from './features/checkout/checkout.component';
+import { PaymentResultComponent } from './features/payment-result/payment-result.component';
+import { ServerErrorComponent } from './core/errors/server-error/server-error.component';
 
 export const routes: Routes = [
     {path:'', component: HomeComponent},
@@ -18,7 +21,11 @@ export const routes: Routes = [
     {path:'account/login', component: LoginComponent},
     {path:'account/register', component: RegisterComponent},
     {path:'cart', component: CartDetailComponent},
+    {path:'checkout', component: CheckoutComponent},
+    {path:'checkout/payment-result', component: PaymentResultComponent},
     {path: 'admin', component: AdminPanelComponent, canActivate: [adminGuard]},
     {path: 'account', component: AccountDetailComponent, canActivate: [authGuard]},
+    {path: 'not-found', component: NotFoundComponent},
+    {path: 'server-error', component: ServerErrorComponent},
     {path:'**', component: NotFoundComponent, pathMatch: 'full'}
 ];

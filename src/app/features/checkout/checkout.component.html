@@ -1,1 +1,154 @@
-<p>checkout works!</p>
+<div class="container" style="margin: 200px 100px;">
+    <div class="row">
+        <div class="col-7">
+            <form [formGroup]="checkoutForm"
+                (ngSubmit)="createOrder()"
+        >
+        <h2>Clothes Shop</h2>
+        <h5>Thông tin giao hàng</h5>
+        <app-text-input
+            [formControl]="checkoutForm.controls['fullname']"
+            [label]="'Họ và tên'"
+            >
+        </app-text-input>
+        <app-text-input
+            [formControl]="checkoutForm.controls['email']"
+            [label]="'Email'">
+        </app-text-input>
+        <app-text-input
+            [formControl]="checkoutForm.controls['phoneNumber']"
+            [label]="'Số điện thoại'"
+            [type]="'number'">
+        </app-text-input>
+        <app-text-input
+            [formControl]="checkoutForm.controls['street']"
+            [label]="'Địa chỉ'">
+        </app-text-input>
+
+        <div class="d-flex">
+            <div class="form-floating">
+                <select 
+                    formControlName="province"
+                    class="form-select" id="province"
+                    (change)="getDistricts($event.target.value)">
+                  <option value="null" selected>Chọn tỉnh / thành phố</option>
+                    @for (item of provinces; track $index) {
+                        <option [value]="item.id">{{item.name}}</option>
+                  }
+                </select>
+                <label for="province">Tỉnh / thành phố</label>
+                <!-- <div *ngIf="provinces.errors?.required"
+                    class="invalid-feedback">
+                    *Vui lòng chọn tỉnh / thành phố
+                </div> -->
+                <!-- <div *ngIf="email.errors?.pattern && email.dirty"
+                    class="invalid-feedback">
+                    *Vui lòng nhập email hợp lệ
+                </div> -->
+                
+            </div>
+            <div class="form-floating">
+                <select formControlName="district"
+                    class="form-select" id="district"
+                    (change)="getWards($event.target.value)">
+                  <option value="null" selected>Chọn quận / huyện</option>
+                  @if(districts) {
+                    @for (item of districts; track $index) {
+                        <option [value]="item.id">{{item.name}}</option>
+                    }
+                  }
+                  
+                </select>
+                <label for="district">Quận / huyện</label>
+            </div>
+            <div class="form-floating">
+                <select formControlName="ward"
+                    class="form-select" id="ward">
+                  <option value="null" selected>Chọn phường / xã</option>
+                  @if(wards) {
+                    @for (item of wards; track $index) {
+                        <option [value]="item.id">{{item.name}}</option>
+                    }
+                  }
+                </select>
+                <label for="ward">Phường / xã</label>
+            </div>
+        </div>
+
+        <div class="form-check">
+            <h6>Phương thức vận chuyển</h6>
+            <input id="shipping" class="form-check-input ms-3" checked
+                formControlName="shipping"
+                type="radio" value="1">
+            <label class="form-check-label" for="shipping">
+                Giao hàng tận nơi
+            </label>
+        </div>
+
+        <h6>Phương thức thanh toán</h6>
+        <div class="form-check">
+            <input id="payment_method_cod" class="form-check-input ms-3" checked
+                formControlName="paymentMethod"
+                type="radio" value="0">
+            <label class="form-check-label" for="payment_method_cod">
+                Thanh toán khi giao hàng (COD)
+            </label>
+        </div>
+        <div class="form-check">
+            <input id="payment_method_atm" class="form-check-input ms-3" 
+                formControlName="paymentMethod"
+                type="radio" value="1">
+            <label class="form-check-label" for="payment_method_atm">
+                Thanh toán bằng VNPay
+            </label>
+        </div>
+
+        
+        <div class="d-flex justify-content-between">
+            <a href="/cart" style="text-decoration: none;"
+                >Giỏ hàng</a>
+            <button type="submit" class="btn btn-success" [disabled]="checkoutForm.invalid">Hoàng tất đơn hàng</button>
+        </div>
+
+        </form>
+
+        </div>
+
+        <div class="col-5">
+            <div>
+                @for (item of cartService.cartItems; track $index) {
+                    <app-card-item-sidebar-card [cartItem]="item"></app-card-item-sidebar-card>
+                }
+            </div>
+            <div class="d-flex">
+                <p>Tạm tính: {{tempCalculation}}đ</p>
+            </div>
+            
+            <p>Phí vận chuyển: {{ship}}đ</p>
+            <h6>Tổng cộng: {{amount}}đ</h6>
+
+            <form [formGroup]="checkoutForm">
+                <div class="row list-group">
+                    <div class="col-md-8 mt-4">
+                        <div class="mb-3">
+                            <h5>Ghi chú đơn hàng</h5>
+                            <textarea class="form-control" formControlName="note" rows="3"></textarea>
+                        </div>
+                        
+                    </div>
+                    <div class="mt-4">
+                        <h5>Chính sách Đổi/Trả</h5>
+                        <ul class="list-unstyled">
+                        <li>→ Sản phẩm được đổi 1 lần duy nhất, không hỗ trợ trả.</li>
+                        <li>→ Sản phẩm còn đủ tem mác, chưa qua sử dụng.</li>
+                        <li>→ Sản phẩm nguyên giá được đổi trong 30 ngày trên toàn hệ thống.</li>
+                        <li>→ Sản phẩm sale chỉ hỗ trợ đổi size (nếu cửa hàng còn).</li>
+                        </ul>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+    
+</div>

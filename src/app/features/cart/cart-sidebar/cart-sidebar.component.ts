@@ -6,7 +6,7 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { CartItem } from '../../../models/cart';
 import { CardItemSidebarCardComponent } from '../../../shared/components/card-item-sidebar-card/card-item-sidebar-card.component';
 import { CartService } from '../../../core/services/cart.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-cart-sidebar',
@@ -26,7 +26,7 @@ export class CartSidebarComponent implements OnInit{
   @Output() showChange = new EventEmitter<boolean>();
   // cartItems: CartItem[] = [];
 
-  constructor(public cartService: CartService) { }
+  constructor(public cartService: CartService, private router: Router) { }
 
   ngOnInit(): void {
     // this.getCartItems();
@@ -34,6 +34,10 @@ export class CartSidebarComponent implements OnInit{
 
   onHide() {
     this.showChange.emit(false);
+  }
+
+  checkout() {
+    this.router.navigateByUrl('/checkout')
   }
 
   // getCartItems() {

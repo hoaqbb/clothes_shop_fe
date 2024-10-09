@@ -14,7 +14,11 @@
             <div class="d-flex">
                 <span>{{cartItem.quantity}}</span>
                 <span>||</span>
-                <span>{{cartItem.price*cartItem.quantity}}đ</span>
+                @if(cartItem.discount) {
+                    <span>{{cartItem.price*(100-cartItem.discount)/100}}đ</span>
+                } @else {
+                    <span>{{cartItem.price*cartItem.quantity}}đ</span>
+                }
             </div>
         </div>
         <span (click)="removeCartItem(cartItem.id)"><i class="pi pi-times" style="font-weight: bold; font-size: small;"></i></span>

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { CartItem } from '../../../models/cart';
 import { CartItemCardComponent } from '../../../shared/components/cart-item-card/cart-item-card.component';
 import { CartService } from '../../../core/services/cart.service';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-cart-detail',
@@ -11,14 +12,13 @@ import { CartService } from '../../../core/services/cart.service';
   styleUrl: './cart-detail.component.css'
 })
 export class CartDetailComponent implements OnInit{
-  // cartItems: CartItem[] = SeedCartItems.items;
+  amount = 0;
 
   // items: CartItem[] = [];
-  constructor(public cartService: CartService) {
-    
-  }
+  constructor(public cartService: CartService, private router: Router) { }
+
   ngOnInit(): void {
-    // this.getCartItems();
+    this.calculateAmount();
   }
 
   // getCartItems() {
@@ -27,5 +27,22 @@ export class CartDetailComponent implements OnInit{
 
   //   })
   // }
+
+  calculateAmount() {
+    this.cartService.getUserCart().subscribe(res => {
+      res.forEach(element => {
+        if(element.discount) {
+          this.amount += element.price*(100-element.discount)/100*element.quantity;
+        } else {
+          this.amount += element.quantity * element.price
+        }
+      });
+    });
+  return this.amount;
+  }
+
+  checkout() {
+    this.router.navigateByUrl('/checkout')
+  }
 
 }
