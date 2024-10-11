@@ -1,4 +1,25 @@
-@if(products) {
-    <app-product-list [products]="products"></app-product-list>
-}
+<div class="container" style="margin: 100px auto;">
+    @if(products) {
+        <form #sortForm="ngForm" class="row justify-content-end">
+            <select name="sortBy" style="width: 10%;"
+            [(ngModel)]="userParams.sortBy"
+            (change)="getProductsByCategory()">
+            @for (item of sortCollection ; track $index) {
+                <option [value]="item.value">{{item.display}}</option>
+            }
+        </select>
+        </form>
+        <app-product-list [products]="products"></app-product-list>
+    }
+
+    @if(pagination) {
+        <div class="flex justify-content-center">
+            <p-paginator 
+                (onPageChange)="pageChanged($event)"
+                [rows]="pagination.itemsPerPage" 
+                [totalRecords]="pagination.totalItems" 
+                />
+        </div>
+    }
     
+</div>

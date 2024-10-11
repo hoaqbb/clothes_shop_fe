@@ -1,0 +1,62 @@
+<div class="container" style="margin: 100px 0;">
+    @if(orderDetail) {
+        <div class="row">
+            <h4>Chi tiết đơn hàng</h4>
+            <span>Người nhận: {{orderDetail.fullname}}</span>
+            <span>Số điện thoại: {{orderDetail.phoneNumber}}</span>
+            <span>Email: {{orderDetail.email}}</span>
+            <span>Địa chỉ: {{orderDetail.address}}</span>
+            <span>Ngày tạo: {{orderDetail.createAt | date:'dd/MM/yyyy, HH:mm a'}}</span>
+
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Giá</th>
+                    <th>Giảm giá %</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of orderDetail.orderItems; track $index) {
+                    <tr>
+                        <td>
+                            <app-checkout-item-card [item]="item"></app-checkout-item-card>
+                        </td>
+                        <td>{{item.quantity}}</td>
+                        <td>{{item.price}} đ</td>
+                        <td>{{item.discount}}</td>
+                        <!-- <td>{{item.paymentMethod}}</td> -->
+                        <!-- @if(item.status == 0) {
+                            <td>Đang xử lý</td>
+                        } @else {
+                            <td>{{item.status}}</td>
+                        } -->
+                    </tr>
+                }
+        </table>
+
+        <div class="row">
+            <div class="col list-group">
+                <span>Phí vận chuyển:</span>
+                <span>Voucher:</span>
+                <span>Thành tiền:</span>
+            </div>
+            <div class="col list-group">
+                <span>25000 đ</span>
+                <span>0</span>
+                <span>{{orderDetail.amount}} đ</span>
+            </div>
+            <!-- <div class="col"></div>
+            <span>Phí vận chuyển: 25000 đ</span>
+            <span>Voucher: </span>
+            <span>Thành tiền: {{orderDetail.amount}} VNĐ</span> -->
+
+        </div>
+    }
+    
+    <div class="d-inline-flex">
+        <i class="pi pi-arrow-left"></i> Quay lại
+    </div>
+</div>

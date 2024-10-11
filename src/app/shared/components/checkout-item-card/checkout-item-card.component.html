@@ -1,0 +1,14 @@
+@if(item) {
+    <div class="d-flex">
+        <img  src="{{baseUrl+item.photo}}"
+            alt="" style="height: 100px; width: 65px;">
+        <div class="list-group p-3" style="font-size: smaller;">
+            <h6 style="font-size: small;">{{item.name}}</h6>
+            <div class="d-flex">
+                <span>{{item.color}}</span>
+                <span> / </span>
+                <span>{{item.size}}</span>
+            </div>
+        </div>
+    </div>
+}

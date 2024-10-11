@@ -1,144 +1,135 @@
-@if(productDetail) {
+<div class="container" style="margin: 80px auto;">
+  @if(productDetail) {
     <div class="container">
-        <div class="row">
-          <div class="col-3">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-              Fugiat, accusantium suscipit doloremque repellendus impedit 
-              recusandae ullam totam veniam necessitatibus exercitationem 
-              aliquid illum amet unde soluta qui officiis, obcaecati accusamus similique?</p>
-          </div>
-
-            <div class="col-6">
-                <div class="container">
-                  
-                  
-                  @for (image of productImages; track null) {
-                    <!-- <p-galleria 
-                      [(value)]="productImages" 
-                      thumbnailsPosition="right" 
-                      [responsiveOptions]="responsiveOptions" 
-                      [containerStyle]="{ 'max-width': '640px' }"
-                      [numVisible]="5">
-                      <ng-template pTemplate="item" let-item>
-                          <img 
-                              [src]="item.itemImageSrc" 
-                              style="width: 100%; min-height: 420px; display: block;" />
-                      </ng-template>
-                      <ng-template pTemplate="thumbnail" let-item>
-                          <div class="grid grid-nogutter justify-content-center">
-                              <img [src]="item.thumbnailImageSrc" />
-                          </div>
-                      </ng-template>
-              </p-galleria> -->
-                          <img src="{{baseUrl+image.imageUrl }}">
-                    
-                }
-                
-                </div>
-            </div>
-
-            <div class="col-3">
-                <div class="list-group">
-                    <h3>{{productDetail.name}}</h3>
-                    <span><strong>{{productDetail.price}}đ</strong></span>
-                    <span>Màu sắc:</span>
-                    <form #productForm="ngForm"
-                      autocomplete="off">
-                      @if(colors) {
-                        <div class="d-flex">
-                          @for (color of colors; track $index) {
-                            <!-- kiểm tra mã màu có tồn tại ko -->
-                            @if(color.colorCode){
-                              <!-- @if($index==0){ -->
-                                <div class="list-group align-items-center">
-                                  <label class="color-box"
-                                    style="cursor: pointer;"
-                                    [ngStyle]="{'background-color': color.colorCode}">
-                                    <input id="color" class="form-check-input mt-4"
-                                           type="radio" name="choseColor"
-                                           [value]="color.colorCode"
-                                           (change)="onColorChange(color)"
-                                           [checked]="$index === 0"> <!-- This will check the first radio input -->
-                                  </label>
-                                </div>
-                            }
-                          }
-                        </div>
-                        <span>Kích thước</span>
-                        <div class="mt-1 size-container">
-                          @if(selectedColor) {
-                            <div class="size-options d-flex">
-                              @for (variant of selectedColor.variants; track $index) {
-                                <!-- để cursor not-allowed lên lable -->
-                                <label class="size-box" 
-                                  [ngClass]="{'out-of-stock': variant.amount === 0}">
-                                  <input  class="form-check-input mt-4"
-                                           type="radio" name="choseSize" 
-                                           [value]="variant.id"
-                                           [disabled]="variant.amount === 0"
-                                           (change)="onSizeChange(variant.size)"
-                                           [checked]="isFirstAvailableVariant(variant, $index)"
-                                           >
-                                  <!-- <input type="radio" name="size" [value]="variant.size" 
-                                    [disabled]="variant.amount === 0" 
-                                    /> -->
-                                  <span>{{ variant.size }}</span>
-                                  <!-- Show the slash image if the size is out of stock -->
-                                  <!-- <img *ngIf="variant.amount === 0"
-                                    class="slash-img" src="assets/slash.png" alt="Out of stock" /> -->
-                                </label>
-                            }
-                            </div>
-                          }
-                          
-                        </div>
-                      }
-  
-                      <button class="btn-addtocart" type="button"
-                        (click)="addToCart()">
-                        <strong>THÊM VÀO GIỎ</strong></button>
-                      <button class="btn" type="button"
-                        (click)="buy()"
-                        >MUA NGAY</button>
-                    </form>
-                    
-                
-                </div>
-            </div>
-
-            
+      <div class="row" >
+        <div class="col-3">
+          <p class="product-detail">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat,
+            accusantium suscipit doloremque repellendus impedit recusandae ullam
+            totam veniam necessitatibus exercitationem aliquid illum amet unde
+            soluta qui officiis, obcaecati accusamus similique?
+          </p>
         </div>
-    </div>
     
-    <div class="container-fluid">
-      <div class="row">
-        <h1>SẢN PHẨM LIÊN QUAN</h1>
+        <div class="col-6">
+          <div class="container">
+            <section class="product-detail-images">
+              <ul
+                class="product-detail-images-images"
+                style="position: relative;"
+              >
+                @for (image of productImages; track null) {
+                <li class="product-detail-images-image-wrapper">
+                  <img src="{{ baseUrl + image.imageUrl }}" alt="" />
+                </li>
+                }
+              </ul>
+              <div class="product-detail-images__image-bar">
+                <div class="product-detail-images__progress-bar">
+                  <div
+                    class="product-detail-images__progress-bar-progress"
+                    style="height: 50%"
+                  ></div>
+                </div>
+                <ul class="product-detail-images-thumbnails">
+                  @for (image of productImages; track null) {
+                  <li
+                    onclick="clickImg(image)"
+                    class="1 product-detail-images-thumbnails-li"
+                  >
+                  <div class="image-scroll">
+                    <img src="{{ baseUrl + image.imageUrl }}" alt="" />
+                  </div>
+                  </li>
+                  }
+                </ul>
+              </div>
+            </section>
+          </div>
+        </div>
+    
+        <div class="col-3">
+          <div class="list-group">
+              <h3>{{productDetail.name}}</h3>
+              <span><strong>{{productDetail.price}}đ</strong></span>
+              <span>Màu sắc:</span>
+              <form #productForm="ngForm"
+                autocomplete="off">
+                @if(colors) {
+                  <div class="d-flex">
+                    @for (color of colors; track $index) {
+                      <!-- kiểm tra mã màu có tồn tại ko -->
+                      @if(color.colorCode){
+                        <!-- @if($index==0){ -->
+                          <div class="list-group align-items-center">
+                            <label class="color-box"
+                              style="cursor: pointer;"
+                              [ngStyle]="{'background-color': color.colorCode}">
+                              <input id="color" class="form-check-input mt-4"
+                                     type="radio" name="choseColor"
+                                     [value]="color.colorCode"
+                                     (change)="onColorChange(color)"
+                                     [checked]="$index === 0"> <!-- This will check the first radio input -->
+                            </label>
+                          </div>
+                      }
+                    }
+                  </div>
+                  <span class="size-choice">Kích thước</span>
+                  <div class="mt-1 size-container">
+                    @if(selectedColor) {
+                      <div class="size-options d-flex">
+                        @for (variant of selectedColor.variants; track $index) {
+                          <!-- để cursor not-allowed lên lable -->
+                          <label class="size-box" 
+                            [ngClass]="{'out-of-stock': variant.amount === 0}">
+                            <input  class="form-check-input mt-4"
+                                     type="radio" name="choseSize" 
+                                     [value]="variant.id"
+                                     [disabled]="variant.amount === 0"
+                                     (change)="onSizeChange(variant.size)"
+                                     [checked]="isFirstAvailableVariant(variant, $index)"
+                                     >
+                            <span>{{ variant.size }}</span>
+                          </label>
+                      }
+                      </div>
+                    }
+                    
+                  </div>
+                }
+    
+                <div>
+                                    
+                  <button type="button" id="add-to-cart" class="add-to-cart button btn-addtocart" (click)="addToCart()"> 
+                    <strong keylanguage="them_vao_gio" class="font-oswald lang">THÊM VÀO GIỎ</strong>
+                  </button>
+                  
+                  <button type="button" id="buy-now" class="buy-now button" (click)="buy()">
+                    <strong keylanguage="mua_ngay" class="font-oswald lang">MUA NGAY</strong>
+                  </button>
+                  
+                </div>
+              </form>
+              
+          
+          </div>
       </div>
-      <div class="row">
-        <app-product-list></app-product-list>
-      </div>
+    
+      
     </div>
-}
-
-
-
-
-<!-- 
-<div class="mt-1">
-  <select *ngIf="selectedColor" class="form-select">
-    <option *ngFor="let variant of selectedColor.variants" [disabled]="variant.amount === 0">
-      {{ variant.size }} ({{ variant.amount > 0 ? variant.amount : 'Out of stock' }})
-    </option>
-  </select>
+    </div>
   
-</div> -->
-
-<!-- <div *ngFor="let color of availableColors">
-  <h4>Color: {{ color }}</h4>
-  <ul>
-    <li *ngFor="let size of getSizesByColor(color)">
-      Size: {{ size.size }} - Available: {{ size.amount > 0 ? size.amount : 'Out of stock' }}
-    </li>
-  </ul>
-</div> -->
-
+      
+      <div class="container-fluid">
+        <div class="row">
+          <h1>SẢN PHẨM LIÊN QUAN</h1>
+        </div>
+        <div class="row">
+          <app-product-list></app-product-list>
+        </div>
+      </div>
+  }
+  
+  
+</div>

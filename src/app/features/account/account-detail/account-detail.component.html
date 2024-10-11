@@ -1,38 +1,135 @@
-<div class="container m-5">
-    <div class="row">
-        <div class="col-4">
-            <h4>Xin chào, Hoàng</h4>
-            <div class="d-flex">
-                <p class="me-1">Email: </p><p><strong>user&#64;gmail.com</strong></p>
+<div class="container" style="margin: 100px 0;">
+    @if(userDetail) {
+        <div class="container m-5">
+            <div class="row">
+                <div class="col-4">
+                    <h4>Xin chào, {{userDetail.lastname}} {{userDetail.firstname}}</h4>
+                    <div class="d-flex">
+                        <p class="me-1">Email: </p><p><strong>{{userDetail.email}}</strong></p>
+                        @if(userDetail.isAuthenticated) {
+                            <p class="text-success">(đã xác thực)</p>
+                        } @else {
+                            <p class="text-danger">(chưa xác thực)</p>
+                        }
+                    </div>
+                    <div class="d-flex">
+                        <p class="me-1">Ngày sinh: </p><p><strong>{{userDetail.dateOfBirth | date:'dd/MM/yyyy'}}</strong></p>
+                    </div>
+                    <div class="d-flex">
+                        <p class="me-1">Giới tính: </p>
+                        @if(userDetail.gender) {
+                            <p><strong>
+                            Nữ
+                            </strong></p>
+                        } @else {
+                            <p><strong>
+                            Nam
+                            </strong></p>
+                        }
+                        
+                    </div>
+                    <button (click)="logout()">Đăng xuất</button>
+                </div>
+        
+                <!-- <div class="col-8">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Mã đơn hàng</th>
+                                <th>Ngày tạo</th>
+                                <th>Người nhận</th>
+                                <th>SĐT</th>
+                                <th>Địa chỉ</th>
+                                <th>Tổng tiền</th>
+                                <th>Phương thức thanh toán</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        @if(userDetail) {
+                            <tbody>
+                                @for (item of userDetail.orders; track $index) {
+                                    <tr routerLink="/order/{{item.id}}">
+                                        <td>{{item.id}}</td>
+                                        <td>{{item.createAt | date:'dd-MM-yyyy'}}</td>
+                                        <td>{{item.fullname}}</td>
+                                        <td>{{item.phoneNumber}}</td>
+                                        <td>{{item.address}}</td>
+                                        <td>{{item.amount}}</td>
+                                        <td>{{item.paymentMethod}}</td>
+                                        @if(item.status == 0) {
+                                            <td>Đang xử lý</td>
+                                        } @else {
+                                            <td>{{item.status}}</td>
+                                        }
+                                    </tr>
+                                }
+                                
+                            </tbody>
+                        }
+                    </table>
+                </div> -->
+                @if(userOrders) {
+                    <div class="card col-8">
+                        <p-table 
+                            [loading]="loading"
+                            rowHover="true"
+                            [rows]="pagination.itemsPerPage"
+                            [value]="userOrders" 
+                            [tableStyle]="{'min-width': '100%'}">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th pSortableColumn="id" style="width:10%">
+                                        Mã đơn hàng
+                                    </th>
+                                    <th pSortableColumn="createAt" style="width:15%">
+                                        Ngày tạo<p-sortIcon field="createAt" />
+                                    </th>
+                                    <th pSortableColumn="fullname" style="width:15%">
+                                        Người nhận
+                                    </th>
+                                    <th pSortableColumn="phoneNumber" style="width:10%">
+                                        SĐT
+                                    </th>
+                                    <th pSortableColumn="address" style="width:20%">
+                                        Địa chỉ
+                                    </th>
+                                    <th pSortableColumn="amount" style="width:10%">
+                                        Tổng tiền<p-sortIcon field="amount" />
+                                    </th>
+                                    <th pSortableColumn="paymentMethod" style="width:8%">
+                                        Phương thức thanh toán
+                                    </th>
+                                    <th pSortableColumn="status" style="width:10%">
+                                        Trạng thái<p-sortIcon field="status" />
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-order>
+                                <tr routerLink="/order/{{order.id}}">
+                                    <td>{{order.id}}</td>
+                                    <td>{{order.createAt | date:'dd-MM-yyyy HH:mm a'}}</td>
+                                    <td>{{order.fullname}}</td>
+                                    <td>{{order.phoneNumber}}</td>
+                                    <td>{{order.address}}</td>
+                                    <td>{{order.amount}}</td>
+                                    <td>{{order.paymentMethod}}</td>
+                                    <td>{{order.status}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        @if(pagination) {
+                            <div class="flex justify-content-center">
+                                <p-paginator 
+                                    (onPageChange)="pageChanged($event)"
+                                    [rows]="pagination.itemsPerPage" 
+                                    [totalRecords]="pagination.totalItems" 
+                                    />
+                            </div>
+                        }
+                    </div>
+                }
+                
             </div>
-            <div class="d-flex">
-                <p class="me-1">Ngày sinh: </p><p><strong>21/09/2003</strong></p>
-            </div>
-            <div class="d-flex">
-                <p class="me-1">Giới tính: </p><p><strong>Nam</strong></p>
-            </div>
-            <button (click)="logout()">Đăng xuất</button>
         </div>
-
-        <div class="col-8">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Mã đơn hàng</th>
-                        <th>Ngày tạo</th>
-                        <th>Địa chỉ</th>
-                        <th>Trạng thái</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>123456</td>
-                        <td>22/12/2024</td>
-                        <td>sdfasdfafasdgfasdgasdgasdasdf</td>
-                        <td>Đang xử lý</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+    }
 </div>

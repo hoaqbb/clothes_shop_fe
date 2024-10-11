@@ -105,11 +105,19 @@ export class CheckoutComponent implements OnInit{
         amount: this.amount,
         note: this.checkoutForm.get('note').value
       };
-      this.orderService.createOrder(orderRequest).subscribe((res: string) => {
+      this.orderService.createOrder(orderRequest).subscribe((res: any) => {
         console.log(res);
         const isUrl = this.isValidUrl(res);
         if(!isUrl) {
-          this.route.navigateByUrl('/payment-result');
+          const approveLink = res.links.find((link: any) => link.rel === 'approve');
+      if (approveLink) {
+        window.location.href = approveLink.href;  // Redirect the user to the PayPal approval page
+      }
+          // https://www.sandbox.paypal.com/checkoutnow?token=9KG07060V91322015
+          console.log(res.id);
+          
+          // window.location.href = `https://www.sandbox.paypal.com/checkoutnow?token=${res.id}`;
+          // this.route.navigateByUrl('/payment-result');
         } else {
           window.location.href = `${res}`;
         }

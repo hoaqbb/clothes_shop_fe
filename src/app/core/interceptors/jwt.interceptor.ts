@@ -7,7 +7,7 @@ import { take } from 'rxjs';
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const accountService = inject(AccountService);
   let currentUser: User;
-  const excludedUrls = ['https://esgoo.net/api-tinhthanh'];
+  const excludedUrls = ['https://esgoo.net/api-tinhthanh', 'https://www.sandbox.paypal.com'];
   const shouldExclude = excludedUrls.some(url => req.url.startsWith(url));
 
   accountService.currentUser$.pipe(take(1)).subscribe( user => {

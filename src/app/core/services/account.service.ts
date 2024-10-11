@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { map, ReplaySubject } from 'rxjs';
-import { User } from '../../models/user';
+import { User, UserDetail } from '../../models/user';
 import { CartService } from './cart.service';
 
 @Injectable({
@@ -44,7 +44,7 @@ export class AccountService {
   }
 
   getUserDetail() {
-
+    return this.http.get<UserDetail>(this.baseUrl + '/api/Account/get-user-detail');
   }
 
   setCurrentUserSource(user: User) {
