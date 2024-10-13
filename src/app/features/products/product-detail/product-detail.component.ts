@@ -63,8 +63,8 @@ export class ProductDetailComponent implements OnInit{
           this.getSizesInColor(),
           this.selectedColor = this.colors[0];
           this.selectedSize = this.getFirstAvailableSize();
-          // console.log(this.colors);
-          // console.log(this.productDetail);
+          console.log(this.colors);
+          console.log(this.productDetail);
       }
       )
     }

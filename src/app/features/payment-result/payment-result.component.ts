@@ -1,8 +1,8 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OrderService } from '../../core/services/order.service';
-import { ToastrService } from 'ngx-toastr';
+import { CartService } from '../../core/services/cart.service';
 
 @Component({
   selector: 'app-payment-result',
@@ -15,7 +15,10 @@ export class PaymentResultComponent implements OnInit{
 
   queryParams = new HttpParams();
 
-  constructor(private route: ActivatedRoute, private orderService: OrderService) { }
+  constructor(
+    private route: ActivatedRoute, 
+    private orderService: OrderService, 
+    private cartService: CartService) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: HttpParams) => {
@@ -31,8 +34,8 @@ export class PaymentResultComponent implements OnInit{
   // Hàm gửi tham số lên server
   sendParamsToServer(params: HttpParams) {
     return this.orderService.paymentCallback(params).subscribe((response: any) => {
-      console.table(response);
       this.clearQueryParams();
+      this.cartService.clearCart();
     });
   }
   

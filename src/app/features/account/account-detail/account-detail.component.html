@@ -30,44 +30,7 @@
                     </div>
                     <button (click)="logout()">Đăng xuất</button>
                 </div>
-        
-                <!-- <div class="col-8">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Mã đơn hàng</th>
-                                <th>Ngày tạo</th>
-                                <th>Người nhận</th>
-                                <th>SĐT</th>
-                                <th>Địa chỉ</th>
-                                <th>Tổng tiền</th>
-                                <th>Phương thức thanh toán</th>
-                                <th>Trạng thái</th>
-                            </tr>
-                        </thead>
-                        @if(userDetail) {
-                            <tbody>
-                                @for (item of userDetail.orders; track $index) {
-                                    <tr routerLink="/order/{{item.id}}">
-                                        <td>{{item.id}}</td>
-                                        <td>{{item.createAt | date:'dd-MM-yyyy'}}</td>
-                                        <td>{{item.fullname}}</td>
-                                        <td>{{item.phoneNumber}}</td>
-                                        <td>{{item.address}}</td>
-                                        <td>{{item.amount}}</td>
-                                        <td>{{item.paymentMethod}}</td>
-                                        @if(item.status == 0) {
-                                            <td>Đang xử lý</td>
-                                        } @else {
-                                            <td>{{item.status}}</td>
-                                        }
-                                    </tr>
-                                }
-                                
-                            </tbody>
-                        }
-                    </table>
-                </div> -->
+                     
                 @if(userOrders) {
                     <div class="card col-8">
                         <p-table 
@@ -78,19 +41,19 @@
                             [tableStyle]="{'min-width': '100%'}">
                             <ng-template pTemplate="header">
                                 <tr>
-                                    <th pSortableColumn="id" style="width:10%">
+                                    <th style="width:10%">
                                         Mã đơn hàng
                                     </th>
                                     <th pSortableColumn="createAt" style="width:15%">
                                         Ngày tạo<p-sortIcon field="createAt" />
                                     </th>
-                                    <th pSortableColumn="fullname" style="width:15%">
+                                    <th style="width:15%">
                                         Người nhận
                                     </th>
-                                    <th pSortableColumn="phoneNumber" style="width:10%">
+                                    <th style="width:10%">
                                         SĐT
                                     </th>
-                                    <th pSortableColumn="address" style="width:20%">
+                                    <th style="width:20%">
                                         Địa chỉ
                                     </th>
                                     <th pSortableColumn="amount" style="width:10%">

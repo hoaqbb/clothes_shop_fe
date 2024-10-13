@@ -33,6 +33,8 @@ export interface OrderDetail {
     shipping: number
     email: string
     paymentMethod: string
+    provider: string
+    transactionId: string
     orderItems: OrderItem[]
   }
 

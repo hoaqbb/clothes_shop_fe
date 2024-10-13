@@ -37,6 +37,10 @@ export class CartService {
     );
   }
 
+  clearCart() {
+    return this.cartItems = [];
+  }
+
   setCurrentCartItemsSource(cartItems: CartItem[]) {
     this.CartItemsSource.next(cartItems);
     localStorage.setItem('cartItems', JSON.stringify(cartItems));

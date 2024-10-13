@@ -14,21 +14,14 @@ import { Router, RouterLink } from '@angular/router';
 export class CartDetailComponent implements OnInit{
   amount = 0;
 
-  // items: CartItem[] = [];
   constructor(public cartService: CartService, private router: Router) { }
 
   ngOnInit(): void {
     this.calculateAmount();
   }
 
-  // getCartItems() {
-  //   this.cartService.getUserCart().subscribe((items) => {
-  //     this.items = items;
-
-  //   })
-  // }
-
   calculateAmount() {
+    this.amount = 0;
     this.cartService.getUserCart().subscribe(res => {
       res.forEach(element => {
         if(element.discount) {

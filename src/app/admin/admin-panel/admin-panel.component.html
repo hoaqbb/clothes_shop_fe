@@ -1,178 +1,127 @@
+<!-- 
+<div class="container" style="margin-top: 1000px;">
+    <button (click)="toggle()">Create Product</button>
+</div> -->
 
-<div class="container">
-    <div class="sidebar">
-        <div class="side-bar__heading">
-            <div class="title-wrap">
-                <i class="fa-solid fa-user-shield"></i>
-                <h3>QUẢN LÝ</h3>
-            </div>
-            <ul>
-                <li class="sb-cta">
-                    <a href="#!" class="sidebar-click">
-                        <i class="fa-solid fa-house"></i>
-                        <p>DashBoard</p>
-                    </a>
-                </li>
-                <li class="sb-cta">
-                    <a href="#!" class="sidebar-click active">
-                        <i class="fa-solid fa-rectangle-list"></i>
-                        <p>Danh Mục</p>
-                    </a>
-                </li>
-                <li class="sb-cta">
-                    <a href="#!" class="sidebar-click">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        <p>Sản Phẩm</p>
-                    </a>
-                </li>
-                <li class="sb-cta">
-                    <a href="#!" class="sidebar-click">
-                        <i class="fa-solid fa-warehouse"></i>
-                        <p>Kho Hàng</p>
-                    </a>
-                </li>
-                <li class="sb-cta">
-                    <a href="#!" class="sidebar-click">
-                        <i class="fa-solid fa-user"></i>
-                        <p>Tài Khoản</p>
-                    </a>
-                </li>
-                <li class="sb-cta">
-                    <a href="#!" class="sidebar-click">
-                        <i class="fa-solid fa-clipboard-list"></i>
-                        <p>Đơn Hàng</p>
-                    </a>
-                </li>
-                <li class="sb-cta">
-                    <a href="#!" class="sidebar-click">
-                        <i class="fa-solid fa-tag"></i>
-                        <p>Voucher giảm giá</p>
-                    </a>
-                </li>
-                <li class="sb-cta">
-                    <a href="#!" class="sidebar-click">
-                        <i class="fa-solid fa-bookmark"></i>
-                        <p>Bài viết</p>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="sidebar-cta">
-            <div class="setting">
-                <a href="#!" class="setting-link">
-                    <i class="fa-solid fa-gear"></i>
-                    <p class="setting_desc">Setting</p>
-                </a>
-            </div>
-            <div class="logout-cta">
-                <a href="#!" class="logout-link">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <p class="logout_desc">Đăng xuất</p>
-                </a>
-            </div>
-        </div>
-    </div>
+<!-- <app-create-product-dialog [toggle]="toggle()"></app-create-product-dialog> -->
 
-    <div class="content">
-        <div class="header">
-            <form action="">
+
+<!-- [(visible)]="true"  -->
+<div class="card flex justify-content-center">
+    <p-dialog 
+        [modal]="true"
+        [visible]="true" 
+        [style]="{ width: '50rem' }" 
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+        <form [formGroup]="createProductForm"
+            (ngSubmit)="log()">
+            <div class="mb-3">
+                <label for="name" class="form-label">Tên sản phẩm</label>
                 <input
                     type="text"
-                    class="search-bar"
-                    placeholder="Tìm kiếm..."
+                    formControlName="name"
+                    id="name"
+                    class="form-control"
                 />
-                <button type="submit">
-                    <i class="fa fa-search"></i>
-                </button>
-            </form>
-            <div class="user-info">
-                <span class="time">TIME-DATE</span>
-                <div class="admin-wrap">
-                    <a href="#!" class="admin-cta">
-                        <i class="fa-solid fa-user-tie"></i>
-                        <p class="admin-desc">Admin</p>
-                    </a>
-                </div>
             </div>
-        </div>
+            <div class="mb-3">
+                <label for="slug" class="form-label">Url</label>
+                <input
+                    type="text"
+                    formControlName="slug"
+                    class="form-control"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="price" class="form-label">Giá sản phẩm</label>
+                <input
+                    type="number"
+                    formControlName="price"
+                    class="form-control"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="discount" class="form-label">Giảm giá (%)</label>
+                <input
+                    type="number"
+                    formControlName="discount"
+                    class="form-control"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Mô tả</label>
+                <p-editor formControlName="description"  [style]="{ height: '150px' }" />
+            </div>
+            <div class="mb-3">
+                <label for="category" class="form-label">Thể loại</label>
+                <select *ngIf="categories"
+                    formControlName="category" class="form-select">
+                    <option *ngFor="let item of categories" [value]="item.id">{{item.name}}</option>
+                </select>
+            </div>
+            <div *ngIf="colors" class="mb-3">Màu sản phẩm
+                @for (item of colors; track $index) {
+                    <div class="m-3">
+                        <input
+                        type="checkbox"
+                        formControlName="productColor"
+                        class="form-check-input"
+                        [value]="item.id"
+                        (change)="onColorChange(item.id, $event)"
+                    />
+                    <label for="productColor" class="form-label">{{item.name}}</label>
+                    <span style="height: 15px; width: 15px; display: inline-block;"
+                    [ngStyle]="{'background-color': item.colorCode}"></span>
+                    </div>
+                    
+                }
+                
+            </div>
 
-        <div class="content__inner">
-            <h2 class="content__heading">Quản lí danh mục</h2>
+            <div *ngIf="sizes" class="mb-3">Size sản phẩm
+                @for (item of sizes; track $index) {
+                    <div class="m-3">
+                        <input
+                        type="checkbox"
+                        class="form-check-input"
+                        formControlName="productSize"
+                        [value]="item.id"
+                        (change)="onSizeChange(item.id, $event)"
+                        />
+                        <label for="productSize" class="form-label">{{item.name}}</label>
+                    </div>
+                }
+                
+            </div>
 
-            <table class="content__show">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Tên danh mục</th>
-                        <th>Quan hệ</th>
-                        <th>Ảnh</th>
-                        <th>Trạng thái</th>
-                        <th>Ngày Thêm</th>
-                        <th>Ngày Cập Nhật</th>
-                        <th>Chức năng</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Nón</td>
-                        <td>Phụ kiện</td>
-                        <td>
-                            <img src="./assets/img/cap.jpg" alt="Nón" />
-                        </td>
-                        <td>
-                            <div class="checkbox-wrap">
-                                <input type="checkbox">
-                            </div>
-                        </td>
-                        <td>4/30/2024, 7:12:55 PM</td>
-                        <td>5/2/2024, 12:01:57 PM</td>
-                        <td class="action-buttons">
-                            <button>Xóa</button>
-                            <button>Sửa</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Túi xách</td>
-                        <td>Phụ kiện</td>
-                        <td>
-                            <img src="./assets/img/handbag.jpg" alt="Túi xách" />
-                        </td>
-                        <td>
-                            <div class="checkbox-wrap">
-                                <input type="checkbox">
-                            </div>
-                        </td>
-                        <td>4/30/2024, 6:44:14 PM</td>
-                        <td>Chưa cập nhật</td>
-                        <td class="action-buttons">
-                            <button>Xóa</button>
-                            <button>Sửa</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Phụ kiện</td>
-                        <td>Phụ kiện</td>
-                        <td>
-                            <img src="accessory.jpg" alt="Phụ kiện" />
-                        </td>
-                        <td>
-                            <div class="checkbox-wrap">
-                                <input type="checkbox">
-                            </div>
-                        </td>
-                        <td>4/30/2024, 6:43:04 PM</td>
-                        <td>Chưa cập nhật</td>
-                        <td class="action-buttons">
-                            <button>Xóa</button>
-                            <button>Sửa</button>
-                        </td>
-                    </tr>
-                    <!-- Add more rows as needed -->
-                </tbody>
-            </table>
-        </div>
-    </div>
+            <!-- <div class="card flex justify-content-center">
+              
+                <p-fileUpload 
+                    formControlName="productImages"
+                    url="https://www.primefaces.org/cdn/api/upload.php" 
+                    [multiple]="true" 
+                    (onUpload)="onFileSelected($event)" 
+                    accept="image/*" 
+                    maxFileSize="1000000">
+                        <ng-template pTemplate="content">
+                            <ul *ngIf="">
+                                <li *ngFor="let file of uploadedFiles">
+                                    {{ file.name }} - {{ file.size }} bytes
+                                </li>
+                            </ul>
+                        </ng-template>
+                </p-fileUpload>
+            </div> -->
+            
+            <input type="file" multiple (change)="onFileSelected($event)" />
+  
+            <div formArrayName="productImages">
+              <div *ngFor="let imageControl of productImages.controls; let i = index">
+                <input [formControlName]="i" readonly />
+                <button (click)="removeImage(i)">Remove</button>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-success">Thêm sản phẩm</button>
+        </form>
+    </p-dialog>
 </div>

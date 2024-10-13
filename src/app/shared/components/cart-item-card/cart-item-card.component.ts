@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CartItem } from '../../../models/cart';
 import { environment } from '../../../../environments/environment.development';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -15,21 +15,23 @@ import { CartService } from '../../../core/services/cart.service';
 export class CartItemCardComponent {
   baseUrl = environment.apiUrl;
   @Input() cartItem: CartItem;
+  @Output() calculate = new EventEmitter<boolean>();
 
-  constructor(private cartService: CartService){
-    console.log(this.cartItem);
-  }
+  constructor(private cartService: CartService) {}
 
   removeCartItem(cartItemId: number) {
     this.cartService.removeCartItem(cartItemId).subscribe(() => {
-      console.log('cart-detail');
+      this.callCulateAmount();
     })
   }
 
   changeQuantityItem(variantId: number, quantity: number) {
     return this.cartService.addToCart(variantId, quantity).subscribe(()=> 
-    console.log('test')
-
+      this.callCulateAmount()
     );
+  }
+
+  callCulateAmount() {
+    this.calculate.emit(true)
   }
 }

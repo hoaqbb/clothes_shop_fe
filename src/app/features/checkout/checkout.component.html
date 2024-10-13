@@ -114,12 +114,23 @@
         
         <div class="d-flex justify-content-between">
             <a href="/cart" style="text-decoration: none;"
+                class="m-3"
                 >Giỏ hàng</a>
-            <button type="submit" class="btn btn-success" [disabled]="checkoutForm.invalid">Hoàng tất đơn hàng</button>
+                <div class="list-group p-3">
+                    <button type="submit" class="btn btn-success" 
+                    *ngIf="checkoutForm.get('paymentMethod')?.value != '2'" 
+                    [disabled]="checkoutForm.invalid">Hoàn tất đơn hàng</button>
+                 <div [ngClass]="{'disabled-paypal': checkoutForm.invalid}">
+                    <ngx-paypal 
+                        *ngIf="checkoutForm.get('paymentMethod')?.value == '2' " 
+                        [config]="payPalConfig">
+                    </ngx-paypal>
+                 </div>
+                </div>
+                
+                    
         </div>
-
         </form>
-
         </div>
 
         <div class="col-5">

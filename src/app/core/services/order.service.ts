@@ -2,7 +2,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { Order, OrderDetail, OrderRequest } from '../../models/order';
-import { Pagination } from '../../models/pagination';
 import { UserParams } from '../../models/userParams';
 import { getPaginatedResult, getPaginationHeaders } from '../../shared/helpers/paginationHelpers';
 
@@ -36,8 +35,17 @@ export class OrderService {
   }
 
   createOrder(order: OrderRequest) {
-    return this.http.post(this.baseUrl + '/api/Order/create-order', order);
-    // , { responseType: 'text' as 'json' }
+    return this.http.post(this.baseUrl + '/api/Order/create-order', order, { responseType: 'text' as 'json' });
+  }
+
+  createPayPalOrder(order, id: string) {
+
+    const orderRequest = {
+      orderRequestDto: order,
+      transactionId: id
+    };
+    
+    return this.http.post(this.baseUrl + '/api/Order/create-paypal-order', orderRequest);
   }
 
   paymentCallback(queryParams: HttpParams) {

@@ -1,0 +1,4 @@
+.disabled-paypal {
+    pointer-events: none; /* Không cho phép click */
+    opacity: 0.5; /* Làm mờ đi để thể hiện rằng nó bị vô hiệu */
+}

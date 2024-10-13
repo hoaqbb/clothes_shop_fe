@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Output, ViewChild, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Output, Renderer2, ViewChild, } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LoginComponent } from '../../../features/authentication/login/login.component';
 import { RegisterComponent } from '../../../features/authentication/register/register.component';
@@ -16,19 +16,17 @@ import { AsyncPipe } from '@angular/common';
 })
 export class NavBarComponent implements AfterViewInit{
   @Output() toggleCartSideBar = new EventEmitter<void>();
-  renderer: Renderer2;
 
-  constructor(public accountService: AccountService) { }
+  constructor(public accountService: AccountService, private renderer: Renderer2) { }
 
   @ViewChild('myElement') myElement: ElementRef;
   @HostListener('window:scroll', [])
-  
   ngAfterViewInit(): void {
-    // if(window.pageYOffset > 50){ // Điều kiện cuộn
-    //   this.renderer.addClass(this.myElement.nativeElement, 'nav-scroll');
-    // }else{
-    //     this.renderer.removeClass(this.myElement.nativeElement, 'nav-scroll');
-    // }
+    if(window.pageYOffset > 50){ // Điều kiện cuộn
+      this.renderer.addClass(this.myElement.nativeElement, 'nav-scroll');
+    }else{
+        this.renderer.removeClass(this.myElement.nativeElement, 'nav-scroll');
+    }
   }
 
   toggleSidebar() {

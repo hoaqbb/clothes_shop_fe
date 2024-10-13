@@ -18,6 +18,7 @@
                     size="1"
                     min="1"
                     [max]="cartItem.productVariant.amount"
+                    
                     [showButtons]="true" 
                     buttonLayout="horizontal" 
                     spinnerMode="vertical" 
@@ -38,6 +39,7 @@
                 <p>Thành tiền:</p>
                 <p style="font-weight: 400;">{{cartItem.price*(100-cartItem.discount)/100*cartItem.quantity}}đ</p>
                 <span (click)="removeCartItem(cartItem.id)">
+
                     <i class="pi pi-trash" style="color: red;"></i>
                 </span>
             </div>
