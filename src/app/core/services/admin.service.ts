@@ -1,14 +1,73 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
+import { CreateProduct, UpdateProduct } from '../../models/product';
+import { Order } from '../../models/order';
+import { UserParams } from '../../models/userParams';
+import { getPaginatedResult, getPaginationHeaders } from '../../shared/helpers/paginationHelpers';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AdminService {
   baseUrl = environment.apiUrl;
+  userParams: UserParams;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.userParams = new UserParams();
+  }
+
+  getUserParams() {
+    return this.userParams;
+  }
+
+  setUserParams(params: UserParams) {
+    this.userParams = params;
+  }
+
+  createProduct(product: CreateProduct) {
+    return this.http.post(
+      this.baseUrl + '/api/Product/create-product',
+      product
+    );
+  }
+
+  updateProduct(updateProduct: UpdateProduct) {
+    return this.http.put(this.baseUrl + '/api/Product/update-product', updateProduct)
+  }
+
+  deleteProduct(id: number) {
+    return this.http.delete(this.baseUrl + '/api/Product/delete-product/' + id);
+  }
+
+  addProductImages(id, files) {
+    return this.http.post(this.baseUrl + '/api/Product/add-product-images', {});
+  }
+
+  deleteProductImage(productId: number, imageId: number) {
+    return this.http.delete(this.baseUrl + '/api/Product/delete-image/'+productId+'/'+imageId);
+  }
+
+  setMainImage(productId: number, imageId: number) {
+    return this.http.put(this.baseUrl + '/api/Product/set-main-image/' + productId + '?imageId='+imageId, {});
+  }
+
+  setSubImage(productId: number, imageId: number) {
+    return this.http.put(this.baseUrl + '/api/Product/set-sub-image/' + productId + '?imageId='+imageId, {});
+  }
+
+
+  getAllOrder(userParams: UserParams) {
+    let params = getPaginationHeaders(
+      userParams.pageNumber,
+      userParams.pageSize
+    );
+    return getPaginatedResult<Order[]>(
+      this.baseUrl + '/api/Order/get-all-order',
+      params,
+      this.http
+    );
+  }
 
   getAllCategory() {
     return this.http.get(this.baseUrl + '/api/Category/get-all-category');

@@ -1,13 +1,13 @@
 @if(productDetail) {
   <div class="container" style="margin: 100px auto;">
     <div class="row">
-      <div class="col-3">
-        <p class="product-detail">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat,
-          accusantium suscipit doloremque repellendus impedit recusandae ullam
-          totam veniam necessitatibus exercitationem aliquid illum amet unde
-          soluta qui officiis, obcaecati accusamus similique?
+      <div class="col-3" style="display: flex; flex-direction: column; justify-content: center;">
+        <h4>THÔNG TIN</h4>
+        <p [innerHTML]="productDetail.description">
         </p>
+        <p><strong>Lưu ý: </strong>Màu sắc sản phẩm có thể khác trên ảnh do điều kiện ánh sáng khi chụp.</p>
+        <p>Vận chuyển từ 2-3 ngày.<br>Thiết kế và sản xuất bởi HADES.</p>
+        <p></p>
       </div>
        
       <div class="col-6">
@@ -19,7 +19,7 @@
             >
               @for (image of productImages; track null) {
               <li class="product-detail-images-image-wrapper">
-                <img src="{{ baseUrl + image.imageUrl }}" alt="" />
+                <img src="{{image.imageUrl}}" alt="" />
               </li>
               }
             </ul>
@@ -37,7 +37,7 @@
                   class="1 product-detail-images-thumbnails-li"
                 >
                 <div class="image-scroll">
-                  <img src="{{ baseUrl + image.imageUrl }}" alt="" />
+                  <img src="{{image.imageUrl}}" alt="" />
                 </div>
                 </li>
                 }

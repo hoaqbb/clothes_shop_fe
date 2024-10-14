@@ -1,0 +1,70 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table,
+th,
+td {
+    border: 1px solid #ddd;
+}
+
+th {
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+td {
+    padding: 12px;
+    text-align: left;
+    align-items: center;
+    vertical-align: middle;
+}
+
+td img {
+    display: block;
+    margin: 0 auto;
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+}
+
+tbody tr {
+    height: 85px;
+}
+
+.action-buttons button {
+    padding: 8px 12px;
+    border: none;
+    background-color: #ff6600;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.action-buttons button:hover {
+    background-color: #e65c00;
+}
+
+::ng-deep .p-datatable>.p-datatable-wrapper {
+    overflow-x: scroll;
+    width: 100%;
+}
+
+::ng-deep table.p-datatable-table {
+    min-width: 600px !important;
+}
+
+.color-box {
+    width: 45px;
+    height: 45px;
+}
+
+::ng-deep .field-radiobutton.col-6.ng-star-inserted {
+    display: inline-block;
+    margin: 6px 0;
+}

@@ -11,7 +11,6 @@ import { FormsModule } from '@angular/forms';
 import { GalleriaModule } from 'primeng/galleria';
 import { CartService } from '../../../core/services/cart.service';
 import { ToastrService } from 'ngx-toastr';
-import { map, pipe, tap } from 'rxjs';
 import { CartItem } from '../../../models/cart';
 
 @Component({
@@ -30,7 +29,6 @@ export class ProductDetailComponent implements OnInit{
   selectedColor: ColorVariant | null = null; 
   selectedSize?: string;
   selectedVariantId: number | null;
-
   
   onColorChange(color: ColorVariant) {
     this.selectedColor = color;  // Cập nhật màu đã chọn
@@ -46,10 +44,11 @@ export class ProductDetailComponent implements OnInit{
     private cartService: CartService,
     private toastr: ToastrService,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.getProductDetail();
+    
   }
 
   getProductDetail() {

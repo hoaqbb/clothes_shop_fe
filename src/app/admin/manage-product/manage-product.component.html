@@ -1,0 +1,95 @@
+<div class="card">
+    <!-- <p-toolbar styleClass="mb-4 gap-2">
+        <ng-template pTemplate="left">
+            <p-button severity="success" label="New" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
+            <p-button severity="danger" label="Delete" icon="pi pi-trash" (onClick)="deleteSelectedProducts()"
+                [disabled]="!selectedProducts || !selectedProducts.length" />
+        </ng-template>
+    </p-toolbar> -->
+<!-- [(selection)]="selectedProducts" -->
+
+    <p-table #dt [value]="products"
+        [rows]="10" [globalFilterFields]="['name', 'category', 'price']"
+        [tableStyle]="{ 'min-width': '75rem' }"  [rowHover]="true"
+        >
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Manage Products</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                        placeholder="Search..." />
+                </span>
+                <button class="btn btn-success" (click)="createProductDialog()">Thêm sản phẩm</button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                
+                <th pSortableColumn="id" style="width: 5%;">Mã sản phẩm<p-sortIcon field="name" />
+                <th pSortableColumn="name" style="min-width: 4rem">Tên sản phẩm<p-sortIcon field="name" />
+                </th>
+                <th pSortableColumn="price">Ảnh<p-sortIcon field="price" /></th>
+                <th style="min-width: 7rem">Url</th>
+                <th pSortableColumn="category" style="min-width: 5rem">Thể loại<p-sortIcon field="category" /></th>
+                <th pSortableColumn="description" style="min-width: 10rem">Giá</th>
+                <th pSortableColumn="discount">Giảm giá (%)<p-sortIcon field="discount"/></th>
+
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+            <tr>
+                <td>
+                    {{ product.id }}
+                </td>
+                <td>
+                    {{ product.name }}
+                </td>
+                <td>
+                    <img src="{{product.mainPhoto || '../../../../../assets/no-image.svg'}}" alt="">
+                </td>
+                <td>
+                    {{ product.slug }}
+                </td>
+                <td>
+                    {{ product.category }}
+                </td>
+                <td>
+                    {{ product.price }} đ
+                </td>
+                <td>
+                    {{ product.discount }}
+                </td>
+                
+                <!-- <td>
+                    <div class="color-box" [ngStyle]="{'background-color': product.colorCode}"></div>
+                </td> -->
+                <td>
+                    <p-button class="btn-warehouse" icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true"
+                        severity="success" (onClick)="updateProductDialog(product.slug)" />
+                    <p-button class="btn-warehouse" icon="pi pi-trash" severity="danger" [rounded]="true"
+                        [outlined]="true" (onClick)="confirmDeleteAction($event, product.id)" />
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    @if(pagination) {
+        <div class="flex justify-content-center">
+            <p-paginator 
+                (onPageChange)="pageChanged($event)"
+                [rows]="pagination.itemsPerPage" 
+                [totalRecords]="pagination.totalItems" 
+                />
+        </div>
+    }
+
+</div>
+
+<app-create-product-dialog [(show)]="toggleCreateDialog"></app-create-product-dialog>
+<app-update-product-dialog [(show)]="toggleUpdateDialog" [slug]="selectedProductSlug"></app-update-product-dialog>
+
+ <!-- <p-confirmDialog [style]="{ width: '450px' }" /> -->
+
+ <div class="card flex justify-content-center gap-2">
+    <p-confirmDialog />
+</div>

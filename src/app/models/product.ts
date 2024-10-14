@@ -1,5 +1,7 @@
+import { Category } from "./category"
 
 export interface Product {
+    id: number
     name: string
     price: number
     mainPhoto: string
@@ -10,17 +12,22 @@ export interface Product {
   }
 
 export interface ProductDetail {
+  id: number
   name: string
   price: number
   description: string
   discount: number
   slug: string
+  category: Category
   productImages: ProductImage[]
   productVariants: ProductVariant[]
 }
 
 export interface ProductImage {
+  id: number
   imageUrl: string
+  isMain: boolean
+  isSub: boolean
 }
 
 export interface ProductVariant {
@@ -45,5 +52,18 @@ export interface CreateProduct {
   categoryId: number
   productColors: number[]
   productSizes: number[]
-  productImages: File[]
+  // productImages: File[]
+}
+
+export interface UpdateProduct {
+  id: number
+  name: string
+  price: number
+  description: string
+  discount: number
+  slug: string
+  categoryId: number
+  productColors: number[]
+  productSizes: number[]
+  // productImages: File[]
 }

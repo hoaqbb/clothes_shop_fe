@@ -1,0 +1,8 @@
+::ng-deep a.p-panelmenu-header-action {
+    color: #6b7280;
+    text-decoration: none;
+}
+
+::ng-deep p-panelmenu.p-element {
+    min-height: 735px;
+}

@@ -1,9 +1,14 @@
 @if(product) {
     <div class="card mb-4" routerLink="/products/{{product.slug}}">
         <div class="card-img-wrapper">
-            <img class="main-image" src="{{baseUrl+product.mainPhoto || '../../../../assets/ao.webp'}}"
+            <!-- <img class="main-image" src="{{baseUrl+product.mainPhoto || '../../../../../../assets/no-image.svg'}}"
+            alt=""
+                class="card-img-top"> -->
+                <img class="main-image" src="{{product.mainPhoto || '../../../../../../assets/no-image.svg'}}"
+            alt=""
                 class="card-img-top">
-            <img class="sub-image" src="{{baseUrl+product.subPhoto}}" alt="">
+            <!-- <img class="sub-image" src="{{baseUrl+product.subPhoto}}" alt=""> -->
+            <img class="sub-image" src="{{product.subPhoto}}" alt="">
             <ul class="list-inline animate text-center">
                 <li class="list-inline-item">
                     <button class="btn btn-dark" routerLink="/account/login">

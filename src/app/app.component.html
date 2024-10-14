@@ -1,3 +1,5 @@
+
+<div *ngIf="!isAdmin ; else adminContent">
 <app-cart-sidebar [(show)]="show"></app-cart-sidebar>
 <app-nav-bar (toggleCartSideBar)="toggleCartSidebar()"></app-nav-bar>
 
@@ -7,5 +9,21 @@
 <!-- </div> -->
 
 <app-footer></app-footer>
+</div>
 
-<!-- <script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&currency=USD"></script> -->
+<ng-template #adminContent>
+  <div class="card">
+    <p-splitter [panelSizes]="[25, 75]" [style]="{ height: 'fit-content' }" styleClass="mb-5">
+      <ng-template pTemplate>
+        <div class="col flex align-items-center justify-content-center">
+          <app-admin-sidebar></app-admin-sidebar>
+        </div>
+      </ng-template>
+      <ng-template pTemplate>
+        <div class="col flex align-items-center justify-content-center">
+          <router-outlet></router-outlet>
+        </div>
+      </ng-template>
+    </p-splitter>
+  </div>
+</ng-template>

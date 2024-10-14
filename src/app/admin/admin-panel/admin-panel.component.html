@@ -7,14 +7,14 @@
 
 
 <!-- [(visible)]="true"  -->
-<div class="card flex justify-content-center">
+<div class="card flex justify-content-center" style="margin: 200px auto;">
     <p-dialog 
         [modal]="true"
         [visible]="true" 
         [style]="{ width: '50rem' }" 
         [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
         <form [formGroup]="createProductForm"
-            (ngSubmit)="log()">
+            (ngSubmit)="createProduct()">
             <div class="mb-3">
                 <label for="name" class="form-label">Tên sản phẩm</label>
                 <input
@@ -64,7 +64,7 @@
                     <div class="m-3">
                         <input
                         type="checkbox"
-                        formControlName="productColor"
+                        name="productColor"
                         class="form-check-input"
                         [value]="item.id"
                         (change)="onColorChange(item.id, $event)"
@@ -84,7 +84,7 @@
                         <input
                         type="checkbox"
                         class="form-check-input"
-                        formControlName="productSize"
+                        name="productSize"
                         [value]="item.id"
                         (change)="onSizeChange(item.id, $event)"
                         />
@@ -94,34 +94,26 @@
                 
             </div>
 
-            <!-- <div class="card flex justify-content-center">
-              
-                <p-fileUpload 
-                    formControlName="productImages"
-                    url="https://www.primefaces.org/cdn/api/upload.php" 
-                    [multiple]="true" 
-                    (onUpload)="onFileSelected($event)" 
-                    accept="image/*" 
-                    maxFileSize="1000000">
-                        <ng-template pTemplate="content">
-                            <ul *ngIf="">
-                                <li *ngFor="let file of uploadedFiles">
-                                    {{ file.name }} - {{ file.size }} bytes
-                                </li>
-                            </ul>
-                        </ng-template>
-                </p-fileUpload>
-            </div> -->
-            
-            <input type="file" multiple (change)="onFileSelected($event)" />
-  
-            <div formArrayName="productImages">
-              <div *ngFor="let imageControl of productImages.controls; let i = index">
-                <input [formControlName]="i" readonly />
-                <button (click)="removeImage(i)">Remove</button>
-              </div>
-            </div>
             <button type="submit" class="btn btn-success">Thêm sản phẩm</button>
         </form>
     </p-dialog>
+
+    <div class="container">
+        <p-fileUpload 
+            [customUpload]="true"
+            (onUpload)="fileHandle($event)" 
+            (uploadHandler)="onUpload($event)" 
+            [multiple]="true" 
+            accept="image/*" 
+            maxFileSize="1000000">
+                <ng-template pTemplate="content">
+                    <ul *ngIf="uploadedFiles.length">
+                        <li *ngFor="let file of uploadedFiles">
+                            {{ file.name }} - {{ file.size }} bytes
+                        </li>
+                    </ul>
+                </ng-template>
+        </p-fileUpload>
+    </div>
+
 </div>

@@ -1,0 +1,185 @@
+<!-- Cửa sổ dialog thêm 1 sản phẩm mới -->
+<p-dialog [(visible)]="show" 
+    
+    (onHide)="onHide()"
+    [style]="{ width: '50rem' }" 
+    header="Chi tiết sản phẩm" 
+    [modal]="true"
+    styleClass="p-fluid">
+    <form *ngIf="!loading; else loadingTemplate" [formGroup]="updateProductForm"
+            (ngSubmit)="updateProduct()">
+            <div class="mb-3">
+                <label for="name" class="form-label">Tên sản phẩm</label>
+                <input
+                    type="text"
+                    formControlName="name"
+                    id="name"
+                    class="form-control"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="slug" class="form-label">Url</label>
+                <input
+                    type="text"
+                    formControlName="slug"
+                    class="form-control"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="price" class="form-label">Giá sản phẩm</label>
+                <input
+                    type="number"
+                    formControlName="price"
+                    class="form-control"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="discount" class="form-label">Giảm giá (%)</label>
+                <input
+                    type="number"
+                    formControlName="discount"
+                    class="form-control"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="categoryId" class="form-label">Thể loại</label>
+                <select *ngIf="categories"
+                    formControlName="categoryId" class="form-select">
+                    <option *ngFor="let item of categories" [value]="item.id">{{item.name}}</option>
+                </select>
+            </div>
+
+            <div *ngIf="mergedColors" class="mb-3">Màu sản phẩm
+                @for (item of mergedColors; track $index) {
+                    <div class="m-3">
+                        <input
+                        [checked]="item.checked"
+                        type="checkbox"
+                        name="productColor"
+                        class="form-check-input"
+                        [value]="item.id"
+                        (change)="onColorChange(item.id, $event)"
+                    />
+                    <label for="productColor" class="form-label">{{item.name}}</label>
+                    <span style="height: 15px; width: 15px; display: inline-block;"
+                    [ngStyle]="{'background-color': item.colorCode}"></span>
+                    </div>
+                }
+            </div>
+
+            <div *ngIf="mergedSizes" class="mb-3">Size sản phẩm
+                @for (item of mergedSizes; track $index) {
+                    <div class="m-3">
+                        <input
+                            [checked]="item.checked"
+                            type="checkbox"
+                            class="form-check-input"
+                            name="productSize"
+                            [value]="item.id"
+                            (change)="onSizeChange(item.id, $event)"
+                        />
+                        <label for="productSize" class="form-label">{{item.name}}</label>
+                    </div>
+                }
+                
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Mô tả</label>
+                <p-editor formControlName="description"  [style]="{ height: '150px' }" />
+            </div>
+
+            @for (img of product.productImages; track $index) {
+                <div class="d-inline-flex m-2">
+                    <div class="col-2 list-group">
+                        <img src="{{img.imageUrl}}" alt="" class="img-thumbnail p-1">
+                        <div class="text-center d-flex">
+                            <button 
+                                [disabled]="img.isMain"
+                                (click)="setMainPhoto(product.id, img)"
+                                [ngClass]='img.isMain ? "btn-success active" : "btn-outline-success"'
+                                class="btn btn-sm"
+                                >Main</button>
+                            <button 
+                                [disabled]="img.isSub"
+                                (click)="setSubPhoto(product.id, img)"
+                                [ngClass]='img.isSub ? "btn-success active" : "btn-outline-success"'
+                                class="btn btn-sm"
+                                >Sub</button>
+                            <button 
+                                [disabled]="img.isMain || img.isSub"
+                                (click)="deleteImage(product.id ,img.id)"
+                                class="btn btn-sm btn-danger"
+                                ><i class="pi pi-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+            }
+
+            <div class="container">
+                <p-fileUpload #fileUpload
+                    [customUpload]="true"
+                    (onUpload)="fileHandle($event)" 
+                    (uploadHandler)="onUpload($event)" 
+                    [multiple]="true" 
+                    accept="image/*" 
+                    maxFileSize="1000000">
+                        <ng-template pTemplate="content">
+                            <ul *ngIf="uploadedFiles.length">
+                                <li *ngFor="let file of uploadedFiles">
+                                    {{ file.name }} - {{ file.size }} bytes
+                                </li>
+                            </ul>
+                        </ng-template>
+                </p-fileUpload>
+            </div>
+
+            <!-- <div class="mb-3">
+                <label for="category" class="form-label">Thể loại</label>
+                <select *ngIf="categories"
+                    formControlName="category" class="form-select">
+                    <option *ngFor="let item of categories" [value]="item.id">{{item.name}}</option>
+                </select>
+            </div>
+            <div *ngIf="colors" class="mb-3">Màu sản phẩm
+                @for (item of colors; track $index) {
+                    <div class="m-3">
+                        <input
+                        type="checkbox"
+                        name="productColor"
+                        class="form-check-input"
+                        [value]="item.id"
+                        (change)="onColorChange(item.id, $event)"
+                    />
+                    <label for="productColor" class="form-label">{{item.name}}</label>
+                    <span style="height: 15px; width: 15px; display: inline-block;"
+                    [ngStyle]="{'background-color': item.colorCode}"></span>
+                    </div>
+                    
+                }
+                
+            </div>
+
+            <div *ngIf="sizes" class="mb-3">Size sản phẩm
+                @for (item of sizes; track $index) {
+                    <div class="m-3">
+                        <input
+                        type="checkbox"
+                        class="form-check-input"
+                        name="productSize"
+                        [value]="item.id"
+                        (change)="onSizeChange(item.id, $event)"
+                        />
+                        <label for="productSize" class="form-label">{{item.name}}</label>
+                    </div>
+                }
+                
+            </div> -->
+
+            <button type="submit" class="btn btn-success m-3">Lưu</button>
+        </form>
+        <ng-template #loadingTemplate>
+            <p>Loading...</p> <!-- Hiển thị khi đang tải dữ liệu -->
+          </ng-template>
+</p-dialog>
