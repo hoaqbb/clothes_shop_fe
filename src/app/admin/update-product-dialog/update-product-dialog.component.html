@@ -60,7 +60,7 @@
                         [value]="item.id"
                         (change)="onColorChange(item.id, $event)"
                     />
-                    <label for="productColor" class="form-label">{{item.name}}</label>
+                    <label for="productColor" class="form-label text">{{item.name}}</label>
                     <span style="height: 15px; width: 15px; display: inline-block;"
                     [ngStyle]="{'background-color': item.colorCode}"></span>
                     </div>
@@ -78,7 +78,7 @@
                             [value]="item.id"
                             (change)="onSizeChange(item.id, $event)"
                         />
-                        <label for="productSize" class="form-label">{{item.name}}</label>
+                        <label for="productSize" class="form-label text">{{item.name}}</label>
                     </div>
                 }
                 

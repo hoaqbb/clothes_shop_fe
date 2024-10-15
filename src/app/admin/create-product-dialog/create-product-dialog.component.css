@@ -1,0 +1,32 @@
+.m-3 {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.form-check-input {
+  margin-right: 10px; /* Khoảng cách giữa checkbox và nhãn */
+  margin-top: 0;
+}
+
+.form-label {
+  margin-right: 10px; /* Khoảng cách giữa nhãn và ô màu */
+}
+
+span {
+  height: 15px;
+  width: 15px;
+  display: inline-block;
+  border-radius: 3px; /* Bo góc của ô màu */
+  border: 1px solid #ccc; /* Đường viền nhẹ cho ô màu */
+  margin-left: 5px; /* Khoảng cách giữa nhãn và ô màu */
+}
+
+::ng-deep div.m-3.ng-star-inserted {
+  display: flex;
+  align-items: center;
+}
+
+.text {
+  margin-bottom: 0;
+}
