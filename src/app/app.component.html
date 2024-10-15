@@ -1,19 +1,19 @@
 
-<div *ngIf="!isAdmin ; else adminContent">
-<app-cart-sidebar [(show)]="show"></app-cart-sidebar>
-<app-nav-bar (toggleCartSideBar)="toggleCartSidebar()"></app-nav-bar>
-
+<div *ngIf="showNavBarFooter ; else adminContent">
+  <app-cart-sidebar [(show)]="show"></app-cart-sidebar>
+  <app-nav-bar (toggleCartSideBar)="toggleCartSidebar()"></app-nav-bar>
 
 <!-- <div class="container" style="margin-top: 100px;"> -->
     <router-outlet></router-outlet>
 <!-- </div> -->
 
-<app-footer></app-footer>
+  <app-footer></app-footer>
 </div>
 
 <ng-template #adminContent>
   <div class="card">
-    <p-splitter [panelSizes]="[25, 75]" [style]="{ height: 'fit-content' }" styleClass="mb-5">
+    <p-splitter [panelSizes]="[20, 80]"
+      [style]="{ width: '100%' }" styleClass="mb-5">
       <ng-template pTemplate>
         <div class="col flex align-items-center justify-content-center">
           <app-admin-sidebar></app-admin-sidebar>

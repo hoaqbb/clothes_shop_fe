@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { NavBarComponent } from './core/components/nav-bar/nav-bar.component';
 import { FooterComponent } from "./core/components/footer/footer.component";
 import { AccountService } from './core/services/account.service';
@@ -26,24 +26,35 @@ import { SplitterModule } from 'primeng/splitter';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent implements OnInit, OnChanges {
+export class AppComponent implements OnInit {
   // cartItems: CartItem[] = [];
   @Input() show: boolean = false;
-  isAdmin: boolean = false;
-  role: String;
+  showNavBarFooter = true;
 
   constructor(
-    private accountService: AccountService,
+    public accountService: AccountService,
     private cartService: CartService,
-    private router: Router,
-    private cdr: ChangeDetectorRef
-  ) {}
+    private router: Router
+  ) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.checkRoute(event.url);
+      }
+    });
+  }
+
+  checkRoute(url: string) {
+    // Hide nav bar and footer if the route contains 'admin'
+    if (url.includes('/admin')) {
+      this.showNavBarFooter = false;
+    } else {
+      this.showNavBarFooter = true;
+    }
+  }
 
   ngOnInit(): void {
     this.setCurrentUser();
-    this.isAdmin = this.role === 'Admin';
 
-    this.navigateBasedOnRole();
     // this.loadCart();
     // this.setCurrentCartItems();
   }
@@ -55,11 +66,10 @@ export class AppComponent implements OnInit, OnChanges {
   setCurrentUser() {
     const user: User = JSON.parse(localStorage.getItem('user'));
     this.accountService.setCurrentUserSource(user);
-    if (user) {
-      this.role = this.accountService.getRoleFromToken(user.token);
-      this.cartService.getUserCart().subscribe((response) => {
+    if(user) {
+      this.cartService.getUserCart().subscribe(response => {
         this.cartService.cartItems = response;
-      });
+      })
     }
   }
 
@@ -70,20 +80,4 @@ export class AppComponent implements OnInit, OnChanges {
     this.cartService.setCurrentCartItemsSource(cartItems);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['role']) {
-      this.cdr.detectChanges(); // Gọi detectChanges để cập nhật giao diện
-    }
-  }
-
-  navigateBasedOnRole() {
-    if (this.role === 'Admin') {
-      this.isAdmin = true;
-      this.router.navigate(['/admin/dashboard']);
-    } else {
-      this.isAdmin = false;
-      this.router.navigate(['/']);
-    }
-    this.cdr.detectChanges(); // Gọi detectChanges để cập nhật giao diện
-  }
 }

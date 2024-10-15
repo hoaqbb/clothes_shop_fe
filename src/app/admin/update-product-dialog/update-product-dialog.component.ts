@@ -6,7 +6,7 @@ import { Product, ProductDetail, ProductImage, UpdateProduct } from '../../model
 import { AdminService } from '../../core/services/admin.service';
 import { ProductService } from '../../core/services/product.service';
 import { EditorModule } from 'primeng/editor';
-import { FileUpload, FileUploadEvent, FileUploadModule } from 'primeng/fileupload';
+import { FileUpload, FileUploadModule } from 'primeng/fileupload';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { Category } from '../../models/category';
@@ -150,11 +150,11 @@ export class UpdateProductDialogComponent implements OnChanges{
       productColors: this.selectedColors,
       productSizes: this.selectedSizes
     };
-    console.log(updateProduct);
+
     this.adminService.updateProduct(updateProduct).subscribe({
       next: () => {
         this.toastr.success('Product updated successfully');
-        // this.onHide();
+        this.onHide();
       },
       error: (err) => this.toastr.warning(err)
     })
@@ -167,7 +167,6 @@ export class UpdateProductDialogComponent implements OnChanges{
 
   deleteImage(productId, imageId) {
     this.adminService.deleteProductImage(productId, imageId).subscribe((response) => {
-      console.log('delete');
       this.product.productImages = this.product.productImages.filter(x => x.id !== imageId);
     })
   }

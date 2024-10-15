@@ -99,25 +99,6 @@
             </div>
           </div>
   
-          <div class="info-box">
-            <div class="box-icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M12 3C6.486 3 2 6.364 2 10.5c0 2.742 1.982 5.354 5 6.678V21a.999.999 0 0 0 1.707.707l3.714-3.714C17.74 17.827 22 14.529 22 10.5 22 6.364 17.514 3 12 3zm0 13a.996.996 0 0 0-.707.293L9 18.586V16.5a1 1 0 0 0-.663-.941C5.743 14.629 4 12.596 4 10.5 4 7.468 7.589 5 12 5s8 2.468 8 5.5-3.589 5.5-8 5.5z"
-                />
-              </svg>
-            </div>
-  
-            <div class="box-content">
-              <span class="big">24</span>
-              Conversations
-            </div>
-          </div>
         </section>
         <div class="card-wrap">
           <div class="card">
@@ -128,41 +109,7 @@
               <p-chart type="doughnut" [data]="data" [options]="options" />
             </div>
           </div>
-          <div class="card-wrap">
-            <div class="card">
-                [value]="orders"
-              <p-table
-                
-                [paginator]="true"
-                [rows]="5"
-                [tableStyle]="{ 'min-width': '50rem' }"
-                [rowsPerPageOptions]="[5, 10, 20]"
-              >
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th style="width: 5%">STT</th>
-                    <th style="width: 20%">Name</th>
-                    <th style="width: 25%">Address</th>
-                    <th style="width: 15%">Admount</th>
-                    <th style="width: 15%">Status</th>
-                    <th style="width: 20%">Note</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-order>
-                  <tr>
-                    <td>{{ order.id }}</td>
-                    <td>{{ order.fullname }}</td>
-                    <td>{{ order.address }}</td>
-                    <td>{{ order.amount }}</td>
-                    <td [ngClass]="getStatusClass(order.status)">
-                      {{ getStatusLabel(order.status) }}
-                    </td>
-                    <td>{{ order.note }}</td>
-                  </tr>
-                </ng-template>
-              </p-table>
-            </div>
-          </div>
+          
         </div>
       </div>
     </main>

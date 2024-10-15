@@ -1,0 +1,75 @@
+<p-dialog [(visible)]="show" 
+    *ngIf="orderDetail"
+    (onHide)="onHide()"
+    [style]="{ width: '60rem' }" 
+    [modal]="true"
+    styleClass="p-fluid">
+    <div *ngIf="!loading ; else loadingTemplate">
+    <div class="row">
+        <h2>Chi tiết đơn hàng</h2>
+        <h6>Mã đơn hàng: {{orderDetail.id}}</h6>
+        <span>Người nhận: {{orderDetail.fullname}}</span>
+        <span>Số điện thoại: {{orderDetail.phoneNumber}}</span>
+        <span>Email: {{orderDetail.email}}</span>
+        <span>Địa chỉ: {{orderDetail.address}}</span>
+        <span>Ngày tạo: {{orderDetail.createAt | date:'dd/MM/yyyy, HH:mm a'}}</span>
+        <span>Ngày cập nhật: {{orderDetail.updateAt | date:'dd/MM/yyyy, HH:mm a'}}</span>
+        <span>Phương thức thanh toán: {{orderDetail.paymentMethod}}</span>
+        @if(orderDetail.paymentMethod != 'COD') {
+            <span>Nhà cung cấp: {{orderDetail.provider}}</span>
+            <span>Mã giao dịch: {{orderDetail.transactionId}}</span>
+        }
+
+        <p-steps 
+            [model]="items" 
+            [readonly]="true" 
+            [activeIndex]="orderDetail.status" 
+            />
+        
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr style="font-size: large;">
+                <th>Sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Giá</th>
+                <th>Giảm giá %</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of orderDetail.orderItems; track $index) {
+                <tr>
+                    <td>
+                        <app-checkout-item-card [item]="item"></app-checkout-item-card>
+                    </td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.price}} đ</td>
+                    <td>{{item.discount}}</td>
+                </tr>
+            }
+    </table>
+
+    <div class="row m-5">
+        <div class="col list-group">
+            <span>Phí vận chuyển:</span>
+            <span>Voucher:</span>
+            <span>Thành tiền:</span>
+        </div>
+        <div class="col list-group">
+            <span>25000 đ</span>
+            <span>0</span>
+            <span>{{orderDetail.amount}} đ</span>
+        </div>
+    </div>
+    </div>
+    <div class="row d-flex justify-content-end">
+        <button class="btn btn-success" 
+            [disabled]="orderDetail.status >= 3"
+            (click)="updateStatusOrder(orderDetail.id)" style="width: 30%;">
+            Cập nhật trạng thái đơn hàng</button>
+    </div>
+
+    <ng-template #loadingTemplate>
+        <p>Loading...</p>
+        </ng-template>
+</p-dialog>

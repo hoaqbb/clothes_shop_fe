@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
-import { CreateProduct, UpdateProduct } from '../../models/product';
+import { CreateProduct, Product, ProductVariant, UpdateProduct } from '../../models/product';
 import { Order } from '../../models/order';
 import { UserParams } from '../../models/userParams';
 import { getPaginatedResult, getPaginationHeaders } from '../../shared/helpers/paginationHelpers';
@@ -40,6 +40,10 @@ export class AdminService {
     return this.http.delete(this.baseUrl + '/api/Product/delete-product/' + id);
   }
 
+  updateProductQuantity(id: number, quantityUpdate: ProductVariant[]) {
+    return this.http.put(this.baseUrl + '/api/Product/update-product-quantity/' + id, quantityUpdate);
+  }
+
   addProductImages(id, files) {
     return this.http.post(this.baseUrl + '/api/Product/add-product-images', {});
   }
@@ -56,6 +60,9 @@ export class AdminService {
     return this.http.put(this.baseUrl + '/api/Product/set-sub-image/' + productId + '?imageId='+imageId, {});
   }
 
+  updateStatusOrder(id) {
+    return this.http.put(this.baseUrl + '/api/Order/update-status-order/' + id, {});
+  }
 
   getAllOrder(userParams: UserParams) {
     let params = getPaginationHeaders(

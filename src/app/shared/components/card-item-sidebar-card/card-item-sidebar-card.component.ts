@@ -12,8 +12,7 @@ import { CartService } from '../../../core/services/cart.service';
   styleUrl: './card-item-sidebar-card.component.css'
 })
 export class CardItemSidebarCardComponent {
-  baseUrl = environment.apiUrl;
-  @Input() cartItem?: CartItem;
+  @Input() cartItem: CartItem;
 
   constructor(private cartService: CartService) { }
 

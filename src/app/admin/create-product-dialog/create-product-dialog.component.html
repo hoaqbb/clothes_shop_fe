@@ -52,37 +52,40 @@
                 </select>
             </div>
             <div *ngIf="colors" class="mb-3">Màu sản phẩm
-                @for (item of colors; track $index) {
-                    <div class="m-3">
-                        <input
-                        type="checkbox"
-                        name="productColor"
-                        class="form-check-input"
-                        [value]="item.id"
-                        (change)="onColorChange(item.id, $event)"
-                    />
-                    <label for="productColor" class="form-label">{{item.name}}</label>
-                    <span style="height: 15px; width: 15px; display: inline-block;"
-                    [ngStyle]="{'background-color': item.colorCode}"></span>
-                    </div>
-                    
-                }
-                
+                <div class="row">
+                    @for (item of colors; track $index) {
+                        <div class="m-3 col-2">
+                            <input
+                            type="checkbox"
+                            name="productColor"
+                            class="form-check-input"
+                            [value]="item.id"
+                            (change)="onColorChange(item.id, $event)"
+                        />
+                        <label for="productColor" class="form-label mx-2">{{item.name}}</label>
+                        <span style="height: 15px; width: 15px; display: inline-block; border-radius: 20%;"
+                        [ngStyle]="{'background-color': item.colorCode}"></span>
+                        </div>
+                        
+                    }
+                </div>
             </div>
 
             <div *ngIf="sizes" class="mb-3">Size sản phẩm
-                @for (item of sizes; track $index) {
-                    <div class="m-3">
-                        <input
-                        type="checkbox"
-                        class="form-check-input"
-                        name="productSize"
-                        [value]="item.id"
-                        (change)="onSizeChange(item.id, $event)"
-                        />
-                        <label for="productSize" class="form-label">{{item.name}}</label>
-                    </div>
-                }
+                <div class="row">
+                    @for (item of sizes; track $index) {
+                        <div class="m-3 col-2">
+                            <input
+                            type="checkbox"
+                            class="form-check-input"
+                            name="productSize"
+                            [value]="item.id"
+                            (change)="onSizeChange(item.id, $event)"
+                            />
+                            <label for="productSize" class="form-label mx-2">{{item.name}}</label>
+                        </div>
+                    }
+                </div>
                 
             </div>
 

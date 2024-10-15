@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
-import { map, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, map, ReplaySubject } from 'rxjs';
 import { User, UserDetail } from '../../models/user';
 import { CartService } from './cart.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -11,7 +11,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class AccountService {
   baseUrl = environment.apiUrl;
-  private currentUserSource = new ReplaySubject<User>(1);
+  private currentUserSource = new BehaviorSubject<User>(null);
   currentUser$ = this.currentUserSource.asObservable();
 
   ///////
@@ -65,6 +65,9 @@ export class AccountService {
   }
 
   setCurrentUserSource(user: User) {
+    user.role ='';
+    const role = this.getDecodedToken(user.token).role
+    if(role != '') user.role = role;
     this.currentUserSource.next(user);
     localStorage.setItem('user', JSON.stringify(user));
   }
@@ -73,5 +76,9 @@ export class AccountService {
     localStorage.removeItem('user');
     this.currentUserSource.next(null);
     this.cartService.cartItems = [];
+  }
+
+  getDecodedToken(token) {
+    return JSON.parse(atob(token.split('.')[1]));
   }
 }

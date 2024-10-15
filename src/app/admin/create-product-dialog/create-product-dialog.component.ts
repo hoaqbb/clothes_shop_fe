@@ -7,11 +7,10 @@ import { Color } from '../../models/color';
 import { CommonModule } from '@angular/common';
 import { AdminService } from '../../core/services/admin.service';
 import { Size } from '../../models/size';
-import { FileUploadEvent, FileUploadModule } from 'primeng/fileupload';
+import { FileUploadModule } from 'primeng/fileupload';
 import { CreateProduct } from '../../models/product';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
-import { AdminSidebarComponent } from "../admin-sidebar/admin-sidebar.component";
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

@@ -5,11 +5,10 @@
         >
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between m-2">
-                <h2 class="m-0">Quản lý sản phẩm</h2>
+                <h2 class="m-0">Quản lý kho</h2>
                 <div class="d-flex justify-content-between mt-3">
                     <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
                         placeholder="Tìm kiếm..." />
-                    <button class="btn btn-success" (click)="createProductDialog()">Thêm sản phẩm</button>
                 </div>
             </div>
         </ng-template>
@@ -19,16 +18,18 @@
                 <th pSortableColumn="id" style="width: 5%;">Mã sản phẩm </th>
                 <th pSortableColumn="name" style="min-width: 4rem">Tên sản phẩm<p-sortIcon field="name" />
                 </th>
-                <th pSortableColumn="price">Ảnh</th>
                 <th style="min-width: 7rem">Url</th>
-                <th pSortableColumn="category" style="min-width: 5rem">Thể loại<p-sortIcon field="category" /></th>
-                <th pSortableColumn="description" style="min-width: 10rem">Giá</th>
-                <th pSortableColumn="discount">Giảm giá (%)<p-sortIcon field="discount"/></th>
+                <th style="width: 8%;">Ảnh</th>
+                <th pSortableColumn="category" style="width: 10%">Thể loại<p-sortIcon field="category" /></th>
+                <th pSortableColumn="description" style="width: 8%">Giá</th>
+                <th pSortableColumn="discount" style="width: 8%">Giảm giá (%)<p-sortIcon field="discount" /></th>
+                <th style="width: 15%;">Màu sắc</th>
+         
 
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-product>
-            <tr>
+            <tr (click)="updateQuantityDialog(product.slug)">
                 <td>
                     {{ product.id }}
                 </td>
@@ -36,10 +37,10 @@
                     {{ product.name }}
                 </td>
                 <td>
-                    <img src="{{product.mainPhoto || '../../../../../assets/no-image.svg'}}" alt="">
+                    {{ product.slug }}
                 </td>
                 <td>
-                    {{ product.slug }}
+                    <img src="{{product.mainPhoto || '../../../../../assets/no-image.svg'}}" alt="">
                 </td>
                 <td>
                     {{ product.category }}
@@ -48,17 +49,16 @@
                     {{ product.price }} đ
                 </td>
                 <td>
-                    {{ product.discount }}
+                    {{ product.discount }} %
                 </td>
-                
-                <!-- <td>
-                    <div class="color-box" [ngStyle]="{'background-color': product.colorCode}"></div>
-                </td> -->
-                <td>
-                    <p-button class="btn-warehouse" icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true"
-                        severity="success" (onClick)="updateProductDialog(product.slug)" />
-                    <p-button class="btn-warehouse" icon="pi pi-trash" severity="danger" [rounded]="true"
-                        [outlined]="true" (onClick)="confirmDeleteAction($event, product.id)" />
+                <td class="m-2">
+                    @for (item of product.productColors; track $index) {
+                        
+                        {{ item.name }}
+                        <span style="height: 15px; width: 15px; display: inline-block; border-radius: 20%;"
+                        [ngStyle]="{'background-color': item.colorCode}"></span>
+                        
+                    }
                 </td>
             </tr>
         </ng-template>
@@ -75,9 +75,4 @@
 
 </div>
 
-<app-create-product-dialog [(show)]="toggleCreateDialog"></app-create-product-dialog>
-<app-update-product-dialog [(show)]="toggleUpdateDialog" [slug]="selectedProductSlug"></app-update-product-dialog>
-
- <div class="card flex justify-content-center gap-2">
-    <p-confirmDialog />
-</div>
+<app-update-quantity-dialog [(show)]="toggleQuantityDialog" [slug]="selectedProduct"></app-update-quantity-dialog>

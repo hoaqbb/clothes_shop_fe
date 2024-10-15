@@ -4,11 +4,12 @@ import { environment } from '../../../../environments/environment.development';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../../core/services/cart.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-cart-item-card',
   standalone: true,
-  imports: [InputNumberModule, FormsModule],
+  imports: [InputNumberModule, FormsModule, NgIf],
   templateUrl: './cart-item-card.component.html',
   styleUrl: './cart-item-card.component.css'
 })

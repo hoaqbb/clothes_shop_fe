@@ -6,15 +6,17 @@ import { Order } from '../../models/order';
 import { UserParams } from '../../models/userParams';
 import { Pagination } from '../../models/pagination';
 import { PaginatorModule } from 'primeng/paginator';
+import { OrderDetailDialogComponent } from "../order-detail-dialog/order-detail-dialog.component";
 
 @Component({
   selector: 'app-manage-order',
   standalone: true,
-  imports: [TableModule, CommonModule, DatePipe, PaginatorModule],
+  imports: [TableModule, CommonModule, DatePipe, PaginatorModule, OrderDetailDialogComponent],
   templateUrl: './manage-order.component.html',
   styleUrl: './manage-order.component.css',
 })
 export class ManageOrderComponent implements OnInit {
+  toggleOrderDetailDialog = false;
   orderList: Order[];
   userParams: UserParams;
   pagination: Pagination;
@@ -25,6 +27,15 @@ export class ManageOrderComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAllOrder();
+  }
+
+  selectedOrderId
+  orderDetailDialog(id) {
+    this.selectedOrderId = id;
+    this.toggleOrderDetailDialog = true;
+  }
+  hideDialog() {
+    this.toggleOrderDetailDialog = false;
   }
 
   loadAllOrder() {

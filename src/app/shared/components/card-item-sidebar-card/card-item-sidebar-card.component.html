@@ -1,7 +1,7 @@
 @if(cartItem){
     <div class="d-flex">
         <a href="/products/{{cartItem.slug}}">
-            <img  src="{{baseUrl+cartItem.photo}}"
+            <img  src="{{cartItem.photo || '../../../../../../assets/no-image.svg'}}"
                 alt="" style="height: 100px; width: 65px;">
         </a>
         <div class="list-group p-3" style="font-size: smaller;">

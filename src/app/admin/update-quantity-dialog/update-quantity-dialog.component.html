@@ -1,0 +1,74 @@
+<!-- Cửa sổ dialog thêm 1 sản phẩm mới -->
+<p-dialog [(visible)]="show"
+    (onHide)="onHide()"
+    [style]="{ width: '50rem' }" 
+    [modal]="true"
+    styleClass="p-fluid">
+    <form *ngIf="!loading; else loadingTemplate" [formGroup]="updateProductForm"
+            (ngSubmit)="updateProduct()">
+            <div class="container d-flex flex-column align-items-center">
+                <img class="card"
+                    style="width: 250px; height: 350px;"
+                    src="{{product.productImages[0].imageUrl}}" alt=""> 
+                <h4 class="m-2">{{product.name}}</h4>
+                <h4 class="m-2">#{{product.id}}</h4>
+            </div>
+        
+            <div class="card">
+                <p-table #dt [value]="product.productVariants"
+                    [tableStyle]="{ 'min-width': '75rem' }"  [rowHover]="true"
+                    >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            
+                            <th pSortableColumn="id" style="width: 5%;">Mã kho</th>
+                            <th pSortableColumn="color" style="width: 20%">Màu sắc<p-sortIcon field="color" />
+                            </th>
+                            <th style="width: 10%"></th>
+                            <th pSortableColumn="category" style="width: 10%">Size<p-sortIcon field="category" /></th>
+                            <th pSortableColumn="amount" style="width: 15%" >Số lượng</th>
+
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-variant>
+                        <tr >
+                            <td>
+                                {{ variant.id }}
+                            </td>
+                            <td>
+                                {{ variant.color }}
+                            </td>
+                            <td>
+                                <span style="height: 15px; width: 15px; display: inline-block; border-radius: 20%;"
+                                    [ngStyle]="{'background-color': variant.colorCode}"></span>    
+                            </td>
+                            <td>
+                                {{ variant.size }}
+                            </td>
+                            <td [pEditableColumn]="variant.amount" pEditableColumnField="amount">
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <p-inputNumber 
+                                            [(ngModel)]="variant.amount" 
+                                            min="0"
+                                            (keydown)="onEdit($event, variant.id)"
+                                            /> 
+                                        </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{ variant.amount }}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            
+                        </tr>
+                    </ng-template>
+                </p-table>
+                
+            </div>
+
+        <button (click)="updateProductQuantity()" class="btn btn-success m-3">Lưu</button>
+    </form>
+    <ng-template #loadingTemplate>
+        <p>Loading...</p> <!-- Hiển thị khi đang tải dữ liệu -->
+    </ng-template>
+</p-dialog>

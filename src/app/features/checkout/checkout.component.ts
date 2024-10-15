@@ -10,11 +10,12 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ICreateOrderRequest, IPayPalConfig, NgxPayPalModule } from 'ngx-paypal';
 import { environment } from '../../../environments/environment.development';
+import { CheckoutItemCardComponent } from "../../shared/components/checkout-item-card/checkout-item-card.component";
 
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [TextInputComponent, ReactiveFormsModule, CardItemSidebarCardComponent, CommonModule, NgxPayPalModule],
+  imports: [TextInputComponent, ReactiveFormsModule, CardItemSidebarCardComponent, CommonModule, NgxPayPalModule, CheckoutItemCardComponent],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.css'
 })
