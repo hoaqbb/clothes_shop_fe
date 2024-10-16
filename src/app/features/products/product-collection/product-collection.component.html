@@ -1,6 +1,6 @@
 <div class="container" style="margin: 100px auto;">
     @if(products) {
-        <form #sortForm="ngForm" class="row justify-content-end">
+        <form #sortForm="ngForm" class="row justify-content-end my-3">
             <select name="sortBy" style="width: 10%;"
             [(ngModel)]="userParams.sortBy"
             (change)="getProductsByCategory()">

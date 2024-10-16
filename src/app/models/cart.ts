@@ -8,5 +8,6 @@ export interface CartItem {
     discount: number
     quantity: number
     slug: string
+    category: string
     productVariant: ProductVariant
 }

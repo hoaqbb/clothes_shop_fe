@@ -11,7 +11,20 @@
             <span>Phương thức thanh toán: {{orderDetail.paymentMethod}}</span>
             @if(orderDetail.paymentMethod != 'COD') {
                 <span>Nhà cung cấp: {{orderDetail.provider}}</span>
+                <div class="d-flex">
+                    <span>Trạng thái: </span>
+                    @switch (orderDetail.paymentStatus) {
+                        @case (true) {
+                            <span class="text-success">Thanh toán thành công</span>
+                        }
+                        @case (false) {
+                            <span class="text-danger">Thanh toán thất bại</span>
+                        }
+                    }
+             
+                </div>
                 <span>Mã giao dịch: {{orderDetail.transactionId}}</span>
+                
             }
             
         </div>
@@ -50,7 +63,7 @@
                 <span>Thành tiền:</span>
             </div>
             <div class="col list-group">
-                <span>25000 đ</span>
+                <span>30000 đ</span>
                 <span>0</span>
                 <span>{{orderDetail.amount}} đ</span>
             </div>

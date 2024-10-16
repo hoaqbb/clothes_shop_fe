@@ -1,26 +1,35 @@
 <div class="card">
+    <!-- <p-toolbar styleClass="mb-4 gap-2">
+        <ng-template pTemplate="left">
+            <p-button severity="success" label="New" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
+            <p-button severity="danger" label="Delete" icon="pi pi-trash" (onClick)="deleteSelectedProducts()"
+                [disabled]="!selectedProducts || !selectedProducts.length" />
+        </ng-template>
+    </p-toolbar> -->
+<!-- [(selection)]="selectedProducts" -->
+
     <p-table #dt [value]="products"
         [rows]="10" [globalFilterFields]="['name', 'category', 'price']"
         [tableStyle]="{ 'min-width': '75rem' }"  [rowHover]="true"
         >
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between caption__heading">
-                <h5 class="m-0">Manage Products</h5>
+                <h3 class="m-0">Quản lý sản phẩm</h3>
                 <span class="p-input-icon-left search__wrap">
                     <i class="pi pi-search"></i>
                     <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
-                        placeholder="Tìm kiếm..." />
-                    <button class="btn btn-success" (click)="createProductDialog()">Thêm sản phẩm</button>
-                </div>
+                        placeholder="Search..." />
+                </span>
+                <button class="btn btn-success" (click)="createProductDialog()">Thêm sản phẩm</button>
             </div>
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
                 
-                <th pSortableColumn="id" style="width: 5%;">Mã sản phẩm </th>
+                <th pSortableColumn="id" style="width: 5%;">Mã sản phẩm<p-sortIcon field="name" />
                 <th pSortableColumn="name" style="min-width: 4rem">Tên sản phẩm<p-sortIcon field="name" />
                 </th>
-                <th pSortableColumn="price">Ảnh</th>
+                <th pSortableColumn="price">Ảnh<p-sortIcon field="price" /></th>
                 <th style="min-width: 7rem">Url</th>
                 <th pSortableColumn="category" style="min-width: 5rem">Thể loại<p-sortIcon field="category" /></th>
                 <th pSortableColumn="description" style="min-width: 10rem">Giá</th>
@@ -78,6 +87,8 @@
 
 <app-create-product-dialog [(show)]="toggleCreateDialog"></app-create-product-dialog>
 <app-update-product-dialog [(show)]="toggleUpdateDialog" [slug]="selectedProductSlug"></app-update-product-dialog>
+
+ <!-- <p-confirmDialog [style]="{ width: '450px' }" /> -->
 
  <div class="card flex justify-content-center gap-2">
     <p-confirmDialog />

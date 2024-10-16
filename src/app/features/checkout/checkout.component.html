@@ -25,12 +25,13 @@
             [label]="'Địa chỉ'">
         </app-text-input>
 
-        <div class="d-flex">
-            <div class="form-floating">
+        <div class="d-flex justify-content-between">
+            <div class="form-floating" style="width: 32%;">
                 <select 
                     formControlName="province"
                     class="form-select" id="province"
-                    (change)="getDistricts($event.target.value)">
+                    (change)="getDistricts($event.target.value) && calculateShippingFee($event.target.value)"
+                    >
                   <option value="null" selected>Chọn tỉnh / thành phố</option>
                     @for (item of provinces; track $index) {
                         <option [value]="item.id">{{item.name}}</option>
@@ -47,7 +48,7 @@
                 </div> -->
                 
             </div>
-            <div class="form-floating">
+            <div class="form-floating" style="width: 32%;">
                 <select formControlName="district"
                     class="form-select" id="district"
                     (change)="getWards($event.target.value)">
@@ -61,7 +62,7 @@
                 </select>
                 <label for="district">Quận / huyện</label>
             </div>
-            <div class="form-floating">
+            <div class="form-floating" style="width: 32%;">
                 <select formControlName="ward"
                     class="form-select" id="ward">
                   <option value="null" selected>Chọn phường / xã</option>
@@ -75,8 +76,12 @@
             </div>
         </div>
 
-        <div class="form-check">
+        <div class="d-flex align-items-center my-2 mb-0">
             <h6>Phương thức vận chuyển</h6>
+            <p style="font-size: small; padding-top: 10px;">(miễn phí vận chuyển cho đơn hàng từ 1 triệu 500)</p>
+        </div>
+        
+        <div class="form-check">
             <input id="shipping" class="form-check-input ms-3" checked
                 formControlName="shipping"
                 type="radio" value="1">
@@ -85,7 +90,7 @@
             </label>
         </div>
 
-        <h6>Phương thức thanh toán</h6>
+        <h6 class="my-2">Phương thức thanh toán</h6>
         <div class="form-check">
             <input checked id="payment_method_cod" class="form-check-input ms-3" 
                 formControlName="paymentMethod"
@@ -136,14 +141,40 @@
         <div class="col-5">
             <div>
                 @for (item of cartService.cartItems; track $index) {
-                    <app-card-item-sidebar-card [cartItem]="item"></app-card-item-sidebar-card>
+                    <div class="d-flex">
+                        <div>
+                            <div class="d-flex" style="position: absolute;">
+                                <p-badge [value]="item.quantity" />
+                            </div>
+                            <img  src="{{item.photo || '../../../../../../assets/no-image.svg'}}"
+                            alt="" style="height: 100px; width: 65px;">
+                        </div>
+                        
+                        <div class="list-group p-3" style="font-size: smaller;">
+                            <h6 style="font-size: small;">{{item.name}}</h6>
+                            <div class="d-flex">
+                                <span>{{item.productVariant.color}}</span>
+                                <span> / </span>
+                                <span>{{item.productVariant.size}}</span>
+                            </div>
+                            <div class="d-flex">
+                                
+                                @if(item.discount) {
+                                    <p><strong>{{item.price*(100-item.discount)/100}}đ</strong></p>
+                                } @else {
+                                    <p><strong>{{item.price*item.quantity}}đ</strong></p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                
                 }
             </div>
             <div class="d-flex">
                 <p>Tạm tính: {{tempCalculation}}đ</p>
             </div>
             
-            <p>Phí vận chuyển: {{ship}}đ</p>
+            <p>Phí vận chuyển: {{shippingFee}}đ</p>
             <h6>Tổng cộng: {{amount}}đ</h6>
 
             <form [formGroup]="checkoutForm">

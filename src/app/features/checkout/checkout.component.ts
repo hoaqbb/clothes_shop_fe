@@ -11,11 +11,14 @@ import { CommonModule } from '@angular/common';
 import { ICreateOrderRequest, IPayPalConfig, NgxPayPalModule } from 'ngx-paypal';
 import { environment } from '../../../environments/environment.development';
 import { CheckoutItemCardComponent } from "../../shared/components/checkout-item-card/checkout-item-card.component";
+import { BadgeModule } from 'primeng/badge';
 
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [TextInputComponent, ReactiveFormsModule, CardItemSidebarCardComponent, CommonModule, NgxPayPalModule, CheckoutItemCardComponent],
+  imports: [TextInputComponent, ReactiveFormsModule, CardItemSidebarCardComponent, 
+    CommonModule, NgxPayPalModule, CheckoutItemCardComponent
+  , BadgeModule],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.css'
 })
@@ -25,7 +28,7 @@ export class CheckoutComponent implements OnInit{
   provinces: any;
   districts: any;
   wards: any;
-  ship = 25000;
+  shippingFee = 0;
   tempCalculation = 0;
   amount = 0;
 
@@ -48,7 +51,7 @@ export class CheckoutComponent implements OnInit{
     this.checkoutForm = this.formBuilder.group({
       fullname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', Validators.required],
+      phoneNumber: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
       street: ['', Validators.required],
       province: ['null', Validators.required],
       district: ['null', Validators.required],
@@ -79,6 +82,8 @@ export class CheckoutComponent implements OnInit{
   }
 
   calculateAmount() {
+    this.tempCalculation = 0;
+    this.amount = 0;
     this.cartService.getUserCart().subscribe(res => {
       res.forEach(element => {
         if(element.discount) {
@@ -87,11 +92,34 @@ export class CheckoutComponent implements OnInit{
           this.tempCalculation += element.quantity * element.price
         }
       });
-      this.amount = this.tempCalculation + this.ship;
+      if(this.tempCalculation > 1500000) this.shippingFee = 0;
+      this.amount = this.tempCalculation + this.shippingFee;
       this.initConfig();
     });
 
   return this.amount;
+  }
+
+  calculateShippingFee(provinceId: string) {
+    if(this.tempCalculation < 1500000) { //mien phi van chuyen cho don > 1tr5
+    const specifiedProvince =  [
+        "79", //tp HCM
+        "01" //Ha Noi
+      ];
+      
+    if(specifiedProvince.includes(provinceId)) {
+      this.shippingFee = 20000;
+    } else {
+    this.shippingFee = 30000;
+    }
+    for (let i = 0; i < this.cartService.cartItems.length; i++) {
+      if(this.cartService.cartItems[i].category == 'bag') {
+        this.shippingFee += 10000;
+        break;
+      }
+    }
+  }
+    this.calculateAmount();
   }
 
   createOrder() {
@@ -130,6 +158,8 @@ export class CheckoutComponent implements OnInit{
       return false;
     }
   }
+
+
 
   public payPalConfig?: IPayPalConfig;
 
@@ -179,4 +209,7 @@ export class CheckoutComponent implements OnInit{
       },
     };
     }
+
+ 
+  
 }

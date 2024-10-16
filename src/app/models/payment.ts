@@ -4,6 +4,7 @@ export interface PaymentDetail{
     phoneNumber: string
     address: string
     paymentMethod: number
+    paymentStatus: boolean
     amount: number
     note: string
 }

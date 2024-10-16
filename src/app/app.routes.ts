@@ -17,6 +17,7 @@ import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard
 import { ManageOrderComponent } from './admin/manage-order/manage-order.component';
 import { ManageProductComponent } from './admin/manage-product/manage-product.component';
 import { ManageQuantityComponent } from './admin/manage-quantity/manage-quantity.component';
+import { checkoutGuard } from './core/guards/checkout.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -32,7 +33,7 @@ export const routes: Routes = [
       { path: 'account', component: AccountDetailComponent},
       { path: 'order/:id', component: OrderDetailComponent },
       { path: 'cart', component: CartDetailComponent },
-      { path: 'checkout', component: CheckoutComponent },
+      { path: 'checkout', component: CheckoutComponent, canActivate: [checkoutGuard]},
       { path: 'checkout/payment-result', component: PaymentResultComponent },
       {
         path: 'admin',
