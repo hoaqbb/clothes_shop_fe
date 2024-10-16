@@ -4,9 +4,10 @@
         [tableStyle]="{ 'min-width': '75rem' }"  [rowHover]="true"
         >
         <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between m-2">
-                <h2 class="m-0">Quản lý sản phẩm</h2>
-                <div class="d-flex justify-content-between mt-3">
+            <div class="flex align-items-center justify-content-between caption__heading">
+                <h5 class="m-0">Manage Products</h5>
+                <span class="p-input-icon-left search__wrap">
+                    <i class="pi pi-search"></i>
                     <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
                         placeholder="Tìm kiếm..." />
                     <button class="btn btn-success" (click)="createProductDialog()">Thêm sản phẩm</button>
@@ -29,7 +30,7 @@
         </ng-template>
         <ng-template pTemplate="body" let-product>
             <tr>
-                <td>
+                <td class="product-id">
                     {{ product.id }}
                 </td>
                 <td>

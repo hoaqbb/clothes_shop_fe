@@ -25,6 +25,10 @@ td {
     vertical-align: middle;
 }
 
+.product-id{
+    text-align: center;
+}
+
 td img {
     display: block;
     margin: 0 auto;
@@ -67,4 +71,24 @@ tbody tr {
 ::ng-deep .field-radiobutton.col-6.ng-star-inserted {
     display: inline-block;
     margin: 6px 0;
+}
+
+.caption__heading{
+    display: flex;
+    padding: 4px 20px;
+}
+
+.search__wrap{
+    position: relative;
+}
+
+.search__wrap i{
+    position: absolute;
+}
+
+.search__wrap i::before{
+    position: absolute;
+    z-index: 1;
+    right: 18px;
+    top: 0;
 }

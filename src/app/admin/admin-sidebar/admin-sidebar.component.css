@@ -1,8 +1,20 @@
 ::ng-deep a.p-panelmenu-header-action {
     color: #6b7280;
     text-decoration: none;
+    justify-content: center;
 }
 
 ::ng-deep p-panelmenu.p-element {
-    min-height: 735px;
+    /* min-height: 735px; */
+}
+
+.sidebar{
+    position: fixed;
+    height: 100vh;
+    width: 25%;
+    /* padding: 100px 20px 0; */
+}
+
+::ng-deep .p-panelmenu .p-panelmenu-panel {
+    margin-bottom: 30px;
 }
