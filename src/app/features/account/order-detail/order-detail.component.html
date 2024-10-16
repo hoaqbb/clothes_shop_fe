@@ -2,16 +2,16 @@
     @if(orderDetail) {
         <div class="row">
             <h2>Chi tiết đơn hàng</h2>
-            <h6>Mã đơn hàng: {{orderDetail.id}}</h6>
-            <span>Người nhận: {{orderDetail.fullname}}</span>
-            <span>Số điện thoại: {{orderDetail.phoneNumber}}</span>
-            <span>Email: {{orderDetail.email}}</span>
-            <span>Địa chỉ: {{orderDetail.address}}</span>
-            <span>Ngày tạo: {{orderDetail.createAt | date:'dd/MM/yyyy, HH:mm a'}}</span>
-            <span>Phương thức thanh toán: {{orderDetail.paymentMethod}}</span>
+            <h5 class="order-id">Mã đơn hàng: {{orderDetail.id}}</h5>
+            <span><label for="">Người nhận:</label> <p>{{orderDetail.fullname}}</p></span>
+            <span><label for="">Số điện thoại:</label> <p>{{orderDetail.phoneNumber}}</p></span>
+            <span><label for="">Email:</label> <p>{{orderDetail.email}}</p></span>
+            <span><label for="">Địa chỉ:</label> <p>{{orderDetail.address}}</p></span>
+            <span><label for="">Ngày tạo:</label> <p>{{orderDetail.createAt | date:'dd/MM/yyyy, HH:mm a'}}</p></span>
+            <span><label for="">Phương thức thanh toán:</label> <p>{{orderDetail.paymentMethod}}</p></span>
             @if(orderDetail.paymentMethod != 'COD') {
-                <span>Nhà cung cấp: {{orderDetail.provider}}</span>
-                <span>Mã giao dịch: {{orderDetail.transactionId}}</span>
+                <span><label for="">Nhà cung cấp:</label> <p>{{orderDetail.provider}}</p></span>
+                <span><label for="">Mã giao dịch:</label> <p>{{orderDetail.transactionId}}</p></span>
             }
             
         </div>
@@ -43,7 +43,7 @@
                 }
         </table>
 
-        <div class="row m-5">
+        <div class="row total">
             <div class="col list-group">
                 <span>Phí vận chuyển:</span>
                 <span>Voucher:</span>
@@ -52,7 +52,7 @@
             <div class="col list-group">
                 <span>25000 đ</span>
                 <span>0</span>
-                <span>{{orderDetail.amount}} đ</span>
+                <span class="total__amount">{{orderDetail.amount}} đ</span>
             </div>
             <!-- <div class="col"></div>
             <span>Phí vận chuyển: 25000 đ</span>
