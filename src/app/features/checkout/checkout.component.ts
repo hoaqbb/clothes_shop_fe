@@ -44,7 +44,7 @@ export class CheckoutComponent implements OnInit{
   ngOnInit(): void {
     this.initializeForm();
     this.getProvinces();
-    this.calculateAmount();
+    // this.calculateAmount();
   }
 
   initializeForm() {
@@ -63,68 +63,68 @@ export class CheckoutComponent implements OnInit{
   }
 
   getProvinces() {
-    return this.addressService.getProvinces().subscribe((res: any) => {
+    return this.addressService.getProvinces().then((res: any) => {
       this.provinces = res.data;
     });
-
   }
 
   getDistricts(provinceId: string) {
-    return this.addressService.getDistricts(provinceId).subscribe((res: any) => {
+    return this.addressService.getDistricts(provinceId).then((res: any) => {
       this.districts = res.data;
+      this.wards = [];
     })
   }
 
   getWards(districtId: string) {
-    return this.addressService.getWards(districtId).subscribe((res: any) => {
+    return this.addressService.getWards(districtId).then((res: any) => {
       this.wards = res.data;
     })
   }
 
-  calculateAmount() {
-    this.tempCalculation = 0;
-    this.amount = 0;
-    this.cartService.getUserCart().subscribe(res => {
-      res.forEach(element => {
-        if(element.discount) {
-          this.tempCalculation += element.price*(100-element.discount)/100*element.quantity;
-        } else {
-          this.tempCalculation += element.quantity * element.price
-        }
-      });
-      if(this.tempCalculation > 1500000) this.shippingFee = 0;
-      this.amount = this.tempCalculation + this.shippingFee;
-      this.initConfig();
-    });
+  // calculateAmount() {
+  //   this.tempCalculation = 0;
+  //   this.amount = 0;
+  //   this.cartService.getUserCart().subscribe(res => {
+  //     res.forEach(element => {
+  //       if(element.discount) {
+  //         this.tempCalculation += element.price*(100-element.discount)/100*element.quantity;
+  //       } else {
+  //         this.tempCalculation += element.quantity * element.price
+  //       }
+  //     });
+  //     if(this.tempCalculation > 1500000) this.shippingFee = 0;
+  //     this.amount = this.tempCalculation + this.shippingFee;
+  //     this.initConfig();
+  //   });
 
-  return this.amount;
-  }
+  // return this.amount;
+  // }
 
-  calculateShippingFee(provinceId: string) {
-    if(this.tempCalculation < 1500000) { //mien phi van chuyen cho don > 1tr5
-    const specifiedProvince =  [
-        "79", //tp HCM
-        "01" //Ha Noi
-      ];
+  // calculateShippingFee(provinceId: string) {
+  //   if(this.tempCalculation < 1500000) { //mien phi van chuyen cho don > 1tr5
+  //   const specifiedProvince =  [
+  //       "79", //tp HCM
+  //       "01" //Ha Noi
+  //     ];
       
-    if(specifiedProvince.includes(provinceId)) {
-      this.shippingFee = 20000;
-    } else {
-    this.shippingFee = 30000;
-    }
-    for (let i = 0; i < this.cartService.cartItems.length; i++) {
-      if(this.cartService.cartItems[i].category == 'bag') {
-        this.shippingFee += 10000;
-        break;
-      }
-    }
-  }
-    this.calculateAmount();
-  }
+  //   if(specifiedProvince.includes(provinceId)) {
+  //     this.shippingFee = 20000;
+  //   } else {
+  //   this.shippingFee = 30000;
+  //   }
+  //   for (let i = 0; i < this.cartService.cartItems.length; i++) {
+  //     if(this.cartService.cartItems[i].category == 'bag') {
+  //       this.shippingFee += 10000;
+  //       break;
+  //     }
+  //   }
+  // }
+  //   this.calculateAmount();
+  // }
 
   createOrder() {
     const wardId = this.checkoutForm.get('ward').value;
-    return this.addressService.getFullAddress(wardId).subscribe((res: any) => {
+    return this.addressService.getFullAddress(wardId).then((res: any) => {
       this.orderRequest = {
         fullname: this.checkoutForm.get('fullname').value,
         email: this.checkoutForm.get('email').value,

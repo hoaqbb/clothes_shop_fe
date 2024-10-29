@@ -30,8 +30,9 @@
                 <select 
                     formControlName="province"
                     class="form-select" id="province"
-                    (change)="getDistricts($event.target.value) && calculateShippingFee($event.target.value)"
+                    (change)="getDistricts($event.target.value)"
                     >
+                    <!-- (change)="getDistricts($event.target.value) && calculateShippingFee($event.target.value)" -->
                   <option value="null" selected>Chọn tỉnh / thành phố</option>
                     @for (item of provinces; track $index) {
                         <option [value]="item.id">{{item.name}}</option>
@@ -140,7 +141,7 @@
 
         <div class="col-5">
             <div>
-                @for (item of cartService.cartItems; track $index) {
+                @for (item of cartService.cart.cartItems; track $index) {
                     <div class="d-flex">
                         <div>
                             <div class="d-flex" style="position: absolute;">
