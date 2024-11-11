@@ -9,6 +9,7 @@ export interface Product {
     productColors: ProductColor[]
     discount: number
     slug: string
+    isVisible: boolean
   }
 
 export interface ProductDetail {
@@ -52,7 +53,9 @@ export interface CreateProduct {
   categoryId: number
   productColors: number[]
   productSizes: number[]
-  // productImages: File[]
+  mainImage: File
+  subImage: File
+  productImages: File[]
 }
 
 export interface UpdateProduct {

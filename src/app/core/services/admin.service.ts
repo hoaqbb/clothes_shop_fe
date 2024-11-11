@@ -25,7 +25,7 @@ export class AdminService {
     this.userParams = params;
   }
 
-  createProduct(product: CreateProduct) {
+  createProduct(product) {
     return this.http.post(
       this.baseUrl + '/api/Product/create-product',
       product
@@ -58,6 +58,10 @@ export class AdminService {
 
   setSubImage(productId: number, imageId: number) {
     return this.http.put(this.baseUrl + '/api/Product/set-sub-image/' + productId + '?imageId='+imageId, {});
+  }
+
+  updateProductStatus(id) {
+    return this.http.put(this.baseUrl + '/api/Product/update-product-status/' + id, {});
   }
 
   updateStatusOrder(id) {

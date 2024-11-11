@@ -3,7 +3,6 @@
         
             <div class="col-2 d-flex justify-content-center align-self-center">
                 <a  href="products/{{cartItem.slug}}">
-                    <!-- <img src="https://res.cloudinary.com/dibfutfpc/image/upload/v1728981720/tcg0un2ringqwrbjswfy.png" alt="" style="height: 100px; width: 65px;"> -->
                     <img src="{{cartItem.photo || '../../../../../../assets/no-image.svg'}}" alt="" style="height: 100px; width: 65px;">
                 </a>
             </div>
@@ -22,23 +21,26 @@
                     [showButtons]="true" 
                     buttonLayout="horizontal" 
                     spinnerMode="vertical" 
+                    allowEmpty="false"
                     inputId="vertical"
-                    (ngModelChange)="changeQuantityItem(cartItem.productVariant.id, cartItem.quantity)"
+                    (onBlur)="updateCartItem($event, cartItem.id)"
                     decrementButtonClass="p-button-secondary"
                     incrementButtonClass="p-button-secondary" 
                     incrementButtonIcon="pi pi-plus" 
                     decrementButtonIcon="pi pi-minus" />
             </div>
             
+            <!-- (ngModelChange)="changeQuantityItem(cartItem.productVariant.id, cartItem.quantity)" -->
+            
             <div class="col-2 text-center align-self-center">
-                <p>{{cartItem.price*(100-cartItem.discount)/100}}đ</p>
+                <p>{{cartItem.price*(100-cartItem.discount)/100 | number:'1.0':'en-US'}}đ</p>
             </div>
             
             <!-- <div class="list-group col-3"> -->
             <div class="col-2 d-flex flex-column align-items-center">
                 <p>Thành tiền:</p>
-                <p style="font-weight: 400;">{{cartItem.price*(100-cartItem.discount)/100*cartItem.quantity}}đ</p>
-                <span (click)="removeCartItem(cartItem.id)">
+                <p style="font-weight: 400;">{{cartItem.price*(100-cartItem.discount)/100*cartItem.quantity | number:'1.0':'en-US'}}đ</p>
+                <span style="cursor: pointer;" (click)="removeCartItem(cartItem.id)">
 
                     <i class="pi pi-trash" style="color: red;"></i>
                 </span>

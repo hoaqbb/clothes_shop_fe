@@ -1,4 +1,4 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ProductService } from '../../../core/services/product.service';
 import { ActivatedRoute } from '@angular/router';
 import { ProductDetail, ProductImage, ProductVariant } from '../../../models/product';
@@ -11,12 +11,13 @@ import { FormsModule } from '@angular/forms';
 import { GalleriaModule } from 'primeng/galleria';
 import { CartService } from '../../../core/services/cart.service';
 import { ToastrService } from 'ngx-toastr';
-import { CartItem } from '../../../models/cart';
+import { CartItem, CreateCart } from '../../../models/cart';
+import { DiscountPipe } from '../../../shared/pipes/discount.pipe';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, ProductListComponent, FormsModule, GalleriaModule],
+  imports: [CommonModule, ProductListComponent, FormsModule, GalleriaModule, DiscountPipe],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.css'
 })
@@ -57,13 +58,11 @@ export class ProductDetailComponent implements OnInit{
     if(slug) {
       this.productService.getProductBySlug(slug).subscribe(
         res => {
-          this.productDetail = res,
-          this.productImages = this.productDetail.productImages,
+          this.productDetail = res;
+          this.productImages = this.productDetail.productImages;
           this.getSizesInColor(),
           this.selectedColor = this.colors[0];
           this.selectedSize = this.getFirstAvailableSize();
-          console.log(this.colors);
-          console.log(this.productDetail);
       }
       )
     }
@@ -118,23 +117,44 @@ export class ProductDetailComponent implements OnInit{
 
   @Output() event = new EventEmitter<void>()
   addToCart() {
+    let cartId;
+    this.cartService.CartId$.subscribe((res) => {
+      cartId = res;
+      if(cartId == null) {
+        this.cartService.createCart();
+      }
+    })
+    
     const selectedVariant = this.selectedColor?.variants?.find(variant => variant.size === this.selectedSize);
     this.selectedVariantId = selectedVariant.id;
 
-    let isCartItemExisted = this.cartService.cartItems.find(x => x.productVariant.id === this.selectedVariantId)
-    console.log(isCartItemExisted);
+    let isCartItemExisted = this.cartService.cart().cartItems.find(x => x.productVariant.id === this.selectedVariantId)
+
       if(isCartItemExisted) {
         if(isCartItemExisted.quantity < isCartItemExisted.productVariant.amount) {
-          this.cartService.cartItems[this.cartService.cartItems.indexOf(isCartItemExisted)].quantity += 1;
-          return this.cartService.addToCart(this.selectedVariantId).subscribe(() => {
-            this.event.emit();
+          return this.cartService.addToCart(this.selectedVariantId, cartId).subscribe((response: CartItem) => {
+            this.cartService.cart.update(
+              cart => {
+                cart.cartItems[this.cartService.cart().cartItems.indexOf(isCartItemExisted)].quantity += 1;
+                this.cartService.itemCount();
+                this.cartService.calculateAmount();
+                return cart;
+              } 
+            )
           })
         }
 
         return this.toastr.warning("Sản phẩm đã đạt tới giới hạn trong kho!");
       }
-    return this.cartService.addToCart(this.selectedVariantId).subscribe((response: CartItem) => {
-      this.cartService.cartItems.push(response)
+    return this.cartService.addToCart(this.selectedVariantId, cartId).subscribe((response: CartItem) => {
+      
+      this.cartService.cart.update(cart => {
+        cart.cartItems.push(response)
+        this.cartService.itemCount();
+        this.cartService.calculateAmount();
+        
+        return cart;
+      })
     })
   }
 

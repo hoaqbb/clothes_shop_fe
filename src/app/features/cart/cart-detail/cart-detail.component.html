@@ -3,8 +3,8 @@
         <div class="col-9">
             <h2 class="text-center">Giỏ hàng của bạn</h2>
             <div class="container" style="background-color: #fafafa;">
-                @if(cartService.cartItems.length > 0) {
-                    @for (item of cartService.cartItems ; track null) {
+                @if(cartService.cart() && cartService.cart().cartItems?.length > 0) {
+                    @for (item of cartService.cart().cartItems ; track null) {
                         <div class="row">
                             <app-cart-item-card [cartItem]="item" (calculate)="calculateAmount()"></app-cart-item-card>
                         </div>
@@ -14,7 +14,6 @@
                         <p class="text-center my-3">Giỏ hàng của bạn đang trống</p>
                         <a style="width: 25%; height: 40px;" href="/collections/all"><button style="width: 100%; height: 100%;" >Tiếp tục mua hàng</button></a>
                     </div>
-                    
                 }
                 
             </div>
@@ -24,7 +23,7 @@
             <h5>Thông tin đơn hàng</h5>
             <div class="d-flex justify-content-between p-2">
                 <h6>Tổng tiền: </h6>
-                <h6 class="me=0">{{amount}}đ</h6>
+                <h6 class="me=0">{{cartService.amount() | number:'1.0':'en-US' }}đ</h6>
             </div>
             <button (click)="checkout()">THANH TOÁN</button>
         </div>

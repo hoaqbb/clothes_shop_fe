@@ -55,7 +55,7 @@
                             
                 <span class="pro-sale">{{productDetail.discount}}%</span>
                   
-                <span class="pro-price"><strong>{{productDetail.price*(100-productDetail.discount)/100}}₫</strong></span>
+                <span class="pro-price"><strong>{{productDetail.price | discount: productDetail.discount}}₫</strong></span>
                 
                 <span class="pro-price-del">{{productDetail.price}}₫</span>
                 

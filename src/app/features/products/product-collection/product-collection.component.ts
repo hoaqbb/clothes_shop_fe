@@ -7,11 +7,12 @@ import { FormsModule } from '@angular/forms';
 import { UserParams } from '../../../models/userParams';
 import { PaginatorModule } from 'primeng/paginator';
 import { Pagination } from '../../../models/pagination';
+import { SelectInputComponent } from "../../../shared/components/select-input/select-input.component";
 
 @Component({
   selector: 'app-product-collection',
   standalone: true,
-  imports: [ProductListComponent, FormsModule, PaginatorModule],
+  imports: [ProductListComponent, FormsModule, PaginatorModule, SelectInputComponent],
   templateUrl: './product-collection.component.html',
   styleUrl: './product-collection.component.css'
 })

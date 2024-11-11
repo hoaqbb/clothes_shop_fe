@@ -4,11 +4,12 @@ import { environment } from '../../../../environments/environment.development';
 import { RouterModule } from '@angular/router';
 import { ProductColor } from '../../../models/product';
 import { NgStyle } from '@angular/common';
+import { globalModules } from '../../../shared/global.modules';
 
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [RouterModule, NgStyle],
+  imports: [RouterModule, globalModules],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.css'
 })

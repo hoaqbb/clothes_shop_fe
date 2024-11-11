@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
-import { BehaviorSubject, map, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import { User, UserDetail } from '../../models/user';
 import { CartService } from './cart.service';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { Cart } from '../../models/cart';
 
 @Injectable({
   providedIn: 'root',
@@ -14,20 +14,7 @@ export class AccountService {
   private currentUserSource = new BehaviorSubject<User>(null);
   currentUser$ = this.currentUserSource.asObservable();
 
-  ///////
-  jwtHelper = new JwtHelperService();
-
   constructor(private http: HttpClient, private cartService: CartService) {}
-
-  getRoleFromToken(token: string): string {
-    const decodedToken = this.jwtHelper.decodeToken(token);
-    return (
-      decodedToken['role'] ||
-      decodedToken[
-        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-      ]
-    );
-  }
 
   login(model: any) {
     return this.http.post(this.baseUrl + '/api/Account/login', model).pipe(
@@ -35,12 +22,10 @@ export class AccountService {
         const user = response;
         if (user) {
           this.setCurrentUserSource(user);
-          this.cartService.getUserCart().subscribe((response) => {
-            this.cartService.cartItems = response;
+          this.cartService.getCart().subscribe((cart: Cart) => {
+            this.cartService.cart.set(cart);
+            this.cartService.setCurrentCartIdSource(cart.id);
           });
-          // this.cartService.getUserCart().subscribe((response) => {
-          //   this.cartService.setCurrentCartItemsSource(response);
-          // });
         }
         return response;
       })
@@ -75,7 +60,8 @@ export class AccountService {
   logout() {
     localStorage.removeItem('user');
     this.currentUserSource.next(null);
-    this.cartService.cartItems = [];
+    this.cartService.removeCartIdSource();
+    this.cartService.clearCart();
   }
 
   getDecodedToken(token) {

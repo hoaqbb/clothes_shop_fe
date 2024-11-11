@@ -4,12 +4,12 @@ import { environment } from '../../../../environments/environment.development';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../../core/services/cart.service';
-import { NgIf } from '@angular/common';
+import { globalModules } from '../../global.modules';
 
 @Component({
   selector: 'app-cart-item-card',
   standalone: true,
-  imports: [InputNumberModule, FormsModule, NgIf],
+  imports: [InputNumberModule, FormsModule, globalModules],
   templateUrl: './cart-item-card.component.html',
   styleUrl: './cart-item-card.component.css'
 })
@@ -17,19 +17,26 @@ export class CartItemCardComponent {
   baseUrl = environment.apiUrl;
   @Input() cartItem: CartItem;
   @Output() calculate = new EventEmitter<boolean>();
+  cartId: string;
+  itemQuantity: number;
 
-  constructor(private cartService: CartService) {}
-
-  removeCartItem(cartItemId: number) {
-    this.cartService.removeCartItem(cartItemId).subscribe(() => {
-      this.callCulateAmount();
-    })
+  constructor(private cartService: CartService) {
+    this.cartId = this.cartService.cart().id;
   }
 
-  changeQuantityItem(variantId: number, quantity: number) {
-    return this.cartService.addToCart(variantId, quantity).subscribe(()=> 
-      this.callCulateAmount()
-    );
+  removeCartItem(cartItemId: number) {
+    this.cartService.removeCartItem(this.cartId, cartItemId).subscribe(() => {
+        // this.callCulateAmount();
+      })
+  }
+
+  updateCartItem(event, cartItemId) {
+    const newQuantity = event.target.ariaValueNow;
+
+    return this.cartService.updateCartItem(this.cartId, cartItemId, newQuantity).subscribe(() => {
+
+    })
+    
   }
 
   callCulateAmount() {

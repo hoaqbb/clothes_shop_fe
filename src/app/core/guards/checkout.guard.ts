@@ -7,7 +7,7 @@ export const checkoutGuard: CanActivateFn = (route, state) => {
   const cartService = inject(CartService);
   const toastr = inject(ToastrService);
 
-  if(cartService.cartItems.length > 0) {
+  if(cartService.cart().cartItems.length > 0) {
     return true;
   }
 

@@ -6,18 +6,22 @@ import { CartSidebarComponent } from "../../../features/cart/cart-sidebar/cart-s
 import { ButtonModule } from 'primeng/button';
 import { AccountService } from '../../services/account.service';
 import { AsyncPipe } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
-  imports: [RouterLink, LoginComponent, RegisterComponent, CartSidebarComponent, ButtonModule, AsyncPipe],
+  imports: [RouterLink, LoginComponent, RegisterComponent, CartSidebarComponent, ButtonModule, AsyncPipe, FontAwesomeModule],
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.css'
 })
 export class NavBarComponent implements AfterViewInit{
   @Output() toggleCartSideBar = new EventEmitter<void>();
+  faEye = faEye;
 
-  constructor(public accountService: AccountService, private renderer: Renderer2) { }
+  constructor(public accountService: AccountService, public cartService: CartService, private renderer: Renderer2) { }
 
   @ViewChild('myElement') myElement: ElementRef;
   @HostListener('window:scroll', [])

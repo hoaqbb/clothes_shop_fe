@@ -44,7 +44,7 @@
                             <app-checkout-item-card [item]="item"></app-checkout-item-card>
                         </td>
                         <td>{{item.quantity}}</td>
-                        <td>{{item.price}} đ</td>
+                        <td>{{item.price | number:'1.0':'en-US'}} đ</td>
                         <td>{{item.discount}}</td>
                         <!-- <td>{{item.paymentMethod}}</td> -->
                         <!-- @if(item.status == 0) {
@@ -63,9 +63,9 @@
                 <span>Thành tiền:</span>
             </div>
             <div class="col list-group">
-                <span>30000 đ</span>
+                <span>30,000đ</span>
                 <span>0</span>
-                <span class="total__amount">{{orderDetail.amount}} đ</span>
+                <span class="total__amount">{{orderDetail.amount | number:'1.0':'en-US'}}đ</span>
             </div>
             <!-- <div class="col"></div>
             <span>Phí vận chuyển: 25000 đ</span>

@@ -34,12 +34,12 @@
             @if(product.discount > 0) {
                 <div class="d-flex p-2 justify-content-center">
                     <span class="col d-flex justify-content-center text-light discount"><strong>-{{product.discount}}%</strong></span>
-                    <h6 class="col d-flex justify-content-center">{{product.price*(100-product.discount)/100}}đ</h6>
+                    <h6 class="col d-flex justify-content-center">{{product.price*(100-product.discount)/100 | number:'1.0':'en-US'}}đ</h6>
                     <h6 class="col d-flex justify-content-center price text-decoration-line-through">
-                        {{product.price}}đ</h6>
+                        {{product.price | number:'1.0':'en-US'}}đ</h6>
                 </div>
             } @else {
-                <h6 class="col d-flex justify-content-center">{{product.price}}đ</h6>
+                <h6 class="col d-flex justify-content-center">{{product.price | number:'1.0':'en-US'}}đ</h6>
             }
             
         </div>

@@ -1,7 +1,18 @@
 ::ng-deep .p-component-overlay {
     z-index: 0 !important;
   }
+
+  .line {
+    float: left;
+    width: 100%;
+    border-top: 3px solid #000000;
+    margin: 10px 0px;
+  }
   
+  span {
+    font-weight: 500;
+  }
+
   button {
         position: relative;
       display: inline-block;
@@ -56,8 +67,8 @@
   .flex button{
     margin: 5px;
   }
-  z-index: 0 !important;
-}
+  /* z-index: 0 !important;
+} */
 
 .flex.gap-3.mt-1 {
   display: flex;

@@ -8,14 +8,15 @@
             <h6 style="font-size: small;">{{cartItem.name}}</h6>
             <div class="d-flex">
                 <span>{{cartItem.productVariant.color}}</span>
-                <span> / </span>
+                <span class="mx-1">/</span>
                 <span>{{cartItem.productVariant.size}}</span>
             </div>
-            <div class="d-flex">
-                <span>{{cartItem.quantity}}</span>
-                <span>||</span>
+            <div class="d-flex my-2">
+                <span class="me-2"
+                    style="height: 20px; width: 25px; background-color: #ededed; text-align: center;">
+                    {{cartItem.quantity}}</span>
                 @if(cartItem.discount) {
-                    <span>{{cartItem.price*(100-cartItem.discount)/100}}đ</span>
+                    <span>{{cartItem.price*(100-cartItem.discount)/100 | number:'1.0':'en-US'}}đ</span>
                 } @else {
                     <span>{{cartItem.price*cartItem.quantity}}đ</span>
                 }

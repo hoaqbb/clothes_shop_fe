@@ -1,48 +1,108 @@
-import { Injectable } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
-import { CartItem } from '../../models/cart';
-import { HttpClient } from '@angular/common/http';
-import { map, of, ReplaySubject, tap } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
+import { Cart, CreateCart } from '../../models/cart';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { BehaviorSubject, map, tap } from 'rxjs';
+import { DiscountPrice } from '../../shared/helpers/productHelpers';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
   baseUrl = environment.apiUrl;
-  cartItems: CartItem[] = [];
-  private CartItemsSource = new ReplaySubject<CartItem[]>(1);
-  CartItems$ = this.CartItemsSource.asObservable();
+  cart = signal<Cart | null>(null);
+  private CartIdSource = new BehaviorSubject<string>(null);
+  CartId$ = this.CartIdSource.asObservable();
+  count = signal<number>(0);
+  amount = signal<number>(0);
 
-  constructor(private http: HttpClient, private toartr: ToastrService) { }
+  constructor(private http: HttpClient) { }
 
-  getUserCart() {
-    return this.http.get<CartItem[]>(this.baseUrl + '/api/Cart/get-user-cart')
-  }
-
-  addToCart(variantId: number, quantity?: number) {
-    // Add item to cart
-    if(quantity){
-      return this.http.post(this.baseUrl + '/api/Cart/add-to-cart', {quantityId: variantId, quantity})
+  getCart(cartId?) {
+    if(cartId) {
+      return this.http.get<Cart>(this.baseUrl + '/api/Cart/get-cart?cartId='+cartId).pipe(
+        map( cart => {
+            this.cart.set(cart);
+            this.itemCount();
+            this.calculateAmount()
+            return cart;
+        })
+      )
     }
-      return this.http.post(this.baseUrl + '/api/Cart/add-to-cart', {quantityId: variantId});
-    
+    return this.http.get<Cart>(this.baseUrl + '/api/Cart/get-cart').pipe(
+      map( cart => {
+          this.cart.set(cart);
+          return cart;
+      })
+    )
   }
 
-  removeCartItem(cartItemId: number) {
-    return this.http.delete(this.baseUrl + '/api/Cart/remove-cart-item/' + cartItemId).pipe(
-      map(() => {
-        this.cartItems = this.cartItems.filter(item => item.id !== cartItemId);
+  addToCart(variantId: number, cartId: string) {
+    return this.http.post(this.baseUrl + '/api/Cart/add-to-cart', {cartId: cartId, quantityId: variantId});
+  }
+
+  updateCartItem(cartId: string, cartItemId: number, quantity: number) {
+    return this.http.put(this.baseUrl + '/api/Cart/update-cart-item', { cartId: cartId, cartItemId: cartItemId, quantity: quantity }).pipe(
+      tap(() => {
+        this.calculateAmount();
       })
     );
   }
 
-  clearCart() {
-    return this.cartItems = [];
+  removeCartItem(cartId: string, cartItemId: number){
+    let param = new HttpParams().set('cartItemId', cartItemId);
+    return this.http.delete(this.baseUrl + '/api/Cart/remove-cart-item/' + cartId, { params: param }).pipe(
+      map(() => {
+        this.cart.update(cart => {
+          cart.cartItems = cart.cartItems.filter(item => item.id !== cartItemId);
+          this.itemCount();
+          this.calculateAmount()
+          return cart;
+        });
+      })
+    )
   }
 
-  setCurrentCartItemsSource(cartItems: CartItem[]) {
-    this.CartItemsSource.next(cartItems);
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  createCart() {
+    const cart = new CreateCart();
+    this.setCurrentCartIdSource(cart.id);
+    this.cart.set(cart);
+  }
+
+  itemCount(){
+    let itemCount = computed(() => {
+      return this.cart()?.cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    })
+    this.count.set(itemCount())
+  }
+
+  calculateAmount() {
+    let calculate = computed(() => {
+      return this.cart()?.cartItems.reduce((amount, item) => {
+        if(item.discount > 0) {
+          amount += item.price * item.quantity * (1 - item.discount / 100);
+        }
+        else {
+          amount += item.price * item.quantity;
+        }
+        
+        return amount;
+      }, 0)
+    })
+    this.amount.set(calculate());
+  }
+
+  clearCart() {
+    return this.cart.set(null);
+  }
+
+  setCurrentCartIdSource(cartId: string) {
+    this.CartIdSource.next(cartId);
+    localStorage.setItem('cart_id', JSON.stringify(cartId));
+  }
+
+  removeCartIdSource() {
+    this.CartIdSource.next(null);
+    localStorage.removeItem('cart_id');
   }
 }

@@ -56,7 +56,7 @@
                                     <th style="width:20%">
                                         Địa chỉ
                                     </th>
-                                    <th pSortableColumn="amount" style="width:10%">
+                                    <th pSortableColumn="amount" style="width:12%">
                                         Tổng tiền<p-sortIcon field="amount" />
                                     </th>
                                     <th pSortableColumn="paymentMethod" style="width:11%">
@@ -74,9 +74,23 @@
                                     <td>{{order.fullname}}</td>
                                     <td>{{order.phoneNumber}}</td>
                                     <td>{{order.address}}</td>
-                                    <td>{{order.amount}}</td>
+                                    <td>{{order.amount}} đ</td>
                                     <td class="number_center">{{order.paymentMethod}}</td>
-                                    <td class="number_center">{{order.status}}</td>
+                                    <!-- <td class="number_center">{{order.status}}</td> -->
+                                    @switch (order.status) {
+                                        @case (0) {
+                                          <td class="text-danger">Chờ xác nhận</td>
+                                        }
+                                        @case (1) {
+                                          <td class="text-primary">Đã xác nhận</td>
+                                        }
+                                        @case (2) {
+                                          <td class="text-warning">Đang giao hàng</td>
+                                        }
+                                        @case (3) {
+                                          <td class="text-success">Giao hàng thành công</td>
+                                        }
+                                      }
                                 </tr>
                             </ng-template>
                         </p-table>

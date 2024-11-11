@@ -25,6 +25,7 @@ export const routes: Routes = [
   { path: 'collections/:category', component: ProductCollectionComponent },
   { path: 'account/login', component: LoginComponent },
   { path: 'account/register', component: RegisterComponent },
+  { path: 'cart', component: CartDetailComponent },
   {
     path: '',
     runGuardsAndResolvers: 'always',
@@ -32,7 +33,7 @@ export const routes: Routes = [
     children: [
       { path: 'account', component: AccountDetailComponent},
       { path: 'order/:id', component: OrderDetailComponent },
-      { path: 'cart', component: CartDetailComponent },
+      // { path: 'checkout', component: CheckoutComponent},
       { path: 'checkout', component: CheckoutComponent, canActivate: [checkoutGuard]},
       { path: 'checkout/payment-result', component: PaymentResultComponent },
       {
