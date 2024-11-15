@@ -30,7 +30,7 @@ export class CheckoutComponent implements OnInit{
   wards: any;
   shippingFee = 0;
   tempCalculation = 0;
-  amount = 0;
+  total = 0;
 
   constructor(
     private formBuilder: FormBuilder, 
@@ -44,7 +44,6 @@ export class CheckoutComponent implements OnInit{
   ngOnInit(): void {
     this.initializeForm();
     this.getProvinces();
-    // this.calculateAmount();
   }
 
   initializeForm() {
@@ -81,46 +80,36 @@ export class CheckoutComponent implements OnInit{
     })
   }
 
-  // calculateAmount() {
-  //   this.tempCalculation = 0;
-  //   this.amount = 0;
-  //   this.cartService.getUserCart().subscribe(res => {
-  //     res.forEach(element => {
-  //       if(element.discount) {
-  //         this.tempCalculation += element.price*(100-element.discount)/100*element.quantity;
-  //       } else {
-  //         this.tempCalculation += element.quantity * element.price
-  //       }
-  //     });
-  //     if(this.tempCalculation > 1500000) this.shippingFee = 0;
-  //     this.amount = this.tempCalculation + this.shippingFee;
-  //     this.initConfig();
-  //   });
+  calculateAmount() {
+    this.total = 0;
+    if(this.cartService.amount() > 1500000) this.shippingFee = 0;
+    this.total = this.cartService.amount() + this.shippingFee;
+    this.initConfig();
 
-  // return this.amount;
-  // }
+  return this.total;
+  }
 
-  // calculateShippingFee(provinceId: string) {
-  //   if(this.tempCalculation < 1500000) { //mien phi van chuyen cho don > 1tr5
-  //   const specifiedProvince =  [
-  //       "79", //tp HCM
-  //       "01" //Ha Noi
-  //     ];
+  calculateShippingFee(provinceId: string) {
+    if(this.cartService.amount() < 1500000) { //mien phi van chuyen cho don > 1tr5
+    const specifiedProvince =  [
+        "79", //tp HCM
+        "01" //Ha Noi
+      ];
       
-  //   if(specifiedProvince.includes(provinceId)) {
-  //     this.shippingFee = 20000;
-  //   } else {
-  //   this.shippingFee = 30000;
-  //   }
-  //   for (let i = 0; i < this.cartService.cartItems.length; i++) {
-  //     if(this.cartService.cartItems[i].category == 'bag') {
-  //       this.shippingFee += 10000;
-  //       break;
-  //     }
-  //   }
-  // }
-  //   this.calculateAmount();
-  // }
+    if(specifiedProvince.includes(provinceId)) {
+      this.shippingFee = 20000;
+    } else {
+    this.shippingFee = 30000;
+    }
+    for (let i = 0; i < this.cartService.cart().cartItems.length; i++) {
+      if(this.cartService.cart().cartItems[i].category == 'bag') {
+        this.shippingFee += 10000;
+        break;
+      }
+    }
+  }
+    this.calculateAmount();
+  }
 
   createOrder() {
     const wardId = this.checkoutForm.get('ward').value;
@@ -132,7 +121,7 @@ export class CheckoutComponent implements OnInit{
         address: this.checkoutForm.get('street').value + ', ' + res.data.full_name,
         paymentMethod: this.checkoutForm.get('paymentMethod').value,
         shipping: this.checkoutForm.get('shipping').value,
-        amount: this.amount,
+        amount: this.total,
         note: this.checkoutForm.get('note').value
       };
       
@@ -166,7 +155,7 @@ export class CheckoutComponent implements OnInit{
     private initConfig(): void {
       let clientId = environment.payPalClientId;
       let currency = 'USD';
-      let amountToUSD = (this.amount/23000).toFixed(2).toString()
+      let amountToUSD = (this.total/23000).toFixed(2).toString()
       this.payPalConfig = {
       currency: currency,
       clientId: clientId,

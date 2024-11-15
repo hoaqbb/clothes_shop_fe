@@ -1,4 +1,4 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, effect, Injectable, signal } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { Cart, CreateCart } from '../../models/cart';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -21,18 +21,18 @@ export class CartService {
   getCart(cartId?) {
     if(cartId) {
       return this.http.get<Cart>(this.baseUrl + '/api/Cart/get-cart?cartId='+cartId).pipe(
-        map( cart => {
+        tap( cart => {
             this.cart.set(cart);
             this.itemCount();
-            this.calculateAmount()
-            return cart;
+            this.calculateAmount();
         })
       )
     }
     return this.http.get<Cart>(this.baseUrl + '/api/Cart/get-cart').pipe(
-      map( cart => {
+      tap( cart => {
           this.cart.set(cart);
-          return cart;
+          this.itemCount();
+          this.calculateAmount();
       })
     )
   }
@@ -44,7 +44,8 @@ export class CartService {
   updateCartItem(cartId: string, cartItemId: number, quantity: number) {
     return this.http.put(this.baseUrl + '/api/Cart/update-cart-item', { cartId: cartId, cartItemId: cartItemId, quantity: quantity }).pipe(
       tap(() => {
-        this.calculateAmount();
+        //van de nam o no up theo cai ng model luon, nen se kho bat dc gia tri thay doi
+        // this.calculateAmount();
       })
     );
   }
@@ -93,7 +94,9 @@ export class CartService {
   }
 
   clearCart() {
-    return this.cart.set(null);
+    this.cart.set(null);
+    this.count.set(0);
+    this.amount.set(0);
   }
 
   setCurrentCartIdSource(cartId: string) {

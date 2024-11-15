@@ -30,9 +30,8 @@
                 <select 
                     formControlName="province"
                     class="form-select" id="province"
-                    (change)="getDistricts($event.target.value)"
+                    (change)="getDistricts($event.target.value) && calculateShippingFee($event.target.value)"
                     >
-                    <!-- (change)="getDistricts($event.target.value) && calculateShippingFee($event.target.value)" -->
                   <option value="null" selected>Chọn tỉnh / thành phố</option>
                     @for (item of provinces; track $index) {
                         <option [value]="item.id">{{item.name}}</option>
@@ -86,7 +85,7 @@
             <input id="shipping" class="form-check-input ms-3" checked
                 formControlName="shipping"
                 type="radio" value="1">
-            <label class="form-check-label" for="shipping">
+            <label class="form-check-label ms-1" for="shipping">
                 Giao hàng tận nơi
             </label>
         </div>
@@ -96,7 +95,7 @@
             <input checked id="payment_method_cod" class="form-check-input ms-3" 
                 formControlName="paymentMethod"
                 type="radio" value="0">
-            <label class="form-check-label" for="payment_method_cod">
+            <label class="form-check-label ms-1" for="payment_method_cod">
                 Thanh toán khi giao hàng (COD)
             </label>
         </div>
@@ -104,7 +103,7 @@
             <input id="payment_method_vnpay" class="form-check-input ms-3" 
                 formControlName="paymentMethod"
                 type="radio" value="1">
-            <label class="form-check-label" for="payment_method_vnpay">
+            <label class="form-check-label ms-1" for="payment_method_vnpay">
                 Thanh toán bằng VNPay
             </label>
         </div>
@@ -112,7 +111,7 @@
             <input id="payment_method_paypal" class="form-check-input ms-3" 
                 formControlName="paymentMethod"
                 type="radio" value="2">
-            <label class="form-check-label" for="payment_method_paypal">
+            <label class="form-check-label ms-1" for="payment_method_paypal">
                 Thanh toán bằng PayPal
             </label>
         </div>
@@ -140,7 +139,7 @@
         </div>
 
         <div class="col-5">
-            <div>
+            <div *ngIf="cartService.cart()">
                 @for (item of cartService.cart().cartItems; track $index) {
                     <div class="d-flex">
                         <div>
@@ -161,7 +160,7 @@
                             <div class="d-flex">
                                 
                                 @if(item.discount) {
-                                    <p><strong>{{item.price*(100-item.discount)/100}}đ</strong></p>
+                                    <p><strong>{{item.price*(100-item.discount)/100 | number:'1.0':'en-US' }}đ</strong></p>
                                 } @else {
                                     <p><strong>{{item.price*item.quantity}}đ</strong></p>
                                 }
@@ -172,11 +171,11 @@
                 }
             </div>
             <div class="d-flex">
-                <p>Tạm tính: {{tempCalculation}}đ</p>
+                <p>Tạm tính: {{cartService.amount() | number:'1.0':'en-US'}}đ</p>
             </div>
             
-            <p>Phí vận chuyển: {{shippingFee}}đ</p>
-            <h6>Tổng cộng: {{amount}}đ</h6>
+            <p>Phí vận chuyển: {{shippingFee | number:'1.0':'en-US'}}đ</p>
+            <h6>Tổng cộng: {{total | number:'1.0':'en-US'}}đ</h6>
 
             <form [formGroup]="checkoutForm">
                 <div class="row list-group">

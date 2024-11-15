@@ -1,13 +1,4 @@
 <div class="card">
-    <!-- <p-toolbar styleClass="mb-4 gap-2">
-        <ng-template pTemplate="left">
-            <p-button severity="success" label="New" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
-            <p-button severity="danger" label="Delete" icon="pi pi-trash" (onClick)="deleteSelectedProducts()"
-                [disabled]="!selectedProducts || !selectedProducts.length" />
-        </ng-template>
-    </p-toolbar> -->
-<!-- [(selection)]="selectedProducts" -->
-
     <p-table #dt [value]="products"
         [rows]="10" [globalFilterFields]="['name', 'category', 'price']"
         [tableStyle]="{ 'min-width': '75rem' }"  [rowHover]="true"
@@ -22,6 +13,19 @@
                 </span>
                 <button class="btn btn-success" (click)="createProductDialog()">Thêm sản phẩm</button>
             </div>
+            <div class="d-flex gap-3">
+                <app-select-input 
+                    [sortCollection]="sortCollectionCategory"
+                    [(value)]="userParams.sortBy"
+                    (valueChange)="a($event)">
+                </app-select-input>
+
+                <app-select-input 
+                    [sortCollection]="sortCollectionProduct"
+                    [(value)]="userParams.sortBy"
+                    (valueChange)="a($event)">
+                </app-select-input>
+            </div>
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
@@ -34,6 +38,7 @@
                 <th pSortableColumn="category" style="min-width: 5rem">Thể loại<p-sortIcon field="category" /></th>
                 <th pSortableColumn="description" style="min-width: 10rem">Giá</th>
                 <th pSortableColumn="discount">Giảm giá (%)<p-sortIcon field="discount"/></th>
+                <th>Trạng thái</th>
 
             </tr>
         </ng-template>
@@ -60,10 +65,19 @@
                 <td>
                     {{ product.discount }}
                 </td>
+                <td >
+                    @switch (product.isVisible) {
+                        @case (true) {
+                            <p-button icon="pi pi-eye" class="m-2" [rounded]="true" [text]="true" size="large"
+                                severity="success" (onClick)="updateProductStatus(product.id)" />
+                        }
+                        @case (false) {
+                            <p-button icon="pi pi-eye-slash" class="m-2" [rounded]="true" [text]="true" size="large"
+                                severity="danger" (onClick)="updateProductStatus(product.id)" />
+                        }
+                    }
+                </td>
                 
-                <!-- <td>
-                    <div class="color-box" [ngStyle]="{'background-color': product.colorCode}"></div>
-                </td> -->
                 <td>
                     <p-button class="btn-warehouse" icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true"
                         severity="success" (onClick)="updateProductDialog(product.slug)" />
@@ -86,9 +100,8 @@
 </div>
 
 <app-create-product-dialog [(show)]="toggleCreateDialog"></app-create-product-dialog>
+<!-- <app-create-product-dialog [show]="true"></app-create-product-dialog> -->
 <app-update-product-dialog [(show)]="toggleUpdateDialog" [slug]="selectedProductSlug"></app-update-product-dialog>
-
- <!-- <p-confirmDialog [style]="{ width: '450px' }" /> -->
 
  <div class="card flex justify-content-center gap-2">
     <p-confirmDialog />

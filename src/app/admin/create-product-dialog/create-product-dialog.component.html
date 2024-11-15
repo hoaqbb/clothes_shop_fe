@@ -46,14 +46,14 @@
             </div>
             <div class="mb-3">
                 <label for="category" class="form-label">Thể loại</label>
-                <select *ngIf="categories"
+                <select *ngIf="adminService.categories()"
                     formControlName="category" class="form-select">
-                    <option *ngFor="let item of categories" [value]="item.id">{{item.name}}</option>
+                    <option *ngFor="let item of adminService.categories()" [value]="item.id">{{item.name}}</option>
                 </select>
             </div>
-            <div *ngIf="colors" class="mb-3">Màu sản phẩm
+            <div *ngIf="adminService.colors()" class="mb-3">Màu sản phẩm
                 <div class="row">
-                    @for (item of colors; track $index) {
+                    @for (item of adminService.colors(); track $index) {
                         <div class="m-3 col-2">
                             <input
                             type="checkbox"
@@ -71,9 +71,9 @@
                 </div>
             </div>
 
-            <div *ngIf="sizes" class="mb-3">Size sản phẩm
+            <div *ngIf="adminService.sizes()" class="mb-3">Size sản phẩm
                 <div class="row">
-                    @for (item of sizes; track $index) {
+                    @for (item of adminService.sizes(); track $index) {
                         <div class="m-3 col-2">
                             <input
                             type="checkbox"
@@ -89,26 +89,57 @@
                 
             </div>
 
-            <button type="submit" class="btn btn-success">Thêm sản phẩm</button>
+            <div class="mb-3"> Ảnh sản phẩm   
+                <div class="row">
+                    <div class="col m-2">
+                        <div class="card flex justify-content-center">
+                            <p-fileUpload
+                                (onSelect)="onSelectedFile($event, 'mainImage')"
+                                [multiple]="false" 
+                                accept="image/*" 
+                                showUploadButton="false"
+                                showCancelButton="false"
+                                maxFileSize="1000000">
+                            </p-fileUpload>
+                        </div>
+                        <label class="mt-1" style="font-weight: bold;">Ảnh chính</label>
+                    </div>
+    
+                    <div class="col m-2">
+                        <div class="card flex justify-content-center">
+                            <p-fileUpload 
+                                (onSelect)="onSelectedFile($event, 'subImage')"
+                                [multiple]="false" 
+                                accept="image/*" 
+                                showUploadButton="false"
+                                showCancelButton="false"
+                                maxFileSize="1000000">
+                            </p-fileUpload>
+                        </div>
+                        <label class="mt-1" style="font-weight: bold;">Ảnh phụ</label>
+                    </div>
+                </div>
+
+                <div class="row ">
+                    <p-fileUpload
+                        (onSelect)="onSelectedFile($event, 'productImages')"
+                        [multiple]="true" 
+                        accept="image/*" 
+                        maxFileSize="1000000">
+                    </p-fileUpload>
+                </div>
+                
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-success"
+                    [disabled]="isLoading">Thêm sản phẩm
+                    <i *ngIf="isLoading" class="pi pi-spinner"></i>
+                </button>
+            </div>
         </form>
     </p-dialog>
 
-    <!-- <div class="container">
-        <p-fileUpload 
-            [customUpload]="true"
-            (onUpload)="fileHandle($event)" 
-            (uploadHandler)="onUpload($event)" 
-            [multiple]="true" 
-            accept="image/*" 
-            maxFileSize="1000000">
-                <ng-template pTemplate="content">
-                    <ul *ngIf="uploadedFiles.length">
-                        <li *ngFor="let file of uploadedFiles">
-                            {{ file.name }} - {{ file.size }} bytes
-                        </li>
-                    </ul>
-                </ng-template>
-        </p-fileUpload>
-    </div> -->
+    
 
 </div>

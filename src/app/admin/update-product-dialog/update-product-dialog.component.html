@@ -43,14 +43,14 @@
             </div>
             <div class="mb-3">
                 <label for="categoryId" class="form-label">Thể loại</label>
-                <select *ngIf="categories"
+                <select *ngIf="adminService.categories()"
                     formControlName="categoryId" class="form-select">
-                    <option *ngFor="let item of categories" [value]="item.id">{{item.name}}</option>
+                    <option *ngFor="let item of adminService.categories()" [value]="item.id">{{item.name}}</option>
                 </select>
             </div>
 
-            <div *ngIf="mergedColors" class="mb-3">Màu sản phẩm
-                @for (item of mergedColors; track $index) {
+            <div *ngIf="productColors" class="mb-3">Màu sản phẩm
+                @for (item of productColors; track $index) {
                     <div class="m-3">
                         <input
                         [checked]="item.checked"
@@ -67,8 +67,8 @@
                 }
             </div>
 
-            <div *ngIf="mergedSizes" class="mb-3">Size sản phẩm
-                @for (item of mergedSizes; track $index) {
+            <div *ngIf="productSizes" class="mb-3">Size sản phẩm
+                @for (item of productSizes; track $index) {
                     <div class="m-3">
                         <input
                             [checked]="item.checked"
@@ -135,49 +135,13 @@
                 </p-fileUpload>
             </div>
 
-            <!-- <div class="mb-3">
-                <label for="category" class="form-label">Thể loại</label>
-                <select *ngIf="categories"
-                    formControlName="category" class="form-select">
-                    <option *ngFor="let item of categories" [value]="item.id">{{item.name}}</option>
-                </select>
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-success m-3"
+                    [disabled]="isLoading">Lưu
+                <i *ngIf="isLoading" class="pi pi-spinner mx-1"></i>
+            </button>
             </div>
-            <div *ngIf="colors" class="mb-3">Màu sản phẩm
-                @for (item of colors; track $index) {
-                    <div class="m-3">
-                        <input
-                        type="checkbox"
-                        name="productColor"
-                        class="form-check-input"
-                        [value]="item.id"
-                        (change)="onColorChange(item.id, $event)"
-                    />
-                    <label for="productColor" class="form-label">{{item.name}}</label>
-                    <span style="height: 15px; width: 15px; display: inline-block;"
-                    [ngStyle]="{'background-color': item.colorCode}"></span>
-                    </div>
-                    
-                }
-                
-            </div>
-
-            <div *ngIf="sizes" class="mb-3">Size sản phẩm
-                @for (item of sizes; track $index) {
-                    <div class="m-3">
-                        <input
-                        type="checkbox"
-                        class="form-check-input"
-                        name="productSize"
-                        [value]="item.id"
-                        (change)="onSizeChange(item.id, $event)"
-                        />
-                        <label for="productSize" class="form-label">{{item.name}}</label>
-                    </div>
-                }
-                
-            </div> -->
-
-            <button type="submit" class="btn btn-success m-3">Lưu</button>
+            
         </form>
         <ng-template #loadingTemplate>
             <p>Loading...</p> <!-- Hiển thị khi đang tải dữ liệu -->

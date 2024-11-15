@@ -35,6 +35,7 @@ export interface OrderDetail {
     paymentMethod: string
     provider: string
     transactionId: string
+    shippingFee: number
     orderItems: OrderItem[]
   }
 

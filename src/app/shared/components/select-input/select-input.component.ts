@@ -1,29 +1,21 @@
-import { Component, Input } from '@angular/core';
-import { ControlValueAccessor } from '@angular/forms';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-select-input',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './select-input.component.html',
   styleUrl: './select-input.component.css'
 })
-export class SelectInputComponent implements ControlValueAccessor{
+export class SelectInputComponent {
   @Input() sortCollection = [];
-  @Input() defaultValue: string;
-  onChanged: any = () => {};
+  @Input() value: string;
+  @Output() valueChange = new EventEmitter<string>();
 
-  writeValue(obj: any): void {
-    throw new Error('Method not implemented.');
-  }
-  registerOnChange(fn: any): void {
-    fn = this.onChanged;
-  }
-  registerOnTouched(fn: any): void {
-    throw new Error('Method not implemented.');
-  }
-  setDisabledState?(isDisabled: boolean): void {
-    throw new Error('Method not implemented.');
+  onSelectChange(value: string) {
+    this.valueChange.emit(value);
+    
   }
   
 }

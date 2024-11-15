@@ -28,20 +28,18 @@ export class UpdateProductDialogComponent implements OnChanges{
   @Input() slug: string;
   @ViewChild('fileUpload') fileUpload: FileUpload;
   product: ProductDetail;
-  categories: Category[] = [];
-  colors: Color[] = [];
-  sizes: Size[] = [];
   updateProductForm: FormGroup;
   productDialog = false;
   loading = true;
-  mergedColors: any;
-  mergedSizes: any;
+  productColors: any;
+  productSizes: any;
   selectedColors: number[] = [];
   selectedSizes: number[] = [];
+  isLoading = false;
 
   constructor(
     private formBuilder: FormBuilder,
-    private adminService: AdminService,
+    public adminService: AdminService,
     private productService: ProductService,
     private toastr: ToastrService,
     private http: HttpClient
@@ -50,9 +48,6 @@ export class UpdateProductDialogComponent implements OnChanges{
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['slug'] && this.slug) {
       this.loadProductDetail(this.slug);
-      // this.getAllCategory();
-      // this.getAllColor();
-      // this.getAllSize();
     }
   }
 
@@ -61,44 +56,30 @@ export class UpdateProductDialogComponent implements OnChanges{
     this.productService.getProductBySlug(slug).subscribe((response) => {
       this.product = response;
       this.initializeForm(response);
-      this.getAllCategory();
-      this.getAllColor();
-      this.getAllSize();
+      this.getProductColors();
+      this.getProductSizes();
       this.loading = false;
     })
   }
 
-  getAllCategory() {
-    this.adminService.getAllCategory().subscribe((res: Category[]) => {
-      this.categories = res;
-    });
-  }
-  
-  getAllColor() {
-    this.adminService.getAllColor().subscribe((res: Color[]) => {
-      this.colors = res;
-      this.mergedColors = this.colors.map(color => {
+  getProductColors() {
+      this.productColors = this.adminService.colors().map(color => {
         const isChecked = this.product.productVariants.some(pColor => pColor.colorCode == color.colorCode);
         if(isChecked) this.selectedColors.push(color.id)
         return { ...color, checked: isChecked };
       });
-      console.log(this.mergedColors);
+      console.log(this.productColors);
       console.log(this.selectedColors);
-      
-    });
   }
 
-  getAllSize() {
-    this.adminService.getAllSize().subscribe((res: Size[]) => {
-      this.sizes = res;
-      this.mergedSizes = this.sizes.map(size => {
+  getProductSizes() {
+      this.productSizes = this.adminService.sizes().map(size => {
         const isChecked = this.product.productVariants.some(pSize => pSize.size == size.name);
         if(isChecked) this.selectedSizes.push(size.id)
         return { ...size, checked: isChecked };
       });
-      console.log(this.mergedSizes);
+      console.log(this.productSizes);
       console.log(this.selectedSizes);
-    });
   }
 
   initializeForm(product: ProductDetail) {
@@ -151,18 +132,26 @@ export class UpdateProductDialogComponent implements OnChanges{
       productSizes: this.selectedSizes
     };
 
+    this.isLoading = true;
     this.adminService.updateProduct(updateProduct).subscribe({
       next: () => {
+        this.isLoading = false;
         this.toastr.success('Product updated successfully');
         this.onHide();
       },
-      error: (err) => this.toastr.warning(err)
+      error: (err) => {
+        this.isLoading = false;
+        this.onHide();
+        this.toastr.warning(err)
+      }
     })
      
   }
 
   onHide() {
     this.showChange.emit(false);
+    this.selectedColors = [];
+    this.selectedSizes = [];
   }
 
   deleteImage(productId, imageId) {

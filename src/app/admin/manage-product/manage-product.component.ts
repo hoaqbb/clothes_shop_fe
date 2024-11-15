@@ -14,6 +14,7 @@ import { UpdateProductDialogComponent } from "../update-product-dialog/update-pr
 import { AdminService } from '../../core/services/admin.service';
 import { ConfirmationService } from 'primeng/api';
 import { ToastrService } from 'ngx-toastr';
+import { SelectInputComponent } from "../../shared/components/select-input/select-input.component";
 
 @Component({
   selector: 'app-manage-product',
@@ -26,7 +27,8 @@ import { ToastrService } from 'ngx-toastr';
     FileUploadModule,
     PaginatorModule,
     CreateProductDialogComponent,
-    UpdateProductDialogComponent
+    UpdateProductDialogComponent,
+    SelectInputComponent
 ],
   providers: [ConfirmationService],
   templateUrl: './manage-product.component.html',
@@ -45,6 +47,21 @@ export class ManageProductComponent implements OnInit {
   products: Product[] = [];
   pagination: Pagination;
   userParams: UserParams;
+  sortCollectionCategory = [
+    { display: 'MỚI NHẤT', value: 'created_descending'}, 
+    { display: 'TẤT CẢ', value: 'all'}, 
+    { display: 'TOP', value: 'top'}, 
+    { display: 'BOTTOM', value: 'bottom'}, 
+    { display: 'OUTERWEAR', value: 'outerwear'}, 
+    { display: 'BAG', value: 'bag'}, 
+    { display: 'ACCESSORIES', value: 'accessory'}, 
+  ];
+  sortCollectionProduct = [
+    { display: 'MỚI NHẤT', value: 'created_descending'}, 
+    { display: 'CŨ NHẤT', value: 'created_ascending'}, 
+    { display: 'GIÁ: TĂNG DẦN', value: 'price_ascending'}, 
+    { display: 'GIÁ: GIẢM DẦN', value: 'price_descending'}, 
+  ];
 
   constructor(
     private productService: ProductService,
@@ -56,6 +73,10 @@ export class ManageProductComponent implements OnInit {
   }
   ngOnInit() {
     this.loadProductList();
+  }
+  a(aa) {
+    console.log(aa);
+    console.log(this.userParams);
   }
 
   loadProductList() {
@@ -85,6 +106,17 @@ export class ManageProductComponent implements OnInit {
   hideDialog() {
     this.productDialog = false;
     // this.submitted = false;
+  }
+
+  updateProductStatus(id) {
+    this.adminService.updateProductStatus(id).subscribe({
+      next: () => {
+        this.toastr.success('Product status updated successfully!');
+        const index = this.products.findIndex(p => p.id == id);
+        this.products[index].isVisible = !this.products[index].isVisible;
+      },
+      error: err => this.toastr.error(err)
+    })
   }
 
   editProduct(product) {

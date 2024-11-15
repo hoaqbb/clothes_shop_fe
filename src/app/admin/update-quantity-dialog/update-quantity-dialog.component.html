@@ -66,7 +66,12 @@
                 
             </div>
 
-        <button (click)="updateProductQuantity()" class="btn btn-success m-3">Lưu</button>
+        <div class="d-flex justify-content-end">
+            <button (click)="updateProductQuantity()"
+                [disabled]="isLoading" class="btn btn-success m-3" >Lưu 
+                <i *ngIf="isLoading" class="pi pi-spinner"></i>
+            </button>
+        </div>
     </form>
     <ng-template #loadingTemplate>
         <p>Loading...</p> <!-- Hiển thị khi đang tải dữ liệu -->

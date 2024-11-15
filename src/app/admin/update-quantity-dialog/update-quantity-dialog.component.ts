@@ -25,6 +25,7 @@ export class UpdateQuantityDialogComponent implements OnChanges{
   productVariants: ProductVariant[] = [];
   productDialog = false;
   loading = true;
+  isLoading = false;
 
   constructor(
     private productService: ProductService, 
@@ -48,12 +49,23 @@ export class UpdateQuantityDialogComponent implements OnChanges{
   }
 
   updateProductQuantity() {
-    this.adminService.updateProductQuantity(this.product.id, this.productVariants).subscribe(() => {
-      this.onHide();
-      this.toastr.success('Cập nhật sản phẩm trong kho thành công!')
-    });
+    this.isLoading = true;
+    this.adminService.updateProductQuantity(this.product.id, this.productVariants).subscribe(
+      {
+        next: () => {
+          this.isLoading = false;
+          this.onHide();
+          this.toastr.success('Cập nhật sản phẩm trong kho thành công!')
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.onHide();
+          this.toastr.warning(error)
+        }
+      }
+      );
   }
-
+  
   onEdit(event, quantityId) {
     this.productVariants.find(x => x.id == quantityId).amount = event.target.value;
 }

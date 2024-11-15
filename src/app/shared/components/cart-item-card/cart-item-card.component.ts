@@ -16,7 +16,6 @@ import { globalModules } from '../../global.modules';
 export class CartItemCardComponent {
   baseUrl = environment.apiUrl;
   @Input() cartItem: CartItem;
-  @Output() calculate = new EventEmitter<boolean>();
   cartId: string;
   itemQuantity: number;
 
@@ -39,7 +38,4 @@ export class CartItemCardComponent {
     
   }
 
-  callCulateAmount() {
-    this.calculate.emit(true)
-  }
 }

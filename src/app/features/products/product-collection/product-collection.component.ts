@@ -39,6 +39,10 @@ export class ProductCollectionComponent implements OnInit{
     });
   }
 
+  onSelectValueChange() {
+    this.getProductsByCategory();
+  }
+
   getProductsByCategory() {
     this.productService.setUserParams(this.userParams);
     this.catName == null ? 

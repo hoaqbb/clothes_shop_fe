@@ -23,7 +23,8 @@ export class AccountService {
         if (user) {
           this.setCurrentUserSource(user);
           this.cartService.getCart().subscribe((cart: Cart) => {
-            this.cartService.cart.set(cart);
+            // this.cartService.cart.set(cart);
+            this.cartService.itemCount();
             this.cartService.setCurrentCartIdSource(cart.id);
           });
         }

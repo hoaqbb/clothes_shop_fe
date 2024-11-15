@@ -55,16 +55,16 @@
                             
                 <span class="pro-sale">{{productDetail.discount}}%</span>
                   
-                <span class="pro-price"><strong>{{productDetail.price | discount: productDetail.discount}}₫</strong></span>
+                <span class="pro-price"><strong>{{productDetail.price | discount: productDetail.discount | number:'1.0':'en-US' }}đ</strong></span>
                 
-                <span class="pro-price-del">{{productDetail.price}}₫</span>
+                <span class="pro-price-del">{{productDetail.price | number:'1.0':'en-US'}}đ</span>
                 
               </div>
               
             }
             @if(productDetail.discount <= 0){
               <div class="product-price">
-                <span class="pro-price"><strong>{{productDetail.price}}₫</strong></span>
+                <span class="pro-price"><strong>{{productDetail.price | number:'1.0':'en-US' }}đ</strong></span>
               </div>
             }
             <span>Màu sắc</span>

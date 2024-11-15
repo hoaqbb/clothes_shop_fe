@@ -1,10 +1,9 @@
-<select name="sortBy" style="width: 10%;"
-    [value]="defaultValue"
-    (onchange)="registerOnChange(this)"
-    >
-    <!-- [(ngModel)]="userParams.sortBy" -->
-    <!-- (change)="getProductsByCategory()" -->
-    @for (item of sortCollection ; track $index) {
-        <option [value]="item.value">{{item.display}}</option>
-    }
-</select>
+<div class="row justify-content-end my-3">
+    <select name="sortBy" style="width: 10%;"
+        [ngModel]="value" 
+        (ngModelChange)="onSelectChange($event)">
+        @for (item of sortCollection ; track $index) {
+            <option [value]="item.value">{{item.display}}</option>
+        }
+    </select>
+</div>

@@ -63,14 +63,10 @@
                 <span>Thành tiền:</span>
             </div>
             <div class="col list-group">
-                <span>30,000đ</span>
+                <span>{{orderDetail.shippingFee | number:'1.0':'en-US'}}</span>
                 <span>0</span>
                 <span class="total__amount">{{orderDetail.amount | number:'1.0':'en-US'}}đ</span>
             </div>
-            <!-- <div class="col"></div>
-            <span>Phí vận chuyển: 25000 đ</span>
-            <span>Voucher: </span>
-            <span>Thành tiền: {{orderDetail.amount}} VNĐ</span> -->
 
         </div>
     }

@@ -3,6 +3,10 @@ import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { AccountService } from '../../core/services/account.service';
+import { AdminService } from '../../core/services/admin.service';
+import { Category } from '../../models/category';
+import { Color } from '../../models/color';
+import { Size } from '../../models/size';
 
 @Component({
   selector: 'app-admin-sidebar',
@@ -14,54 +18,76 @@ import { AccountService } from '../../core/services/account.service';
 export class AdminSidebarComponent implements OnInit{
   items: MenuItem[];
 
-    constructor(private router: Router, private accountService: AccountService) {}
+  constructor(private adminService: AdminService, private router: Router, private accountService: AccountService) {
 
-    ngOnInit() {
-        this.items = [
-            {
-                label: 'Dashboard',
-                icon: 'pi pi-building-columns',
-                command: () => this.onItemClick('admin/dashboard')
-              },
-              {
-                label: 'Đơn hàng',
-                icon: 'pi pi-shopping-bag',
-                command: () => this.onItemClick('admin/order')
-              },
-              {
-                label: 'Sản phẩm',
-                icon: 'pi pi-objects-column',
-                command: () => this.onItemClick('admin/product')
-              },
-              {
-                label: 'Kho',
-                icon: 'pi pi-warehouse',
-                command: () => this.onItemClick('admin/quantity')
-              },
-              {
-                label: 'Thể loại',
-                icon: 'pi pi-book',
-                command: () => this.onItemClick('admin/quantity')
-              },
-              {
-                label: 'Màu sắc',
-                icon: 'pi pi-palette',
-                command: () => this.onItemClick('admin/quantity')
-              },
-              {
-                label: 'Đăng xuất',
-                icon: 'pi pi-sign-out',
-                command: () => {
-                  this.accountService.logout()
-                  this.router.navigateByUrl('/');
-                }
-              }
-        ];
+  }
+
+  ngOnInit() {
+    this.items = [
+      {
+          label: 'Dashboard',
+          icon: 'pi pi-building-columns',
+          command: () => this.onItemClick('admin/dashboard')
+        },
+        {
+          label: 'Đơn hàng',
+          icon: 'pi pi-shopping-bag',
+          command: () => this.onItemClick('admin/order')
+        },
+        {
+          label: 'Sản phẩm',
+          icon: 'pi pi-objects-column',
+          command: () => this.onItemClick('admin/product')
+        },
+        {
+          label: 'Kho',
+          icon: 'pi pi-warehouse',
+          command: () => this.onItemClick('admin/quantity')
+        },
+        {
+          label: 'Thể loại',
+          icon: 'pi pi-book',
+          command: () => this.onItemClick('admin/quantity')
+        },
+        {
+          label: 'Màu sắc',
+          icon: 'pi pi-palette',
+          command: () => this.onItemClick('admin/quantity')
+        },
+        {
+          label: 'Đăng xuất',
+          icon: 'pi pi-sign-out',
+          command: () => {
+            this.accountService.logout()
+            this.router.navigateByUrl('/');
+          }
+        }
+    ];
+    
+    this.getAllCategory();
+    this.getAllColor();
+    this.getAllSize();
+  }
+
+  onItemClick(path: string) {
+      this.router.navigate([path]);
     }
 
-    onItemClick(path: string) {
-        this.router.navigate([path]);
-      }
+    getAllCategory() {
+      this.adminService.getAllCategory().subscribe(() => {
+        
+      });
+    }
+  
+    getAllColor() {
+      this.adminService.getAllColor().subscribe(() => {
 
-
+      });
+    }
+  
+    getAllSize() {
+      this.adminService.getAllSize().subscribe(() => {
+        
+      });
+    }
 }

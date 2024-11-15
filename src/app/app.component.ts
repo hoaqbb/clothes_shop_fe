@@ -64,6 +64,7 @@ export class AppComponent implements OnInit {
     if(user) {
       this.accountService.setCurrentUserSource(user);
       return this.cartService.getCart().subscribe(response => {
+
         this.cartService.setCurrentCartIdSource(response.id);
       })
     }
