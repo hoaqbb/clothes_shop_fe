@@ -12,6 +12,7 @@ import { ICreateOrderRequest, IPayPalConfig, NgxPayPalModule } from 'ngx-paypal'
 import { environment } from '../../../environments/environment.development';
 import { CheckoutItemCardComponent } from "../../shared/components/checkout-item-card/checkout-item-card.component";
 import { BadgeModule } from 'primeng/badge';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-checkout',
@@ -29,7 +30,6 @@ export class CheckoutComponent implements OnInit{
   districts: any;
   wards: any;
   shippingFee = 0;
-  tempCalculation = 0;
   total = 0;
 
   constructor(
@@ -37,7 +37,8 @@ export class CheckoutComponent implements OnInit{
     public cartService: CartService,
     private addressService: AddressService,
     private orderService: OrderService,
-    private route: Router
+    private route: Router,
+    private toarstr: ToastrService
   ) {}
 
 
@@ -55,7 +56,7 @@ export class CheckoutComponent implements OnInit{
       province: ['null', Validators.required],
       district: ['null', Validators.required],
       ward: ['null', Validators.required],
-      shipping: ['1', Validators.required],
+      deliveryMethod: ['1', Validators.required],
       paymentMethod: ['0', Validators.required],
       note: ['']
     })
@@ -115,12 +116,14 @@ export class CheckoutComponent implements OnInit{
     const wardId = this.checkoutForm.get('ward').value;
     return this.addressService.getFullAddress(wardId).then((res: any) => {
       this.orderRequest = {
+        cartId: this.cartService.cart().id,
         fullname: this.checkoutForm.get('fullname').value,
         email: this.checkoutForm.get('email').value,
         phoneNumber: this.checkoutForm.get('phoneNumber').value,
         address: this.checkoutForm.get('street').value + ', ' + res.data.full_name,
         paymentMethod: this.checkoutForm.get('paymentMethod').value,
-        shipping: this.checkoutForm.get('shipping').value,
+        deliveryMethod: this.checkoutForm.get('deliveryMethod').value,
+        shippingFee: this.shippingFee,
         amount: this.total,
         note: this.checkoutForm.get('note').value
       };
@@ -184,13 +187,13 @@ export class CheckoutComponent implements OnInit{
         layout: 'vertical'
       },
       onClientAuthorization: (data) => {
-        // console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
         this.orderService.createPayPalOrder(this.orderRequest, data.id).subscribe(() => {
           this.cartService.clearCart();
           this.route.navigateByUrl('/payment-result');
         })
       },
       onError: err => {
+        this.toarstr.error("Thanh toán không thành công!")
         console.log('OnError', err);
       },
       onClick: (data, actions) => {

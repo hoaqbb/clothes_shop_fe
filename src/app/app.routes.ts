@@ -13,10 +13,6 @@ import { CheckoutComponent } from './features/checkout/checkout.component';
 import { PaymentResultComponent } from './features/payment-result/payment-result.component';
 import { ServerErrorComponent } from './core/errors/server-error/server-error.component';
 import { OrderDetailComponent } from './features/account/order-detail/order-detail.component';
-import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
-import { ManageOrderComponent } from './admin/manage-order/manage-order.component';
-import { ManageProductComponent } from './admin/manage-product/manage-product.component';
-import { ManageQuantityComponent } from './admin/manage-quantity/manage-quantity.component';
 import { checkoutGuard } from './core/guards/checkout.guard';
 
 export const routes: Routes = [
@@ -26,6 +22,8 @@ export const routes: Routes = [
   { path: 'account/login', component: LoginComponent },
   { path: 'account/register', component: RegisterComponent },
   { path: 'cart', component: CartDetailComponent },
+  { path: 'checkout', component: CheckoutComponent, canActivate: [checkoutGuard]},
+  { path: 'checkout/payment-result', component: PaymentResultComponent },
   {
     path: '',
     runGuardsAndResolvers: 'always',
@@ -33,19 +31,12 @@ export const routes: Routes = [
     children: [
       { path: 'account', component: AccountDetailComponent},
       { path: 'order/:id', component: OrderDetailComponent },
-      // { path: 'checkout', component: CheckoutComponent},
-      { path: 'checkout', component: CheckoutComponent, canActivate: [checkoutGuard]},
-      { path: 'checkout/payment-result', component: PaymentResultComponent },
       {
         path: 'admin',
         runGuardsAndResolvers: 'always',
         canActivate: [adminGuard],
-        children: [
-          { path: 'dashboard', component: AdminDashboardComponent },
-          { path: 'order', component: ManageOrderComponent },
-          { path: 'product', component: ManageProductComponent },
-          { path: 'quantity', component: ManageQuantityComponent },
-        ]
+        loadChildren:  () => import('./admin/routes')
+          .then(m => m.adminRoutes)
       }
     ]
   },

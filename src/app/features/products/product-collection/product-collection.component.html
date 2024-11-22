@@ -1,11 +1,13 @@
 <div class="container" style="margin: 100px auto;">
     @if(products) {
-        
+        <div class="row justify-content-end">
             <app-select-input 
+                style="width: 10%;"
                 [sortCollection]="sortCollection" 
                 [(value)]="userParams.sortBy"
                 (valueChange)="onSelectValueChange($event)">
             </app-select-input>
+        </div>
        
         <app-product-list [products]="products"></app-product-list>
     }
@@ -21,13 +23,3 @@
     }
     
 </div>
-
-<!-- <form #sortForm="ngForm" class="row justify-content-end my-3">
-    <select name="sortBy" style="width: 10%;"
-        [(ngModel)]="userParams.sortBy"
-        (change)="getProductsByCategory()">
-        @for (item of sortCollection ; track $index) {
-            <option [value]="item.value">{{item.display}}</option>
-        }
-    </select>
-    </form> -->

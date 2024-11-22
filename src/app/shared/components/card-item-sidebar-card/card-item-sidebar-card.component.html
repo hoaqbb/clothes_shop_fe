@@ -18,7 +18,7 @@
                 @if(cartItem.discount) {
                     <span>{{cartItem.price*(100-cartItem.discount)/100 | number:'1.0':'en-US'}}đ</span>
                 } @else {
-                    <span>{{cartItem.price*cartItem.quantity}}đ</span>
+                    <span>{{cartItem.price*cartItem.quantity | number:'1.0':'en-US'}}đ</span>
                 }
             </div>
         </div>

@@ -1,10 +1,12 @@
 export interface OrderRequest{
+    cartId: string
     fullname: string
     email: string
     phoneNumber: string
     address: string
-    shipping: number
+    deliveryMethod: number
     paymentMethod: number
+    shippingFee: number
     amount: number
     note: string
 }

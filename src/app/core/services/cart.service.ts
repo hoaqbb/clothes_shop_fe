@@ -45,7 +45,7 @@ export class CartService {
     return this.http.put(this.baseUrl + '/api/Cart/update-cart-item', { cartId: cartId, cartItemId: cartItemId, quantity: quantity }).pipe(
       tap(() => {
         //van de nam o no up theo cai ng model luon, nen se kho bat dc gia tri thay doi
-        // this.calculateAmount();
+        this.calculateAmount();
       })
     );
   }

@@ -46,10 +46,10 @@
                     {{ product.category }}
                 </td>
                 <td>
-                    {{ product.price }} đ
+                    {{ product.price | number:'1.0':'en-US' }}đ
                 </td>
                 <td>
-                    {{ product.discount }} %
+                    {{ product.discount }}%
                 </td>
                 <td class="m-2">
                     @for (item of product.productColors; track $index) {

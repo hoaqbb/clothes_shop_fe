@@ -13,7 +13,7 @@ import { CheckoutItemCardComponent } from '../../shared/components/checkout-item
 @Component({
   selector: 'app-order-detail-dialog',
   standalone: true,
-  imports: [DialogModule, DatePipe, CommonModule, StepsModule, CheckoutItemCardComponent],
+  imports: [DialogModule, DatePipe, CommonModule, StepsModule],
   templateUrl: './order-detail-dialog.component.html',
   styleUrl: './order-detail-dialog.component.css'
 })

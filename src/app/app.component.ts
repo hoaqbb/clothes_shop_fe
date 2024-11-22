@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { NavBarComponent } from './core/components/nav-bar/nav-bar.component';
 import { FooterComponent } from "./core/components/footer/footer.component";
 import { AccountService } from './core/services/account.service';
@@ -7,8 +7,6 @@ import { User } from './models/user';
 import { CartService } from './core/services/cart.service';
 import { CartSidebarComponent } from './features/cart/cart-sidebar/cart-sidebar.component';
 import { CommonModule } from '@angular/common';
-import { AdminSidebarComponent } from './admin/admin-sidebar/admin-sidebar.component';
-import { SplitterModule } from 'primeng/splitter';
 
 @Component({
   selector: 'app-root',
@@ -18,36 +16,23 @@ import { SplitterModule } from 'primeng/splitter';
     NavBarComponent,
     FooterComponent,
     CartSidebarComponent,
-    CommonModule,
-    AdminSidebarComponent,
-    SplitterModule,
-  ],
+    CommonModule
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
   @Input() show: boolean = false;
-  showNavBarFooter = true;
 
   constructor(
     public accountService: AccountService,
     private cartService: CartService,
     private router: Router
-  ) {
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.checkRoute(event.url);
-      }
-    });
-  }
+  ) { }
 
-  checkRoute(url: string) {
-    // Hide nav bar and footer if the route contains 'admin'
-    if (url.includes('/admin')) {
-      this.showNavBarFooter = false;
-    } else {
-      this.showNavBarFooter = true;
-    }
+  isHiddenRoute(): boolean {
+    const hiddenRoutes = ['/admin', '/checkout'];
+    return hiddenRoutes.some(route => this.router.url.startsWith(route));
   }
 
   ngOnInit(): void {

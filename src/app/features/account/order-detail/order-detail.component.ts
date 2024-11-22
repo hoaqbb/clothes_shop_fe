@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { OrderService } from '../../../core/services/order.service';
 import { OrderDetail } from '../../../models/order';
-import { DatePipe } from '@angular/common';
-import { CheckoutItemCardComponent } from "../../../shared/components/checkout-item-card/checkout-item-card.component";
 import { globalModules } from '../../../shared/global.modules';
 
 @Component({
   selector: 'app-order-detail',
   standalone: true,
-  imports: [CheckoutItemCardComponent, globalModules],
+  imports: [globalModules],
   templateUrl: './order-detail.component.html',
   styleUrl: './order-detail.component.css'
 })

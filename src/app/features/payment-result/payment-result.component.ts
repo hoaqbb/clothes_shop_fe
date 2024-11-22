@@ -1,13 +1,13 @@
 import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { OrderService } from '../../core/services/order.service';
 import { CartService } from '../../core/services/cart.service';
 
 @Component({
   selector: 'app-payment-result',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './payment-result.component.html',
   styleUrl: './payment-result.component.css'
 })

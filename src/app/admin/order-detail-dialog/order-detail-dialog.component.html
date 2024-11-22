@@ -40,10 +40,21 @@
             @for (item of orderDetail.orderItems; track $index) {
                 <tr>
                     <td>
-                        <app-checkout-item-card [item]="item"></app-checkout-item-card>
+                        <div class="d-flex">
+                            <img  src="{{item.photo || '../../../../../../assets/no-image.svg'}}"
+                                alt="" style="height: 100px; width: 65px;">
+                            <div class="list-group p-3" style="font-size: smaller;">
+                                <h6 style="font-size: medium;">{{item.name}}</h6>
+                                <div class="d-flex" style="font-size: medium;">
+                                    <span>{{item.color}}</span>
+                                    <span> / </span>
+                                    <span>{{item.size}}</span>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                     <td>{{item.quantity}}</td>
-                    <td>{{item.price}} đ</td>
+                    <td>{{item.price | number:'1.0':'en-US' }}đ</td>
                     <td>{{item.discount}}</td>
                 </tr>
             }
@@ -56,9 +67,9 @@
             <span>Thành tiền:</span>
         </div>
         <div class="col list-group">
-            <span>25000 đ</span>
+            <span>{{ orderDetail.shippingFee | number:'1.0':'en-US' }}đ</span>
             <span>0</span>
-            <span>{{orderDetail.amount}} đ</span>
+            <span style="font-weight: bold;">{{orderDetail.amount | number:'1.0':'en-US'}}đ</span>
         </div>
     </div>
     </div>

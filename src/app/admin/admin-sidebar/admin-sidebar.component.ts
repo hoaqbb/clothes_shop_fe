@@ -3,10 +3,6 @@ import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { AccountService } from '../../core/services/account.service';
-import { AdminService } from '../../core/services/admin.service';
-import { Category } from '../../models/category';
-import { Color } from '../../models/color';
-import { Size } from '../../models/size';
 
 @Component({
   selector: 'app-admin-sidebar',
@@ -18,7 +14,7 @@ import { Size } from '../../models/size';
 export class AdminSidebarComponent implements OnInit{
   items: MenuItem[];
 
-  constructor(private adminService: AdminService, private router: Router, private accountService: AccountService) {
+  constructor(private router: Router, private accountService: AccountService) {
 
   }
 
@@ -64,30 +60,10 @@ export class AdminSidebarComponent implements OnInit{
         }
     ];
     
-    this.getAllCategory();
-    this.getAllColor();
-    this.getAllSize();
+
   }
 
   onItemClick(path: string) {
       this.router.navigate([path]);
-    }
-
-    getAllCategory() {
-      this.adminService.getAllCategory().subscribe(() => {
-        
-      });
-    }
-  
-    getAllColor() {
-      this.adminService.getAllColor().subscribe(() => {
-
-      });
-    }
-  
-    getAllSize() {
-      this.adminService.getAllSize().subscribe(() => {
-        
-      });
     }
 }
