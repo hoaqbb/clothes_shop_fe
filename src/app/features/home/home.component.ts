@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductListComponent } from "../products/product-list/product-list.component";
 import { ProductService } from '../../core/services/product.service';
 import { Product } from '../../models/product';
+import { UserProductParams } from '../../models/userParams';
 
 @Component({
   selector: 'app-home',
@@ -12,6 +13,7 @@ import { Product } from '../../models/product';
 })
 export class HomeComponent implements OnInit{
   products: Product[] = [];
+  productParams = new UserProductParams();
 
   constructor(private productService: ProductService) { }
 
@@ -20,8 +22,8 @@ export class HomeComponent implements OnInit{
   }
 
   loadProducts() {
-    this.productService.getAllProducts().subscribe(
-      res => this.products = res
+    this.productService.getAllProducts(this.productParams).subscribe(
+      res => this.products = res.result
     );
   }
 }

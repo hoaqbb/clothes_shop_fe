@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { Product, ProductDetail } from '../../models/product';
-import { UserParams } from '../../models/userParams';
+import { UserProductParams } from '../../models/userParams';
 import { getPaginatedResult, getPaginationHeaders } from '../../shared/helpers/paginationHelpers';
 
 @Injectable({
@@ -10,28 +10,27 @@ import { getPaginatedResult, getPaginationHeaders } from '../../shared/helpers/p
 })
 export class ProductService {
   baseUrl = environment.apiUrl;
-  userParams = new UserParams();
+  productParams: UserProductParams;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    this.productParams = new UserProductParams();
+  }
 
   getUserParams() {
-    return this.userParams;
+    return this.productParams;
   }
 
-  setUserParams(params: UserParams) {
-    this.userParams = params;
+  setUserParams(params: UserProductParams) {
+    this.productParams = params;
   }
 
-  getAllProducts() {
-    return this.http.get<Product[]>(this.baseUrl + '/api/Product');
-  }
-
-  getProductsByCategory(userParams: UserParams, category: string) {
+  getAllProducts(userParams: UserProductParams) {
     let params = getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
 
+    params = params.append('category', userParams.category)
     params = params.append('sortBy', userParams.sortBy)
     
-    return getPaginatedResult<Product[]>(this.baseUrl + '/api/Product/categories/' + category, params, this.http)
+    return getPaginatedResult<Product[]>(this.baseUrl + '/api/Product', params, this.http);
   }
 
   getProductBySlug(slug: string) {

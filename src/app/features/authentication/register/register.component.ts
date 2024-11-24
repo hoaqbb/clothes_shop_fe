@@ -4,11 +4,12 @@ import { CalendarModule } from 'primeng/calendar';
 import { AccountService } from '../../../core/services/account.service';
 import { Router } from '@angular/router';
 import { TextInputComponent } from "../../../shared/components/text-input/text-input.component";
+import { globalModules } from '../../../shared/global.modules';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, CalendarModule, ReactiveFormsModule, TextInputComponent],
+  imports: [FormsModule, CalendarModule, ReactiveFormsModule, TextInputComponent, globalModules],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })

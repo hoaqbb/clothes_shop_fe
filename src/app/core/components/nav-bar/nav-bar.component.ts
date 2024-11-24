@@ -13,7 +13,7 @@ import { CartService } from '../../services/cart.service';
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
-  imports: [RouterLink, LoginComponent, RegisterComponent, CartSidebarComponent, ButtonModule, AsyncPipe, FontAwesomeModule],
+  imports: [RouterLink, CartSidebarComponent, ButtonModule, AsyncPipe, FontAwesomeModule],
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.css'
 })
