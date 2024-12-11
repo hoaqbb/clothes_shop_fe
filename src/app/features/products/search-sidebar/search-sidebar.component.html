@@ -1,0 +1,50 @@
+<div class="card flex flex-wrap justify-content-center gap-2">
+  <p-sidebar [(visible)]="show" position="right"
+
+    (onHide)="onHide()">
+    <h4 class="mt-2 mb-4">TÌM KIẾM</h4>
+    <div class="container">
+        <div class="row">
+            <form [formGroup]="searchForm" class="p-0">
+            <input
+                oninput="this.value = this.value.toUpperCase()"
+                formControlName="search"
+                type='text'
+                class="form-control"
+                placeholder="TÌM KIẾM SẢN PHẨM...">
+            </form>
+        </div>
+
+        <div class="row" *ngIf="products">
+            @for (item of products; track $index) {
+                @if($index < 6) {
+                    <div class="item-ult">
+                        <div class="title">
+                            <a class="/products/{{item.name}}" title="{{item.name}}" href="/products/{{item.slug}}">{{item.name}}</a>
+                            @if (item.discount > 0) {
+                                <p class="f-initial">{{item.price | discount: item.discount | number:'1.0':'en-US'}}đ
+                                    <del>{{item.price | number:'1.0':'en-US'}}đ</del>
+                                </p>
+                            } @else {
+                                <p class="f-initial">{{item.price | number:'1.0':'en-US'}}đ</p>
+                            }
+                        </div>
+    
+                        <div class="thumbs">
+                            <a href="/products/{{item.slug}}" title="{{item.name}}">
+                                <img alt="{{item.name}}" src="{{item.mainPhoto}}" style="width: 100%; height: 100%;">
+                            </a>
+                        </div>
+                    </div>
+                }
+            }
+            @if (pagination && pagination.totalItems > 6) {
+                <div class="resultsMore">
+                    <a href="/search?keyword={{searchForm.controls['search'].value}}">Xem thêm {{pagination.totalItems - 6}} sản phẩm</a>
+                </div>
+            }
+        </div>
+    </div>
+
+  </p-sidebar>
+</div>

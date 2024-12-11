@@ -14,6 +14,7 @@ import { PaymentResultComponent } from './features/payment-result/payment-result
 import { ServerErrorComponent } from './core/errors/server-error/server-error.component';
 import { OrderDetailComponent } from './features/account/order-detail/order-detail.component';
 import { checkoutGuard } from './core/guards/checkout.guard';
+import { SearchProductComponent } from './features/products/search-product/search-product.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -22,6 +23,7 @@ export const routes: Routes = [
   { path: 'account/login', component: LoginComponent },
   { path: 'account/register', component: RegisterComponent },
   { path: 'cart', component: CartDetailComponent },
+  { path: 'search', component: SearchProductComponent },
   { path: 'checkout', component: CheckoutComponent, canActivate: [checkoutGuard]},
   { path: 'checkout/payment-result', component: PaymentResultComponent },
   {

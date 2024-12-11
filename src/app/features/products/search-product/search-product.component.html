@@ -1,0 +1,27 @@
+<div class="container list-group align-items-center" style="margin: 100px auto 150px auto;">
+    <h1 class="title">TÌM KIẾM</h1>
+    <form [formGroup]="searchForm" style="width: 80%;">
+        <input
+            style="width: 100%;"
+            formControlName="keyword"
+            oninput="this.value = this.value.toUpperCase()"
+            type='text'
+            class="form-control"
+            placeholder="TÌM KIẾM SẢN PHẨM..."
+            >
+    </form>
+    @if(products && products.length > 0) {
+        <p *ngIf="pagination">Có {{pagination.totalItems}} sản phẩm cho tìm kiếm.</p>
+        <app-product-list style="width: 100%;" [products]="products"></app-product-list>
+    }
+    @if(pagination && pagination.totalPages > 1) {
+        <div class="flex justify-content-center">
+            <p-paginator 
+                (onPageChange)="pageChanged($event)"
+                [ariaValueNow]="pagination.currentPage"
+                [rows]="pagination.itemsPerPage" 
+                [totalRecords]="pagination.totalItems" 
+                />
+        </div>
+    }
+</div>  

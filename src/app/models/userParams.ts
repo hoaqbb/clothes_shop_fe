@@ -3,6 +3,11 @@ export type ParamType = {
     pageSize: number
 }
 
+export class PaginationParams implements ParamType {
+    pageNumber = 1
+    pageSize = 8
+}
+
 export class UserParams implements ParamType{
     pageNumber = 1
     pageSize = 8

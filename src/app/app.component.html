@@ -1,7 +1,11 @@
 
 <div *ngIf="!isHiddenRoute() ; else hiddenContent">
-  <app-cart-sidebar [(show)]="show"></app-cart-sidebar>
-  <app-nav-bar (toggleCartSideBar)="toggleCartSidebar()"></app-nav-bar>
+  <app-cart-sidebar [(show)]="showCartSidebar"></app-cart-sidebar>
+  <app-search-sidebar [(show)]="showSearchCpn"></app-search-sidebar>
+  <app-nav-bar 
+    (toggleCartSideBar)="toggleCartSidebar()"
+    (toggleSearchCpn)="toggleSearch()"
+    ></app-nav-bar>
   <router-outlet></router-outlet>
   <app-footer></app-footer>
 </div>

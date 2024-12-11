@@ -7,6 +7,8 @@ import { User } from './models/user';
 import { CartService } from './core/services/cart.service';
 import { CartSidebarComponent } from './features/cart/cart-sidebar/cart-sidebar.component';
 import { CommonModule } from '@angular/common';
+import { SearchSidebarComponent } from './features/products/search-sidebar/search-sidebar.component';
+
 
 @Component({
   selector: 'app-root',
@@ -16,13 +18,15 @@ import { CommonModule } from '@angular/common';
     NavBarComponent,
     FooterComponent,
     CartSidebarComponent,
+    SearchSidebarComponent,
     CommonModule
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  @Input() show: boolean = false;
+  @Input() showCartSidebar: boolean = false;
+  @Input() showSearchCpn: boolean = false;
 
   constructor(
     public accountService: AccountService,
@@ -40,7 +44,11 @@ export class AppComponent implements OnInit {
   }
 
   toggleCartSidebar() {
-    this.show = !this.show;
+    this.showCartSidebar = !this.showCartSidebar;
+  }
+
+  toggleSearch() {
+    this.showSearchCpn = !this.showSearchCpn;
   }
 
   setCurrentUser() {

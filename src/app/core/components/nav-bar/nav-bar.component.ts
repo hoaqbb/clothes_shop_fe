@@ -19,6 +19,7 @@ import { CartService } from '../../services/cart.service';
 })
 export class NavBarComponent implements AfterViewInit{
   @Output() toggleCartSideBar = new EventEmitter<void>();
+  @Output() toggleSearchCpn = new EventEmitter<void>();
   faEye = faEye;
 
   constructor(public accountService: AccountService, public cartService: CartService, private renderer: Renderer2) { }
@@ -35,5 +36,9 @@ export class NavBarComponent implements AfterViewInit{
 
   toggleSidebar() {
     this.toggleCartSideBar.emit();
+  }
+
+  toggleSearch() {
+    this.toggleSearchCpn.emit();
   }
 }
