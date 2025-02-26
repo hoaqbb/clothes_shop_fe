@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { PaginationParams } from '../../../models/userParams';
 import { Pagination } from '../../../models/pagination';
 import { Product } from '../../../models/product';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-sidebar',
@@ -26,7 +27,7 @@ export class SearchSidebarComponent {
     search: new FormControl('')  
   });  
 
-  constructor(private productService: ProductService, private toastr: ToastrService) { 
+  constructor(private productService: ProductService, private toastr: ToastrService, private router: Router) { 
     this.params = new PaginationParams();
     this.searchForm.controls['search'].valueChanges.pipe(
       startWith(''),
@@ -42,6 +43,11 @@ export class SearchSidebarComponent {
       this.products = data.result;
       this.pagination = data.pagination
      });
+  }
+
+  navigateToSearch(key: string) {
+    this.router.navigate(['/search'], { queryParams: { keyword: key } });
+    this.onHide();
   }
 
   onHide() {

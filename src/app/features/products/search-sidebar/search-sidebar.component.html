@@ -18,9 +18,12 @@
         <div class="row" *ngIf="products">
             @for (item of products; track $index) {
                 @if($index < 6) {
-                    <div class="item-ult">
+                    <div class="item-ult"
+                        routerLink="/products/{{item.slug}}" 
+                        (click)="onHide()">
                         <div class="title">
-                            <a class="/products/{{item.name}}" title="{{item.name}}" href="/products/{{item.slug}}">{{item.name}}</a>
+                            <a title="{{item.name}}">{{item.name}}
+                            </a>
                             @if (item.discount > 0) {
                                 <p class="f-initial">{{item.price | discount: item.discount | number:'1.0':'en-US'}}đ
                                     <del>{{item.price | number:'1.0':'en-US'}}đ</del>
@@ -31,7 +34,7 @@
                         </div>
     
                         <div class="thumbs">
-                            <a href="/products/{{item.slug}}" title="{{item.name}}">
+                            <a title="{{item.name}}">
                                 <img alt="{{item.name}}" src="{{item.mainPhoto}}" style="width: 100%; height: 100%;">
                             </a>
                         </div>
@@ -40,7 +43,8 @@
             }
             @if (pagination && pagination.totalItems > 6) {
                 <div class="resultsMore">
-                    <a href="/search?keyword={{searchForm.controls['search'].value}}">Xem thêm {{pagination.totalItems - 6}} sản phẩm</a>
+                    <a (click)="navigateToSearch(searchForm.controls['search'].value)"
+                        >Xem thêm {{pagination.totalItems - 6}} sản phẩm</a>
                 </div>
             }
         </div>

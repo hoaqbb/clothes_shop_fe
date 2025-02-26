@@ -34,14 +34,14 @@ export class SearchProductComponent implements OnInit{
   ngOnInit(): void {
     this.trackChangesInput();
     this.getKeywordFromParam();
-    if(this.keyword) {
-      this.searchForm.controls['keyword'].setValue(this.keyword);
-    }
   }
 
   getKeywordFromParam() {
     this.route.queryParams.subscribe(param => {
       this.keyword = param['keyword']
+      if(this.keyword) {
+        this.searchForm.controls['keyword'].setValue(this.keyword);
+      }
       //remove query param
       window.history.replaceState({}, document.title, window.location.pathname);
     })
