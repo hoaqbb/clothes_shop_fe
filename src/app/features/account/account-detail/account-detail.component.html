@@ -62,7 +62,7 @@
                                     <th pSortableColumn="paymentMethod" style="width:11%">
                                         Phương thức thanh toán
                                     </th>
-                                    <th pSortableColumn="status" style="width:9%">
+                                    <th pSortableColumn="status" style="width:15%">
                                         Trạng thái<p-sortIcon field="status" />
                                     </th>
                                 </tr>
@@ -76,23 +76,34 @@
                                     <td>{{order.address}}</td>
                                     <td>{{order.amount | number:'1.0':'en-US'}}đ</td>
                                     <td class="number_center">{{order.paymentMethod}}</td>
+                                    <td class="text-center">
                                     @switch (order.status) {
                                         @case (0) {
-                                            <td class="text-warning">Chờ xác nhận</td>
-                                          }
-                                          @case (1) {
-                                            <td class="text-primary">Đã xác nhận</td>
-                                          }
-                                          @case (2) {
-                                            <td class="text-info">Đang giao hàng</td>
-                                          }
-                                          @case (3) {
-                                            <td class="text-success">Giao hàng thành công</td>
-                                          }
-                                          @default {
-                                            <td class="text-danger">Đã hủy</td>
-                                          }
+                                          <p-tag [rounded]="true" 
+                                            severity="warning"
+                                            value="Chờ xác nhận"/>
+                                        }
+                                        @case (1) {
+                                          <p-tag [rounded]="true" 
+                                            value="Đã xác nhận"/>
+                                        }
+                                        @case (2) {
+                                          <p-tag [rounded]="true" 
+                                            severity="info"
+                                            value="Đang giao hàng"/>
+                                        }
+                                        @case (3) {
+                                          <p-tag [rounded]="true" 
+                                            severity="success"
+                                            value="Giao hàng thành công"/>
+                                        }
+                                        @default {
+                                          <p-tag [rounded]="true" 
+                                            severity="danger"
+                                            value="Đã hủy"/>
+                                        }
                                       }
+                                    </td>
                                 </tr>
                             </ng-template>
                         </p-table>

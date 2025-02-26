@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CartItemCardComponent } from '../../../shared/components/cart-item-card/cart-item-card.component';
 import { CartService } from '../../../core/services/cart.service';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
 import { globalModules } from '../../../shared/global.modules';
 
 @Component({

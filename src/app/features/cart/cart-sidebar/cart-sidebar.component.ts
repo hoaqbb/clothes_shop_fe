@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { SidebarModule } from 'primeng/sidebar'; 
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { CardItemSidebarCardComponent } from '../../../shared/components/card-item-sidebar-card/card-item-sidebar-card.component';
@@ -12,9 +11,9 @@ import { globalModules } from '../../../shared/global.modules';
   selector: 'app-cart-sidebar',
   standalone: true,
   imports: [
-    MatSidenavModule, FormsModule, SidebarModule, 
+    FormsModule, SidebarModule, 
     ScrollPanelModule, CardItemSidebarCardComponent,
-    RouterLink, globalModules
+    globalModules
   ],
   templateUrl: './cart-sidebar.component.html',
   styleUrl: './cart-sidebar.component.css'
@@ -35,7 +34,8 @@ export class CartSidebarComponent implements OnInit{
   }
 
   checkout() {
-    this.router.navigateByUrl('/checkout')
+    this.router.navigateByUrl('/checkout');
+    this.onHide();
   }
 
 }

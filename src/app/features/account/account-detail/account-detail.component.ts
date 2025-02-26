@@ -10,11 +10,12 @@ import { UserParams } from '../../../models/userParams';
 import { Pagination } from '../../../models/pagination';
 import { TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/paginator';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-account-detail',
   standalone: true,
-  imports: [DatePipe, RouterLink, TableModule, CommonModule, PaginatorModule],
+  imports: [DatePipe, RouterLink, TableModule, CommonModule, PaginatorModule, TagModule],
   templateUrl: './account-detail.component.html',
   styleUrl: './account-detail.component.css'
 })

@@ -2,13 +2,13 @@
     <div class="d-flex p-0 m-1" style="background-color: #ffff;">
         
             <div class="col-2 d-flex justify-content-center align-self-center">
-                <a  href="products/{{cartItem.slug}}">
+                <a routerLink="/products/{{cartItem.slug}}">
                     <img src="{{cartItem.photo || '../../../../../../assets/no-image.svg'}}" alt="" style="height: 100px; width: 65px;">
                 </a>
             </div>
         
             <div class="col-4 align-self-center">
-                <h6>{{cartItem.name}}</h6>
+                <h6 routerLink="/products/{{cartItem.slug}}">{{cartItem.name}}</h6>
                 <p class="text-muted">{{cartItem.productVariant.color}} / {{cartItem.productVariant.size}}</p>
             </div>
             

@@ -17,7 +17,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [TextInputComponent, ReactiveFormsModule, CardItemSidebarCardComponent, 
+  imports: [TextInputComponent, ReactiveFormsModule, 
     CommonModule, NgxPayPalModule, CheckoutItemCardComponent
   , BadgeModule],
   templateUrl: './checkout.component.html',
@@ -133,7 +133,7 @@ export class CheckoutComponent implements OnInit{
           const isUrl = this.isValidUrl(res);
           if(!isUrl) {
             this.cartService.clearCart();
-            this.route.navigateByUrl('/payment-result');
+            this.route.navigateByUrl('/checkout/payment-result');
           } else {
             window.location.href = `${res}`;
           }
