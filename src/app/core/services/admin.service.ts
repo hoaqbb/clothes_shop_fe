@@ -24,12 +24,37 @@ export class AdminService {
     this.userParams = new UserParams();
   }
 
-  getUserParams() {
-    return this.userParams;
+  getOverview() {
+    return this.http.get(this.baseUrl + '/api/Admin/overview');
   }
 
-  setUserParams(params: UserParams) {
-    this.userParams = params;
+  getRevenue() {
+    return this.http.get(this.baseUrl + '/api/Admin/revenue');
+  }
+
+  getRevenueWithYear(year: number) {
+    const params = new HttpParams().set('year', year.toString());
+    return this.http.get(this.baseUrl + '/api/Admin/revenue', { params });
+  }
+
+  getAdminProductParams() {
+    return this.productParams;
+  }
+
+  getAdminOrderParams() {
+    return this.orderParams;
+  }
+
+  getProductDetailById(id) {
+    return this.http.get<ProductDetail>(this.baseUrl + '/api/Admin/get-product-detail/' + id);
+  }
+
+  setAdminProductParams(params: AdminProductParams) {
+    this.productParams = params;
+  }
+
+  setAdminOrderParams(params: AdminOrderParams) {
+    this.orderParams = params;
   }
 
   createProduct(product) {

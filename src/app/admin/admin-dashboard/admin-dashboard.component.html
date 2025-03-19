@@ -1,117 +1,153 @@
-<div class="dashboard">
-    <aside class="search-wrap">
-      <div class="search">
-        <label for="search">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"
-            />
-          </svg>
-          <input type="text" id="search" />
-        </label>
+@if(overviewData) {
+  <div class="container">
+    <div class="overview row flex-wrap p-4">
+      <div class="card col d-flex justify-content-between flex-row bg-success text-white m-2 p-4">
+        <div class="overview-info">
+          <h5>Doanh thu tháng</h5>
+          <h3 class="fw-semibold">{{ overviewData.monthlyRevenue | number:'1.0':'en-US' }} VNĐ</h3>
+        </div>
+        <i class="pi pi-dollar" style="font-size: 1.5rem"></i>
       </div>
   
-      <div class="user-actions">
-        <button>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M12 21c4.411 0 8-3.589 8-8 0-3.35-2.072-6.221-5-7.411v2.223A6 6 0 0 1 18 13c0 3.309-2.691 6-6 6s-6-2.691-6-6a5.999 5.999 0 0 1 3-5.188V5.589C6.072 6.779 4 9.65 4 13c0 4.411 3.589 8 8 8z"
-            />
-            <path d="M11 2h2v10h-2z" />
-          </svg>
-        </button>
+      <div class="card col d-flex justify-content-between flex-row text-body-secondary m-2 p-4">
+        <div class="overview-info">
+          <h5>Đơn hàng tháng</h5>
+          <h3 class="fw-semibold">{{overviewData.monthlyOrders}}</h3>
+        </div>
+        <i class="pi pi-chart-line" style="font-size: 1.5rem"></i>
       </div>
-    </aside>
   
-    <main class="content-wrap">
-      <div class="content">
-        <section class="info-boxes">
-          <div class="info-box">
-            <div class="box-icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M21 20V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1zm-2-1H5V5h14v14z"
-                />
-                <path
-                  d="M10.381 12.309l3.172 1.586a1 1 0 0 0 1.305-.38l3-5-1.715-1.029-2.523 4.206-3.172-1.586a1.002 1.002 0 0 0-1.305.38l-3 5 1.715 1.029 2.523-4.206z"
-                />
-              </svg>
+      <div class="card col d-flex justify-content-between flex-row bg-secondary text-white m-2 p-4">
+        <div class="overview-info">
+          <h5>Tin nhắn</h5>
+          <h3 class="fw-semibold">2</h3>
+        </div>
+        <i class="pi pi-envelope" style="font-size: 1.5rem"></i>
+      </div>
+  
+      <div class="card col d-flex justify-content-between flex-row bg-success text-white m-2 p-4"
+        style="background: linear-gradient(90deg, #ffb340 0%, #ffa740 100%); border: none;">
+        <div class="overview-info">
+          <h5>Sản phẩm hết hàng</h5>
+          <h3 class="fw-semibold">4</h3>
+        </div>
+        <i class="pi pi-box" style="font-size: 1.5rem"></i>
+      </div>
+    </div>
+  
+    <div class="detail row">
+      <div class="col-8">
+        <div class="card p-3 m-1">
+
+          <select [(ngModel)]="selectedYear" 
+            class="ms-auto me-0" style="width: 15%;"
+            (change)="getRevenueChartWithYear($event.target.value)">
+            @for (item of revenueData.years; track $index) {
+              <option [value]="item">{{item}}</option>
+            }
+          </select>
+
+          <div class="d-flex m-2 gap-5 flex-wrap">
+            <div>
+              <p class="m-0 text-secondary fw-normal">Tổng đơn hàng</p>
+              <p class="m-0 p-0 fw-semibold">
+                {{revenueData.orderOverview.totalOrders}}</p>
             </div>
-  
-            <div class="box-content">
-              <span class="big">44.51</span>
-              Doanh thu tháng này
+            <div>
+              <p class="m-0 text-secondary fw-normal">Tổng sản phẩm</p>
+              <p class="m-0 p-0 fw-semibold">
+                {{revenueData.orderOverview.totalUnits}}</p>
             </div>
-          </div>
-  
-          <div class="info-box">
-            <div class="box-icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M20 10H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V11a1 1 0 0 0-1-1zm-1 10H5v-8h14v8zM5 6h14v2H5zM7 2h10v2H7z"
-                />
-              </svg>
+            <div>
+              <p class="m-0 text-secondary fw-normal">Tổng doanh thu</p>
+              <p class="m-0 p-0 fw-semibold">
+                {{revenueData.orderOverview.totalSales | number:'1.0':'en-US'}} VNĐ</p>
             </div>
-  
-            <div class="box-content">
-              <span class="big">132</span>
-              Đơn hàng tháng này
-            </div>
-          </div>
-  
-          <div class="info-box active">
-            <div class="box-icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M3,21c0,0.553,0.448,1,1,1h16c0.553,0,1-0.447,1-1v-1c0-3.714-2.261-6.907-5.478-8.281C16.729,10.709,17.5,9.193,17.5,7.5 C17.5,4.468,15.032,2,12,2C8.967,2,6.5,4.468,6.5,7.5c0,1.693,0.771,3.209,1.978,4.219C5.261,13.093,3,16.287,3,20V21z M8.5,7.5 C8.5,5.57,10.07,4,12,4s3.5,1.57,3.5,3.5S13.93,11,12,11S8.5,9.43,8.5,7.5z M12,13c3.859,0,7,3.141,7,7H5C5,16.141,8.14,13,12,13z"
-                />
-              </svg>
-            </div>
-  
-            <div class="box-content">
-              <span class="big">18</span>
-              Người dùng
+            <div>
+              <p class="m-0 text-secondary fw-normal">Trung bình. Giá trị/đơn hàng</p>
+              <p class="m-0 p-0 fw-semibold">
+                {{revenueData.orderOverview.avgSalesPerOrders | number:'1.0':'en-US'}} VNĐ</p>
             </div>
           </div>
-  
-        </section>
-        <div class="card-wrap">
-          <div class="card">
-            <p-chart type="bar" [data]="basicData" [options]="basicOptions" />
-          </div>
-          <div class="card-wrap piechart-component">
-            <div class="card flex justify-content-center">
-              <p-chart type="doughnut" [data]="data" [options]="options" />
-            </div>
-          </div>
-          
+
+          <!-- revenue chart -->
+          <p-chart type="bar" [data]="chartData" [options]="chartOptions"></p-chart>
+
+        </div>
+
+        <div class="card row p-2 m-1 my-4">
+          <h4>Sản phẩm bán chạy</h4>
+          <p-table [value]="overviewData.bestSellingProducts"
+            rowHover="true">
+            <ng-template pTemplate="header">
+              <tr>
+                  <th>Mã sản phẩm</th>
+                  <th>Ảnh</th>
+                  <th>Tên sản phẩm</th>
+                  <th>Doanh số</th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-product>
+              <tr>
+                  <td class="product-id">
+                      {{ product.productId }}
+                  </td>
+                  
+                  <td>
+                      <img style="width: 70px; height: 80px;"
+                        src="{{product.productImage || '../../../../../assets/no-image.svg'}}" alt="">
+                  </td>
+                  <td>
+                    {{ product.productName }}
+                </td>
+                  <td>
+                      {{ product.totalSold}}
+                  </td>
+              </tr>
+          </ng-template>
+          </p-table>
         </div>
       </div>
-    </main>
-  </div>
   
+      <div class="col-4">
+        <div class="card row p-2 m-1">
+          <h4>Đơn hàng chưa giao</h4>
+          <ul class="overflow-auto" style="max-height: 35rem;">
+            @for (item of overviewData.unshippedOrders; track $index) {
+              <li class="card my-2" style="background-color: #f3fbfb; border: none;">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between">
+                    <p-tag [style]="{'font-size': '1rem'}"
+                      [rounded]="true" 
+                      severity="danger"
+                      [value]='"#" + item.id'/>
+                    <p>{{item.createAt | date:'dd/MM/yyyy, HH:mm a'}}</p>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <p class="ms-2"><strong>{{item.amount | number:'1.0':'en-US'}} VNĐ</strong></p>
+                    @switch (item.status) {
+                      @case (0) {
+                        <p-tag [rounded]="true" 
+                          severity="warning"
+                          value="Chờ xác nhận"/>
+                      }
+                      @case (1) {
+                        <p-tag [rounded]="true" 
+                          value="Đã xác nhận"/>
+                      }
+                    }
+                  </div>
+                </div>
+              </li>
+            }
+          </ul>
+        </div>
+        <div class="card row p-2 m-1 my-5">
+          <h4>Doanh số theo danh mục</h4>
+          <p-chart type="doughnut" [data]="pieChartData" [options]="pieChartOptions"></p-chart>
+        </div>
+      </div>
+
+    </div>
+  </div>
+}

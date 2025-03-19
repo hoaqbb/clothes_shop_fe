@@ -2,179 +2,108 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { ChartModule } from 'primeng/chart';
-import { OrderService } from '../../core/services/order.service';
+import { AdminService } from '../../core/services/admin.service';
+import { TagModule } from 'primeng/tag';
+import { globalModules } from '../../shared/global.modules';
+import { FormsModule } from '@angular/forms';
+import { HttpHeaders } from '@angular/common/http';
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [ChartModule,TableModule, CommonModule],
+  imports: [ChartModule, TableModule, CommonModule, TableModule, TagModule, globalModules, FormsModule],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css'
 })
 export class AdminDashboardComponent implements OnInit{
-  basicData: any;
-  basicOptions: any;
-  data: any;
-  options: any;
-  // orders = OrderList.items;
+  overviewData: any;
+  revenueData: any;
 
-  //Get dữ liệu lên 
-  constructor(private orderService: OrderService) {}
+  chartData: any;
+  chartOptions: any;
+  pieChartData: any;
+  pieChartOptions: any;
+  selectedYear: number;
+
+  constructor(private adminService: AdminService) {}
+
+  getOverview() {
+    this.adminService.getOverview().subscribe((res: any) => {
+      this.overviewData = res;
+      this.pieChartInit();
+    });
+  }
+
+  getRevenueChart() {
+    this.adminService.getRevenue().subscribe((res: any) => {
+      this.revenueData = res;
+      console.log(this.revenueData);
+      
+      this.selectedYear = this.revenueData.years.at(-1); //get last element of array
+      this.chartInit();
+    });
+  }
+
+  getRevenueChartWithYear(year: number) {
+    this.adminService.getRevenueWithYear(year).subscribe((res: any) => {
+      this.revenueData = res;
+      this.selectedYear = year;
+      this.chartInit();
+    });
+  }
 
   ngOnInit() {
-    this.chartInit();
-    this.pieChartInit();
+    this.getOverview();
+    this.getRevenueChart();
   }
 
-  //Daonh thu từng tháng
+  //Doanh thu từng tháng theo năm
   chartInit() {
     const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--text-color');
-    const textColorSecondary = documentStyle.getPropertyValue(
-      '--text-color-secondary'
-    );
-    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-    this.basicData = {
-      labels: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ],
+    const months = this.revenueData.revenues.map((x) => x.month.toString());
+    const revenue = this.revenueData.revenues.map((x) => x.revenue);
+    const totalOrder = this.revenueData.revenues.map((x) => x.totalOrder);
+
+    this.chartData = {
+      labels: months,
       datasets: [
         {
-          label: 'Sales',
-          data: [540, 325, 702, 620, 540, 325, 702, 620, 540, 325, 702, 620],
-          backgroundColor: [
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-          ],
-          borderColor: [
-            'rgb(255, 159, 64)',
-            'rgb(75, 192, 192)',
-            'rgb(54, 162, 235)',
-            'rgb(153, 102, 255)',
-            'rgb(255, 159, 64)',
-            'rgb(75, 192, 192)',
-            'rgb(54, 162, 235)',
-            'rgb(153, 102, 255)',
-            'rgb(255, 159, 64)',
-            'rgb(75, 192, 192)',
-            'rgb(54, 162, 235)',
-            'rgb(153, 102, 255)',
-          ],
-          borderWidth: 1,
+          label: 'Doanh thu',
+          data: revenue,
+          backgroundColor: documentStyle.getPropertyValue('--teal-400'),
+        },
+        {
+          label: 'Đơn hàng',
+          data: totalOrder,
+          backgroundColor: documentStyle.getPropertyValue('--red-400'),
         },
       ],
     };
 
-    this.basicOptions = {
-      plugins: {
-        legend: {
-          labels: {
-            color: textColor,
-          },
-        },
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            color: textColorSecondary,
-          },
-          grid: {
-            color: surfaceBorder,
-            drawBorder: false,
-          },
-        },
-        x: {
-          ticks: {
-            color: textColorSecondary,
-          },
-          grid: {
-            color: surfaceBorder,
-            drawBorder: false,
-          },
-        },
-      },
+    this.chartOptions = {
+      maintainAspectRatio: false,
+      aspectRatio: 0.8,
     };
   }
-
-  //Top 3 sản phẩm bán chạy nhất
+  
+  //Doanh số theo danh mục
   pieChartInit() {
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--text-color');
+    const categories = this.overviewData.categorySales.map((x) => x.categoryName);
+    const data = this.overviewData.categorySales.map((x) => x.totalSold);
 
-    this.data = {
-      labels: ['A', 'B', 'C'],
+    this.pieChartData = {
+      labels: categories,
       datasets: [
         {
-          data: [300, 50, 100],
-          backgroundColor: [
-            documentStyle.getPropertyValue('--blue-500'),
-            documentStyle.getPropertyValue('--yellow-500'),
-            documentStyle.getPropertyValue('--green-500'),
-          ],
-          hoverBackgroundColor: [
-            documentStyle.getPropertyValue('--blue-400'),
-            documentStyle.getPropertyValue('--yellow-400'),
-            documentStyle.getPropertyValue('--green-400'),
-          ],
+          data: data
         },
       ],
     };
 
-    this.options = {
-      cutout: '60%',
-      plugins: {
-        legend: {
-          labels: {
-            color: textColor,
-          },
-        },
-      },
+    this.pieChartOptions = {
+      responsive: true,
+      cutout: '60%'
     };
   }
-  //Danh sách đơn hàng
-  orderListInit(){
-    //orderList lấy ra ở đây 
-  }
 
-  getStatusLabel(status: number): string {
-    if (status === 1) {
-      return 'Đã hoàn thành';
-    } else if (status === 0) {
-      return 'Đang vận chuyển';
-    } else {
-      return 'Đang chuẩn bị';
-    }
-  }
-
-  getStatusClass(status: number): string {
-    if (status === 1) {
-      return 'shipped';
-    } else if (status === 0) {
-      return 'pending';
-    } else  {
-      return 'prepared';
-    } 
-  }
 }
